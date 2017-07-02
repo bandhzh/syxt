@@ -1,0 +1,61 @@
+package com.haihao.controller;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.haihao.utils.IPUtils;
+import com.haihao.utils.UrlMatchUtils;
+
+public class TimeBasedInterceptor implements HandlerInterceptor {
+	
+	private static ThreadLocal<Long> TIMER_LOCAL = new ThreadLocal<Long>();
+	
+	private static final Logger logger = LoggerFactory.getLogger("TimeBasedInterceptor");
+
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		
+		TIMER_LOCAL.set(System.nanoTime());
+		String url = UrlMatchUtils.getServletUrl(request);
+
+		String clientIP = IPUtils.getRequestIp(request);
+		
+		String userAgent = request.getHeader("User-Agent");
+		
+		logger.info("----- 开始请求：URL={}, 客户端IP={}, UserAgent={} -----", new Object[] {
+				url,
+				null == clientIP? IPUtils.getRequestIp(request) : clientIP,
+				userAgent
+		});
+		
+		
+		
+		return true;
+	}
+
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		
+	}
+
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		Long startTime = TIMER_LOCAL.get();
+		TIMER_LOCAL.remove();
+		
+		String clientIP = IPUtils.getRequestIp(request);
+		Long spendTimeInMillis = (System.nanoTime() - (null == startTime? System.nanoTime() : startTime.longValue())) / 1000000L;
+		
+		logger.info("----- 完成请求: URL={}, 耗时(毫秒)={}, 客户端IP={} -----", new Object[] {
+				UrlMatchUtils.getServletUrl(request),
+				spendTimeInMillis,
+				null == clientIP? IPUtils.getRequestIp(request) : clientIP
+		});
+	}
+
+}

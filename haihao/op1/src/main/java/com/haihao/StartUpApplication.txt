@@ -1,0 +1,57 @@
+package com.haihao;
+
+import java.io.IOException;
+
+import org.beetl.core.GroupTemplate;
+import org.beetl.core.resource.ClasspathResourceLoader;
+import org.beetl.ext.spring.BeetlGroupUtilConfiguration;
+import org.beetl.ext.spring.BeetlSpringViewResolver;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.Banner.Mode;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+
+import com.haihao.beetl.AuthenticationFn;
+
+
+@SpringBootApplication
+@ComponentScan(basePackages = {"com.haihao","com.baidu"})
+public class StartUpApplication {
+	
+	public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(StartUpApplication.class);
+        app.setBannerMode(Mode.OFF);
+        app.run(args);
+		
+        try {
+			new JfinalCoreInit();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Bean(initMethod = "init", name = "beetlConfig")
+	public BeetlGroupUtilConfiguration getBeetlGroupUtilConfiguration() {
+
+		BeetlGroupUtilConfiguration beetlGroupUtilConfiguration = new BeetlGroupUtilConfiguration();
+		ClasspathResourceLoader classpathResourceLoader = new ClasspathResourceLoader();
+		beetlGroupUtilConfiguration.setResourceLoader(classpathResourceLoader);
+		return beetlGroupUtilConfiguration;
+	}
+
+	@Bean(name = "beetlViewResolver")
+	public BeetlSpringViewResolver getBeetlSpringViewResolver(@Qualifier("beetlConfig") BeetlGroupUtilConfiguration beetlGroupUtilConfiguration) {
+		GroupTemplate groupTemplate = beetlGroupUtilConfiguration.getGroupTemplate();
+		groupTemplate.registerFunction("authenticationFn", new AuthenticationFn());
+		BeetlSpringViewResolver beetlSpringViewResolver = new BeetlSpringViewResolver();
+		beetlSpringViewResolver.setPrefix("/templates/");
+		beetlSpringViewResolver.setSuffix(".html");
+		beetlSpringViewResolver.setContentType("text/html;charset=UTF-8");
+		beetlSpringViewResolver.setOrder(0);
+		beetlSpringViewResolver.setConfig(beetlGroupUtilConfiguration);
+		return beetlSpringViewResolver;
+	}
+	
+}

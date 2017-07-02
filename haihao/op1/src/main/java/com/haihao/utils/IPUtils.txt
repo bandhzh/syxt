@@ -1,0 +1,298 @@
+package com.haihao.utils;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+
+import jodd.http.HttpRequest;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springside.modules.utils.number.NumberUtil;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
+public abstract class IPUtils extends IPUtil {
+	
+	private static final Logger logger = LoggerFactory.getLogger(IPUtils.class);
+
+	public static final String LOCALHOST = "127.0.0.1";
+
+	private static volatile InetAddress LOCAL_ADDRESS = null;
+
+	public static final String ANYHOST = "0.0.0.0";
+
+	private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");
+
+	public static String getLocalHost() {
+		InetAddress address = getLocalAddress();
+		return address == null ? LOCALHOST : address.getHostAddress();
+	}
+
+	public static InetAddress getLocalAddress() {
+		if (LOCAL_ADDRESS != null)
+			return LOCAL_ADDRESS;
+		InetAddress localAddress = getLocalAddress0();
+		LOCAL_ADDRESS = localAddress;
+		return localAddress;
+	}
+
+	private static boolean isValidAddress(InetAddress address) {
+		if (address == null || address.isLoopbackAddress())
+			return false;
+		String name = address.getHostAddress();
+		return (name != null && !ANYHOST.equals(name) && !LOCALHOST.equals(name) && IP_PATTERN.matcher(name).matches());
+	}
+
+	private static void printError(String msg, Throwable e) {
+		e.printStackTrace();
+	}
+
+	private static InetAddress getLocalAddress0() {
+		InetAddress localAddress = null;
+		try {
+			localAddress = InetAddress.getLocalHost();
+			if (isValidAddress(localAddress)) {
+				return localAddress;
+			}
+		} catch (Throwable e) {
+			printError("Failed to retriving ip address, " + e.getMessage(), e);
+		}
+		try {
+			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			if (interfaces != null) {
+				while (interfaces.hasMoreElements()) {
+					try {
+						NetworkInterface network = interfaces.nextElement();
+						Enumeration<InetAddress> addresses = network.getInetAddresses();
+						if (addresses != null) {
+							while (addresses.hasMoreElements()) {
+								try {
+									InetAddress address = addresses.nextElement();
+									if (isValidAddress(address)) {
+										return address;
+									}
+								} catch (Throwable e) {
+									printError("Failed to retriving ip address, " + e.getMessage(), e);
+								}
+							}
+						}
+					} catch (Throwable e) {
+						printError("Failed to retriving ip address, " + e.getMessage(), e);
+					}
+				}
+			}
+		} catch (Throwable e) {
+			printError("Failed to retriving ip address, " + e.getMessage(), e);
+		}
+		printError("Could not get local host ip address, will use 127.0.0.1 instead.", null);
+		return localAddress;
+	}
+	
+	/**
+	 * <p>
+	 *  获取客户端的IP地址的方法是：request.getRemoteAddr()，这种方法在大部分情况下都是有效的。
+	 *  但是在通过了Apache,Squid等反向代理软件就不能获取到客户端的真实IP地址了，如果通过了多级反向代理的话，
+	 *  X-Forwarded-For的值并不止一个，而是一串IP值， 究竟哪个才是真正的用户端的真实IP呢？
+	 *  答案是取X-Forwarded-For中第一个非unknown的有效IP字符串。
+	 *  例如：X-Forwarded-For：192.168.1.110, 192.168.1.120,
+	 *  192.168.1.130, 192.168.1.100 用户真实IP为： 192.168.1.110
+	 *  </p>
+	 *  
+	 * @param request
+	 * @return
+	 */
+	public static String getRequestIp(HttpServletRequest request) {
+		String ip = request.getHeader("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+			if (ip.equals(LOCALHOST)) {
+				/** 根据网卡取本机配置的IP */
+				InetAddress inet = null;
+				try {
+					inet = InetAddress.getLocalHost();
+					ip = inet.getHostAddress();
+				} catch (UnknownHostException e) {
+					logger.error("IpHelper error." + e.toString());
+				}
+			}
+		}
+		
+		logger.debug("解析出的IP: " + ip);
+		
+		/**
+		 * 对于通过多个代理的情况， 第一个IP为客户端真实IP,多个IP按照','分割 "***.***.***.***".length() = 15
+		 */
+		if (ip != null && ip.length() > 15) {
+			if (ip.indexOf(",") > 0) {
+				ip = ip.substring(0, ip.indexOf(","));
+			}
+		}
+		return ip;
+	}
+	
+
+	public static String ipToDistrict(String ip) {
+		JSONObject address = httpGet("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=" + ip);
+		if (address != null) {
+			List<String> lists = new ArrayList<String>();
+			String country = address.getString("country");
+			if (StringUtils.isNotBlank(country)) {
+				lists.add(country);
+			}
+			String pro = address.getString("province");
+			if (StringUtils.isNotBlank(pro)) {
+				lists.add(pro);
+			}
+			String city = address.getString("city");
+			if (StringUtils.isNotBlank(city)) {
+				lists.add(city);
+			}
+			String dis = address.getString("district");
+			if (StringUtils.isNotBlank(dis)) {
+				lists.add(dis);
+			}
+			String addStr = StringUtils.join(lists, "-");
+			return addStr;
+		}
+		
+		return "";
+	}
+	public static Map<String, String> getDistrictByIP(String ip) {
+		JSONObject address = httpGet("http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=" + ip);
+		Map<String, String> result = new HashMap<String, String>();
+		if (address != null) {
+			String country = address.getString("country");
+			if (StringUtils.isNotBlank(country)) {
+				result.put("country", country);
+			}
+			String province = address.getString("province");
+			if (StringUtils.isNotBlank(province)) {
+				result.put("province", province);
+			}
+			String city = address.getString("city");
+			if (StringUtils.isNotBlank(city)) {
+				result.put("city", city);
+			}
+			String district = address.getString("district");
+			if (StringUtils.isNotBlank(district)) {
+				result.put("district", district);
+			}
+		}
+		return result;
+	}
+
+	private static JSONObject httpGet(String cusUrl) {
+		HttpRequest request = new HttpRequest();
+		try{
+			HttpRequest httpRequest = request.get(cusUrl);
+			String bodyText = httpRequest.send().bodyText();
+			JSONObject address = JSON.parseObject(bodyText);
+			return address;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		
+		/*CloseableHttpClient httpclient = HttpClients.createDefault();
+		try {
+			// 创建httpget.
+			HttpGet httpget = new HttpGet(cusUrl);
+			//System.out.println("executing request " + httpget.getURI());
+			// 执行get请求.
+			CloseableHttpResponse response = httpclient.execute(httpget);
+			try {
+				// 获取响应实体
+				HttpEntity entity = response.getEntity();
+
+				// 打印响应状态
+				// System.out.println(response.getStatusLine());
+				if (entity != null) {
+					// 打印响应内容长度
+					// System.out.println("Response content length: "+
+					// entity.getContentLength());
+					// 打印响应内容
+
+					String ret = EntityUtils.toString(entity);
+					JSONObject address = JSON.parseObject(ret);
+					return address;
+				}
+			} finally {
+				response.close();
+			}
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			// 关闭连接,释放资源
+			try {
+				httpclient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}*/
+		return null;
+	}
+	
+	public static boolean internalIp(String ip) {
+	    int ipv4StringToInt = IPUtil.ipv4StringToInt(ip);
+	    return internalIp(NumberUtil.toBytes(ipv4StringToInt));
+	}
+	
+	private static boolean internalIp(byte[] addr) {
+	    final byte b0 = addr[0];
+	    final byte b1 = addr[1];
+	    //10.x.x.x/8
+	    final byte SECTION_1 = 0x0A;
+	    //172.16.x.x/12
+	    final byte SECTION_2 = (byte) 0xAC;
+	    final byte SECTION_3 = (byte) 0x10;
+	    final byte SECTION_4 = (byte) 0x1F;
+	    //192.168.x.x/16
+	    final byte SECTION_5 = (byte) 0xC0;
+	    final byte SECTION_6 = (byte) 0xA8;
+	    switch (b0) {
+	        case SECTION_1:
+	            return true;
+	        case SECTION_2:
+	            if (b1 >= SECTION_3 && b1 <= SECTION_4) {
+	                return true;
+	            }
+	        case SECTION_5:
+	            switch (b1) {
+	                case SECTION_6:
+	                    return true;
+	            }
+	        default:
+	            return false;
+
+	    }
+	}
+	
+	public static void main(String[] args) {
+		String localIP = getLocalHost();
+		System.out.println("local ip is " + localIP);
+		
+		System.out.println(getDistrictByIP("61.145.130.241"));
+	}
+}

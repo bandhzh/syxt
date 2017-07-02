@@ -1,0 +1,21 @@
+package com.haihao.model.security;
+
+import java.util.List;
+
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+@TableBind(tableName="op_role")
+public class RoleModel extends BaseModel<RoleModel> {
+
+	private static final long serialVersionUID = -7373642816373147933L;
+	
+	public static RoleModel dao = new RoleModel();
+	
+	
+	public List<PrivilegeModel> getRolePrivilege(Long roleId){
+		return PrivilegeModel.dao.find(ToolSqlXml.getSql("com.role.getPrivilegeById"),roleId);
+	}
+
+}

@@ -1,0 +1,59 @@
+package com.haihao;
+
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
+
+import com.alibaba.druid.filter.stat.StatFilter;
+import com.alibaba.druid.wall.WallConfig;
+import com.alibaba.druid.wall.WallFilter;
+import com.haihao.jfinal.SqlXmlPlugin;
+import com.haihao.plugin.tablebind.AutoTableBindPlugin;
+import com.haihao.tool.ToolString;
+import com.jfinal.kit.PathKit;
+import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
+import com.jfinal.plugin.druid.DruidPlugin;
+
+public class JfinalCoreInit {
+	
+	private final Logger log = LoggerFactory.getLogger(JfinalCoreInit.class);
+	
+	public JfinalCoreInit() throws IOException {
+		PropKit.use("a_little_config.properties");
+		DruidPlugin druidPlugin = new DruidPlugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
+		druidPlugin.addFilter(new StatFilter());
+		WallFilter wall = new WallFilter();
+		wall.setDbType("mysql");
+		WallConfig wallConfig = new WallConfig("META-INF/druid/wall/mysql");
+		wallConfig.setCommentAllow(true);
+		wallConfig.setSelectWhereAlwayTrueCheck(false);
+		wallConfig.setConditionAndAlwayTrueAllow(true);
+		wallConfig.setMultiStatementAllow(true);
+		wallConfig.setNoneBaseStatementAllow(true);
+		wall.setConfig(wallConfig);
+		druidPlugin.addFilter(wall);
+		druidPlugin.start();
+		
+/*		log.info("启用ActiveRecordPlugin插件");
+		ActiveRecordPlugin activeRecordPlugin = new ActiveRecordPlugin(druidPlugin);
+		activeRecordPlugin.setShowSql(true);
+		activeRecordPlugin.start();*/
+		
+		log.info("启用模板插件");
+		SqlXmlPlugin sqlXmlPlugin = new SqlXmlPlugin();
+		sqlXmlPlugin.start();
+		log.info("启用AutoTableBindPlugin插件");
+		AutoTableBindPlugin autoTableBindPlugin = new AutoTableBindPlugin(druidPlugin);
+		autoTableBindPlugin.setShowSql(true);
+		autoTableBindPlugin.setDevMode(false);
+		autoTableBindPlugin.setDialect(new MysqlDialect());
+		autoTableBindPlugin.setPackagesToScan("com.haihao.model");
+		autoTableBindPlugin.start();
+	}
+	
+	
+
+}

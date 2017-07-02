@@ -1,0 +1,20 @@
+package com.haihao.service;
+
+public class ServiceException extends RuntimeException {
+	private static final long serialVersionUID = -6421349909142021084L;
+	
+	private String error;
+
+	public ServiceException(String error) {
+		super(error);
+		this.error = error;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+}

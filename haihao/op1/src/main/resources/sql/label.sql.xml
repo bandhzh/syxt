@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+	
+-->
+<sql-statement namespace="com.label">
+	
+	<sql id="role">
+		<![CDATA[ 
+			select id,name as label from op_role
+		]]>
+	</sql>
+	
+	
+	<sql id="department">
+		<![CDATA[ 
+			select id,name as label from op_department
+		]]>
+	</sql>
+	
+	<sql id="list">
+		<![CDATA[ 
+			select id,name as label,listId from op_list order by displayOrder
+		]]>
+	</sql>
+	
+</sql-statement>

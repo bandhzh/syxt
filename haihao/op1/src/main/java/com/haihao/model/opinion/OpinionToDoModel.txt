@@ -1,0 +1,12 @@
+package com.haihao.model.opinion;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_opinion_todo")
+public class OpinionToDoModel extends BaseModel<OpinionToDoModel> {
+
+	private static final long serialVersionUID = -1658354762004192287L;
+
+}

@@ -1,0 +1,33 @@
+/*
+ * Copyright (C) 2017 WinbonsCloud Technology Software Co.,Ltd
+ * All Rights Reserved.
+ * Development of this software WinbonsCloud Technology Software Co.,Ltd.
+ * Without the formal written consent of the Company, 
+ * any other individuals, groups may not use, 
+ * copy, modify, or distribute this software
+ */
+
+package com.haihao.plugin.tablebind;
+
+/**
+ * 
+ * @author a.Qing(行云流水)
+ * @date 2017年5月10日 上午9:53:06
+ * @version 1.0.0
+ */
+public class MappingException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
+
+	public MappingException(Throwable root) {
+		super(root);
+	}
+
+	public MappingException(String string, Throwable root) {
+		super(string, root);
+	}
+
+	public MappingException(String s) {
+		super(s);
+	}
+}

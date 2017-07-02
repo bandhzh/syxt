@@ -1,0 +1,26 @@
+package com.haihao.utils;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
+import org.springframework.web.util.UrlPathHelper;
+
+public abstract class UrlMatchUtils {
+
+	private static PathMatcher PATH_MATCHER = new AntPathMatcher();
+
+	private static UrlPathHelper URL_PATHHELPER = new UrlPathHelper();
+
+	public static boolean isMatch(String pattern, String url) {
+		return PATH_MATCHER.match(pattern, url);
+	}
+
+	public static String getServletUrl(HttpServletRequest request) {
+		return URL_PATHHELPER.getServletPath(request);
+	}
+
+	public static String getContextUrl(HttpServletRequest request) {
+		return URL_PATHHELPER.getContextPath(request);
+	}
+}

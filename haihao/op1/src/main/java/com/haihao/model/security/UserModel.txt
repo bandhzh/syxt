@@ -1,0 +1,23 @@
+package com.haihao.model.security;
+
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_user")
+public class UserModel extends BaseModel<UserModel> {
+
+	private static final long serialVersionUID = 6461607398063932678L;
+	
+	public static UserModel dao = new UserModel();
+	
+	
+	public UserModel getByLoginName(String loginName){
+		UserModel findFirst = UserModel.dao.findFirst(ToolSqlXml.getSql("com.user.getByLoginName"),loginName);
+		return findFirst;
+	}
+	
+	
+
+}

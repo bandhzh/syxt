@@ -1,0 +1,21 @@
+package com.haihao.tool;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.haihao.dto.SecurityUser;
+
+public class ToolSecurity {
+	
+	public static SecurityUser getSecurityUser(){
+		return (SecurityUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}
+	
+	public static long getUserId(){
+		return getSecurityUser().getUserDto().getUserId();
+	}
+	
+	public static long getDepartmentId(){
+		return getSecurityUser().getUserDto().getDepartmentId();
+	}
+
+}

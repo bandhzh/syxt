@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- -->
+<sql-statement namespace="com.user">
+
+	<sql id="getByLoginName">
+		<![CDATA[ 
+			select * from op_user where loginName = ? limit 0,1
+		]]>
+	</sql>
+	
+	
+	<sql id="selectAll">
+		<![CDATA[ 
+			select * from op_user;
+		]]>
+	</sql>
+
+	<sql id="selectHearder">
+		<![CDATA[ 
+			select * 
+		]]>
+	</sql>
+	
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_user userModel where 1 = 1 and enable = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	<sql id="exist">
+		<![CDATA[ 
+			select count(1) from op_user where loginName = ? and enable = 1 
+		<% 
+			if(isNotEmpty(id)){
+				print("and id <> " + id);
+			}
+		%>
+		]]>
+	</sql>
+	
+
+
+</sql-statement>

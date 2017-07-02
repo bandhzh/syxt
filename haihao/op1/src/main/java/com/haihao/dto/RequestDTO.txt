@@ -1,0 +1,60 @@
+package com.haihao.dto;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RequestDTO extends BaseDTO {
+
+	private static final long serialVersionUID = 1L;
+	
+	private Map<String, Object> data = new HashMap<String, Object>();
+
+	private FilterDTO[] filters;
+
+	private SortDTO[] sorts;
+	
+	private PageDTO page;
+
+	private boolean paged;
+
+	public Map<String, Object> getData() {
+		return data;
+	}
+
+	public void setData(Map<String, Object> data) {
+		this.data = data;
+	}
+
+
+	public PageDTO getPage() {
+		return page;
+	}
+
+	public void setPage(PageDTO page) {
+		this.page = page;
+	}
+
+	public boolean isPaged() {
+		return paged;
+	}
+
+	public void setPaged(boolean paged) {
+		this.paged = paged;
+	}
+
+	public FilterDTO[] getFilters() {
+		return filters;
+	}
+
+	public void setFilters(FilterDTO[] filters) {
+		this.filters = filters;
+	}
+
+	public SortDTO[] getSorts() {
+		return sorts;
+	}
+
+	public void setSorts(SortDTO[] sorts) {
+		this.sorts = sorts;
+	}
+}

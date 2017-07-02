@@ -1,0 +1,15 @@
+package com.haihao.beetl;
+
+import org.beetl.core.Context;
+import org.beetl.core.Function;
+
+import com.haihao.tool.ToolSecurity;
+
+public class AuthenticationFn implements Function {
+
+	@Override
+	public Object call(Object[] arg0, Context arg1) {
+		return ToolSecurity.getSecurityUser();
+	}
+
+}

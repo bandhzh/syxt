@@ -1,0 +1,52 @@
+package com.haihao.dto;
+
+import javax.servlet.http.HttpServletRequest;
+
+public class PageSqlCommond<T> {
+	
+	
+	private HttpServletRequest request;
+	
+	private String headSql;
+	
+	private String bodySql;
+	
+	private SQLCallback<T> sqlCallback;
+	
+	
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
+	public String getHeadSql() {
+		return headSql;
+	}
+
+	public void setHeadSql(String headSql) {
+		this.headSql = headSql;
+	}
+
+	public String getBodySql() {
+		return bodySql;
+	}
+
+	public void setBodySql(String bodySql) {
+		this.bodySql = bodySql;
+	}
+
+	public SQLCallback<T> getSqlCallback() {
+		return sqlCallback;
+	}
+
+	public void setSqlCallback(SQLCallback<T> sqlCallback) {
+		this.sqlCallback = sqlCallback;
+	}
+	
+	
+
+}

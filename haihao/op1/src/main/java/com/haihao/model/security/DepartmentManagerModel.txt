@@ -1,0 +1,14 @@
+package com.haihao.model.security;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_department_manager",pkName="userId,deptId")
+public class DepartmentManagerModel extends BaseModel<DepartmentManagerModel> {
+
+	private static final long serialVersionUID = -4425533287969126623L;
+	
+	public static DepartmentManagerModel dao = new DepartmentManagerModel().dao();
+
+}

@@ -1,0 +1,410 @@
+package com.haihao.controller;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.constant.DataConstant;
+import com.haihao.constant.DataConstant.OpinionStatus;
+import com.haihao.constant.DataConstant.OpinionToDoStatus;
+import com.haihao.dto.PageResultDto;
+import com.haihao.dto.PageSqlCommond;
+import com.haihao.dto.RequestDTO;
+import com.haihao.dto.ResultDto;
+import com.haihao.dto.SQLCallback;
+import com.haihao.jfinal.ModelKit;
+import com.haihao.jfinal.ToolModel;
+import com.haihao.model.opinion.OpinionInstructionModel;
+import com.haihao.model.opinion.OpinionModel;
+import com.haihao.model.opinion.OpinionToDoFollowModel;
+import com.haihao.model.opinion.OpinionToDoModel;
+import com.haihao.model.opinion.OpinionVerifyFollowModel;
+import com.haihao.model.opinion.OpinionVerifyModel;
+import com.haihao.model.security.ListModel;
+import com.haihao.model.security.RoleModel;
+import com.haihao.service.ServiceException;
+import com.haihao.tool.ToolSecurity;
+import com.haihao.tool.ToolString;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
+import com.jfinal.plugin.activerecord.Record;
+
+@Controller
+@RequestMapping(value = "/opinion")
+public class OpinionController extends BaseController {
+
+	@RequestMapping(value = { "", "/", "/index" })
+	public String index(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/opinion/opinion.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+
+	@RequestMapping("/listOpinion")
+	@ResponseBody
+	public PageResultDto listOpinion(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBody");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+
+	@RequestMapping("/saveOpinion")
+	@ResponseBody
+	public ResultDto saveOpinion(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		OpinionModel model = getModel(request, OpinionModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdBy", ToolSecurity.getUserId());
+					long currentTimeMillis = System.currentTimeMillis();
+					model.set("createdDate", currentTimeMillis);
+					model.set("publishDate", currentTimeMillis);
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+
+	@RequestMapping("/removeOpinion")
+	@ResponseBody
+	public ResultDto removeOpinion(HttpServletRequest request) {
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		for (String id : requestDTO.getData().get("ids").toString().split(",")) {
+			Db.update("update op_opinion set enabled = -1 where id = ?", id);
+		}
+		return resultDto;
+	}
+
+	@RequestMapping("/verifyOpinion")
+	@ResponseBody
+	public ResultDto verifyOpinion(HttpServletRequest request) {
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		Map<String, Object> data = requestDTO.getData();
+		Object id = data.get("id");
+		Object departmentId = data.get("departmentId");
+		Long queryLong = Db.queryLong("select count(1) from op_opinion_verify where opinionId = ? and departmentId = ?", id, departmentId);
+		if (queryLong > 0)
+			throw new ServiceException("该部门已经被委托");
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				Db.update("update op_opinion set status = ? where id = ?", OpinionStatus.inVerify, id);
+				OpinionVerifyModel opinionVerifyModel = new OpinionVerifyModel();
+				opinionVerifyModel.set("opinionId", id);
+				opinionVerifyModel.set("departmentId", departmentId);
+				opinionVerifyModel.set("createdBy", ToolSecurity.getUserId());
+				opinionVerifyModel.set("createdDate", System.currentTimeMillis());
+				opinionVerifyModel.save();
+				return true;
+
+			}
+		});
+		return resultDto;
+	}
+
+	@RequestMapping("/opinionByVerify")
+	public String opinionByVerify(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/opinion/opinionByVerify.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+
+	@RequestMapping("/listOpinionByVerify")
+	@ResponseBody
+	public PageResultDto listOpinionByVerify(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByVerify");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+
+	@RequestMapping("/saveVerifyFollerOpinion")
+	@ResponseBody
+	public ResultDto saveFollerOpinion(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		OpinionVerifyFollowModel model = getModel(request, OpinionVerifyFollowModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdDate", System.currentTimeMillis());
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+
+	@RequestMapping("/listVerifyFollerOpinion")
+	@ResponseBody
+	public ResultDto listVerifyFollerOpinion(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.opinion.selectFollowByOpinionId", requestDTO.getData()));
+		resultDto.setData(ToolModel.recordListConvert(find));
+		return resultDto;
+	}
+
+	@RequestMapping("/finishVerifyFollerOpinion/{id}")
+	@ResponseBody
+	public ResultDto finishVerifyFollerOpinion(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		OpinionModel findById = OpinionModel.dao.findById(id);
+		findById.set("status", DataConstant.OpinionStatus.finishVerify);
+		findById.update();
+		return resultDto;
+	}
+
+	@RequestMapping("/toDoOpinion")
+	@ResponseBody
+	public ResultDto toDoOpinion(HttpServletRequest request) {
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		Map<String, Object> data = requestDTO.getData();
+		Object opinionToDoModelOpinionId = data.get("opinionToDoModelOpinionId");
+		Object mainTodo = data.get("mainTodo");
+		Object subTodo = data.get("subTodo");
+		if(ToolString.isEmptyString(mainTodo))throw new ServiceException("主办部门不能为空");
+		Long departmentId = Db.queryLong("select departmentId from op_opinion_todo where opinionId = ? and isMaster = 1", opinionToDoModelOpinionId);
+		
+			//throw new ServiceException("主办部门已经存在");
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				Db.update("update op_opinion set toDoStatus = ? where id = ?", OpinionToDoStatus.inDo, opinionToDoModelOpinionId);
+				if (null != opinionToDoModelOpinionId) {
+					if(null != departmentId){
+						if(!departmentId.equals(Long.parseLong(mainTodo.toString()))){
+							OpinionToDoModel opinionToDoModel = new OpinionToDoModel();
+							opinionToDoModel.set("opinionId", opinionToDoModelOpinionId);
+							opinionToDoModel.set("departmentId", mainTodo);
+							opinionToDoModel.set("isMaster", DataConstant.Yes);
+							opinionToDoModel.set("createdBy", ToolSecurity.getUserId());
+							opinionToDoModel.set("createdDate", System.currentTimeMillis());
+							opinionToDoModel.save();
+						}
+					}else{
+						OpinionToDoModel opinionToDoModel = new OpinionToDoModel();
+						opinionToDoModel.set("opinionId", opinionToDoModelOpinionId);
+						opinionToDoModel.set("departmentId", mainTodo);
+						opinionToDoModel.set("isMaster", DataConstant.Yes);
+						opinionToDoModel.set("createdBy", ToolSecurity.getUserId());
+						opinionToDoModel.set("createdDate", System.currentTimeMillis());
+						opinionToDoModel.save();
+					}
+				}
+
+				for (String id : ToolString.toString(subTodo).split(",")) {
+					OpinionToDoModel opinionToDoModel = new OpinionToDoModel();
+					if (Db.queryLong("select count(1) from op_opinion_todo where opinionId = ? and departmentId = ?", opinionToDoModelOpinionId, id) == 0) {
+						opinionToDoModel.set("opinionId", opinionToDoModelOpinionId);
+						opinionToDoModel.set("departmentId", id);
+						opinionToDoModel.set("isMaster", DataConstant.No);
+						opinionToDoModel.set("createdBy", ToolSecurity.getUserId());
+						opinionToDoModel.set("createdDate", System.currentTimeMillis());
+						opinionToDoModel.save();
+					}
+
+				}
+
+				return true;
+
+			}
+		});
+		return resultDto;
+	}
+
+	@RequestMapping("/opinionByTodo")
+	public String opinionByTodo(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/opinion/opinionByToDo.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+
+	@RequestMapping("/listOpinionByTodo")
+	@ResponseBody
+	public PageResultDto listOpinionByTodo(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByTodo");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+
+	@RequestMapping("/saveToDoFoller")
+	@ResponseBody
+	public ResultDto saveToDoFoller(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		OpinionToDoFollowModel model = getModel(request, OpinionToDoFollowModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdDate", System.currentTimeMillis());
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+
+	@RequestMapping("/listToDoFoller")
+	@ResponseBody
+	public ResultDto listTodoFoller(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.opinion.selectToDoByOpinionId", requestDTO.getData()));
+		resultDto.setData(ToolModel.recordListConvert(find));
+		return resultDto;
+	}
+
+	@RequestMapping("/finishTodoFoller/{id}")
+	@ResponseBody
+	public ResultDto finishTodoFoller(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		OpinionModel findById = OpinionModel.dao.findById(id);
+		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.finishDo);
+		findById.update();
+		return resultDto;
+	}
+
+	@RequestMapping("/untTodoFollerOpinion/{id}")
+	@ResponseBody
+	public ResultDto untTodoFollerOpinion(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		OpinionModel findById = OpinionModel.dao.findById(id);
+		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.untDo);
+		findById.update();
+		return resultDto;
+	}
+
+	@RequestMapping("/saveOpinionInstruction")
+	@ResponseBody
+	public ResultDto saveOpinionInstruction(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		OpinionInstructionModel model = getModel(request, OpinionInstructionModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdDate", System.currentTimeMillis());
+					model.set("userId", ToolSecurity.getUserId());
+					model.save();
+
+					OpinionModel findById = OpinionModel.dao.findById(model.getLong("opinionId"));
+					findById.set("hasInstruction", DataConstant.Yes);
+					findById.update();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+
+	@RequestMapping("/listInstructionOpinion")
+	@ResponseBody
+	public ResultDto listInstructionOpinion(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.opinion.selectInstructionOpinionId", requestDTO.getData()));
+		resultDto.setData(ToolModel.recordListConvert(find));
+		return resultDto;
+	}
+
+	@RequestMapping("/opinionByInstruction")
+	public String opinionByInstruction(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/opinion/opinionByInstruction.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+
+	@RequestMapping("/listOpinionByInstruction")
+	@ResponseBody
+	public PageResultDto listOpinionByInstruction(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByInstruction");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+
+}

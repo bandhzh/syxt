@@ -1,0 +1,46 @@
+package com.haihao.tool;
+
+import java.io.File;
+
+import com.qiniu.common.QiniuException;
+import com.qiniu.http.Response;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
+
+public abstract class ToolQiniu {
+	
+	 private static String ACCESS_KEY = "xEUubhj74EWsDgTCiLFeXUbeH_SMLEUnZEeQFM6P";
+	 private static String SECRET_KEY = "-mEmBsyoYaivBSNODNXzzfkq0TyHhjckFneXsQrv";
+	 
+	 private static String bucketname = "haihao2"; 
+	 
+	 
+	 private static Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+	 
+	 public static String getUpToken(){
+	      return auth.uploadToken(bucketname);
+	 }
+	 
+	 private static UploadManager uploadManager = new UploadManager();
+	 
+	 public static void main(String[] args){
+		 try {
+			 Response res = uploadManager.put(new File("D:\\cxf.txt"), "0001", getUpToken());
+			 
+		 } catch (QiniuException e) {
+	          Response r = e.response;
+	          // 请求失败时打印的异常的信息
+	          System.out.println(r.toString());
+	          try {
+	              //响应的文本信息
+	            System.out.println(r.bodyString());
+	          } catch (QiniuException e1) {
+	              //ignore
+	          }
+	      }        
+	 }
+	 
+	 
+	 
+
+}

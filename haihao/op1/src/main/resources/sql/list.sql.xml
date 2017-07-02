@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- -->
+<sql-statement namespace="com.list">
+	
+	
+	<sql id="selectAll">
+		<![CDATA[ 
+			select * from op_list order by displayOrder;
+		]]>
+	</sql>
+
+	<sql id="selectHearder">
+		<![CDATA[ 
+			select listModel.* 
+		]]>
+	</sql>
+	
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_list listModel 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+
+	
+
+
+</sql-statement>

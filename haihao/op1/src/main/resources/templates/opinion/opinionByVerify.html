@@ -1,0 +1,431 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light portlet-fit portlet-datatable ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-settings font-dark"></i> <span class="caption-subject font-dark sbold uppercase">信息管理</span>
+				</div>
+				<div class="actions"></div>
+			</div>
+
+
+			<div class="portlet-body">
+				<div class="table-container">
+					<table class="table table-striped table-bordered table-hover table-checkable" id="datatable_orders">
+						<thead>
+							<tr role="row" class="heading">
+								<th width="20%">主题</th>
+								<th width="10%">类别</th>
+								<th width="10%">等级</th>
+								<th width="20%">发布时间</th>
+								<th width="10%">核实状态</th>
+								<th width="10%">处理状态</th>
+								<th width="20%">操作</th>
+							</tr>
+							<tr role="row" class="filter">
+								<td><input type="text" class="form-control form-filter input-sm" columnName="opinionModel.subject" operation="like"></td>
+								<td><select id="categoryIds" class="form-control  form-filter selectpicker" columnName="opinionModel.categoryId"></select></td>
+								<td><select id="levelIds" class="form-control  form-filter selectpicker" columnName="opinionModel.levelId"></select></td>
+								<td>
+									<div class="form-group" style="margin-bottom: 0px;">
+										<div class="input-group input-large date-picker input-daterange" data-date="2012-11-10" data-date-format="yyyy-mm-dd">
+											<input type="text" class="form-control form-filter" name="opinionModel.publishDate" operation=">="> <span class="input-group-addon"> to </span> <input type="text" class="form-control form-filter" name="opinionModel.publishDate" operation="<=">
+										</div>
+									</div>
+								</td>
+								<td><select class="form-control  form-filter selectpicker" columnName="opinionModel.status">
+										<option value="" selected="selected">请选择...</option>
+										<option value="-1">待核实</option>
+										<option value="1">核实中</option>
+										<option value="2">已核实</option>
+										<option value="3">已转办</option>
+										<option value="10">归档</option>
+
+								</select></td>
+								<td><select class="form-control  form-filter selectpicker" columnName="opinionModel.toDoStatus">
+										<option value="" selected="selected">请选择...</option>
+										<option value="4">待核实</option>
+										<option value="5">处理中</option>
+										<option value="6">处理完成</option>
+										<option value="7">无法处理</option>
+								</select></td>
+								<td>
+									<div class="margin-bottom-5">
+										<button class="btn btn-sm btn-success filter-submit margin-bottom">
+											<i class="fa fa-search"></i> 查询
+										</button>
+									</div>
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="8">
+									<div id="slickGrid" class="grid"></div>
+									<div id="pager" class="om-grid om-widget om-widget-content" style="width: 100%; height: 30px;"></div>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+					</div>
+			</div>
+			</div>
+
+
+		<!-- /.发起核实-->
+<div class="modal fade bs-modal-sm" id="small" tabindex="1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">信息</h4>
+      </div>
+      <div class="modal-body">
+      <div id="slickGrid2" class="grid" style="overflow: hidden;width: 580px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+		<script>
+	var myDataView, myGrid, pager,myDataView2,myGrid2;
+	$(window).resize(function() {
+		$("#slickGrid").width($("#slickGrid").parent().width());
+		$("#slickGrid").height($(document).height() - 380);
+		if (myGrid) {
+			myGrid.resizeCanvas();
+		}
+
+	});
+	$(document)
+			.ready(
+					function() {
+						$(window).resize();
+						
+						selectInitList("#categoryIds","lists",1);
+						selectInitList("#levelIds","lists",2);
+						
+ 						$(".filter-submit").bind("click",function(){
+ 							  var filterParameters = [];
+ 							  $(".form-filter").each(function() {
+ 								  if($(this).val() != ""){
+ 									  var _operation = $(this).attr("operation");
+ 									  if(!_operation)_operation = "=";
+ 									  filterParameters.push({property:$(this).attr("columnName"),value:$(this).val(),operation:_operation});
+ 								  }
+ 							  });
+ 							 filterParameters.push({property:"opinionModel.enabled",value:"1",operation:"="});
+ 							  pager.setSearch(filterParameters);
+  							 pager.setSort([{"property":"opinionModel.id","order":"desc"}]);
+  							pager.setData({"departmentId":"${authenticationFn().userDto.departmentId}"});
+  							 
+ 							  pager.reload();
+						 });
+						
+						
+						myDataView = new Slick.Data.DataView({
+							inlineFilters : true
+						});
+						myDataView.setItems([]);
+						var options = {
+							editable : false,
+							enableAddRow : false,
+							enableCellNavigation : true,
+							enableColumnReorder : true,
+							asyncEditorLoading : false,
+							forceFitColumns: false,
+							forceSyncScrolling : false,
+							rowHeight : 30
+						}
+
+						var checkboxSelector = new Slick.CheckboxSelectColumn({
+							cssClass : "slick-cell-checkboxsel"
+						});
+
+						var columnsSortable = [
+								checkboxSelector.getColumnDefinition(),
+								{
+									id : "subject",
+									name : "主题",
+									field : "subject",
+									width : 150,
+									sortable : true
+								}, {
+									id : "lists",
+									name : "类别",
+									field : "categoryId",
+									formatter: listFormatter,
+									width : 100,
+									sortable : true
+								} , {
+									id : "lists",
+									name : "等级",
+									field : "levelId",
+									width : 100,
+									formatter: listFormatter,
+									sortable : true
+								} , {
+									id : "createdDate",
+									name : "创建时间",
+									field : "createdDate",
+									width : 150,
+									formatter: dateFormatter,
+									sortable : true
+								}, {
+									id : "displayName",
+									name : "发布者",
+									field : "displayName",
+									width : 100,
+									sortable : false
+								}, {
+									id : "lists",
+									name : "来源",
+									field : "sourceId",
+									width : 100,
+									formatter: listFormatter,
+									sortable : true
+								} , {
+									id : "status",
+									name : "状态",
+									field : "status",
+									width : 100,
+									formatter:  function (row, cell, value, columnDef, dataContext){
+										if(value == "1"){
+											return "核实中";
+										}else if(value == "2"){
+											return "已核实";
+										}else if(value == "3"){
+											return "已转办";
+										}else if(value == "10"){
+											return "归档";
+										}else{
+											return "待核实";
+										}
+										
+									},
+									sortable : true
+								}, {
+									id : "toDoStatus",
+									name : "回复状态",
+									field : "toDoStatus",
+									width : 100,
+									formatter: function (row, cell, value, columnDef, dataContext){
+										if(value == "5"){
+											return "处理中";
+										}else if(value == "6"){
+											return "处理完成";
+										}else if(value == "7"){
+											return "无法处理";
+										}else{
+											return "未执行";
+										}
+									},
+									sortable : true
+								}, {
+									id : "isPublic",
+									name : "公开",
+									field : "isPublic",
+									width : 100,
+									formatter: function (row, cell, value, columnDef, dataContext){
+										if(value == "-1"){
+											return "不公开";
+										}else{
+											return "公开";
+										}
+									},
+									sortable : true
+								}, {
+									  id: "#",
+									  name: "操作",
+									  field: "#",
+									  width: 300,
+									  formatter:function(row, cell, value, columnDef, dataContext){
+										  var _content = [];
+										  var status = dataContext.status;
+										  var isVerify = dataContext.isVerify;
+										  if(status < 2){
+											  _content.push(String.format("<a href='javascript:verifyed({0});'>{1}</a>&nbsp;&nbsp;",row,"反馈"));
+										  }
+										  _content.push(String.format("<a href='javascript:listVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"查看"));
+										  if(status < 2){
+											  _content.push(String.format("<a href='javascript:finishVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"核实完毕"));
+										  }
+										  return _content.join(""); 
+									  }
+									}
+								];
+						myGrid = new Slick.Grid("#slickGrid", myDataView,
+								columnsSortable, options);
+						myGrid.setSelectionModel(new Slick.RowSelectionModel());
+						myGrid.registerPlugin(new Slick.AutoTooltips({
+							enableForHeaderCells : true
+						}));
+						myGrid.registerPlugin(checkboxSelector);
+						pager = new Slick.Controls.Pager(myDataView, myGrid, $("#pager"),{pagesize:100,url:"${ctxPath}/opinion/listOpinionByVerify"});
+						 $(".filter-submit").trigger("click");
+						 
+						 myDataView.onPagingInfoChanged.subscribe(function (e, pagingInfo) {
+						});
+						 
+						 myDataView.onRowCountChanged.subscribe(function (e, args) {
+								myGrid.updateRowCount();
+								myGrid.render();
+							  });
+						 
+						 myDataView.onRowsChanged.subscribe(function (e, args) {
+								 myGrid.invalidateRows(args.rows);
+								 myGrid.render();
+							  });
+						 
+						 myGrid.onSort.subscribe(function (e, args) {
+							 var sorts = [];
+							 sorts.push({"property":args.sortCol.field,"order":args.sortAsc == true ? "asc" : "desc"});
+							 pager.setSort(sorts);
+							 $(".filter-submit").trigger("click");
+						  });
+						 
+						 
+						 myGrid.onScroll.subscribe(function (e, args) {
+						 });
+						 
+						  myGrid.onAddNewRow.subscribe(function (e, args) {
+						      var item = args.item;
+						      myGrid.invalidateRow(mainData.length);
+						      mainData.push(item);
+						      myGrid.updateRowCount();
+						      myGrid.render();
+						    });
+						  
+						  
+						  
+						  myDataView2 = new Slick.Data.DataView({ inlineFilters: true });
+						  myDataView2.setItems([]);
+							var columnsSortable2 = [{
+								  id: "displayName",
+								  name: "核实者",
+								  field: "displayName",
+								  width: 140,
+								  sortable: false
+								},{
+									  id: "departmentName",
+									  name: "部门",
+									  field: "departmentName",
+									  width: 140,
+									  sortable: false
+									}, {
+							  id: "createdDate",
+							  name: "核实时间",
+							  field: "createdDate",
+							  width: 150,
+							  formatter: dateFormatter,
+							  sortable: false
+							}, {
+								  id: "memo",
+								  name: "核实内容",
+								  field: "memo",
+								  width: 250,
+								  sortable: false
+								}];
+					 
+							myGrid2 = new Slick.Grid("#slickGrid2", myDataView2, columnsSortable2, options);
+							myGrid2.setSelectionModel(new Slick.RowSelectionModel());
+							myGrid2.registerPlugin( new Slick.AutoTooltips({ enableForHeaderCells: true }) );
+							myDataView2.onPagingInfoChanged.subscribe(function (e, pagingInfo) {
+							});
+
+							myDataView2.onRowCountChanged.subscribe(function (e, args) {
+								myGrid2.updateRowCount();
+								myGrid2.render();
+								  });
+							 
+							myDataView2.onRowsChanged.subscribe(function (e, args) {
+								myGrid2.invalidateRows(args.rows);
+								myGrid2.render();
+								  });
+														  
+						
+					});
+	
+	
+	function initEditData(id){
+		var _data = myDataView.getItemByIdx(id);
+		formInit({filter:"#validationForm .columnName",data:_data,modelName:"opinionModel"});
+		 $('#large').modal('show'); 
+	}
+	
+	function verifyed(id){
+		var _data = myDataView.getItemByIdx(id);
+		bootbox.prompt({
+		    title: "请输入核实内容",
+		    inputType: 'textarea',
+		    callback: function (result) {
+		    	if($.trim(result)){
+		    		var _item = {
+			    			"opinionVerifyFollowModel.opinionId":_data.id,
+			    			"opinionVerifyFollowModel.departmentId":"${authenticationFn().userDto.departmentId}",
+			    			"opinionVerifyFollowModel.userId":"${authenticationFn().userDto.userId}",
+			    			"opinionVerifyFollowModel.memo":result,
+			    	
+			    	};
+			    	$.ajax({
+		                url: "${ctxPath}/opinion/saveVerifyFollerOpinion",
+		                type: "post",
+		                data: _item,
+		                success: function (data) {
+		                    $('#large').modal('hide');
+		                	if(data.success){
+		                		pager.reload();
+		                	}else{
+		                		toastr.error(data.error);
+		                	}
+		                }
+		              });  
+		    	}
+		    }
+		});
+		
+	}
+	
+	function listVerifyFollerOpinion(id){
+		var _data = myDataView.getItemByIdx(id);
+		
+		var params = {data:{"opinionId":_data["id"]}};
+		
+		var _item = {data:JSON.stringify(params)};
+		
+		$.ajax({
+            url: "${ctxPath}/opinion/listVerifyFollerOpinion",
+            type: "post",
+            data: _item,
+            success: function (data) {
+            	if(data.success){
+            		myDataView2.setItems(data.data);
+            		myGrid2.render();
+            	}
+                $('#small').modal('show'); 
+            }
+          });  
+		
+	}
+	
+	function finishVerifyFollerOpinion(id){
+		var _data = myDataView.getItemByIdx(id);
+		$.ajax({
+            url: "${ctxPath}/opinion/finishVerifyFollerOpinion/" + _data["id"],
+            type: "post",
+            success: function (data) {
+            	if(data.success){
+            		pager.reload();
+            	}
+            }
+          });  
+	}
+	
+	
+	
+	
+</script>

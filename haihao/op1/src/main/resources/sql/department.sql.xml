@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+	
+-->
+<sql-statement namespace="com.department">
+
+
+	<sql id="selectAll">
+		<![CDATA[ 
+			select * from op_department
+		]]>
+	</sql>
+
+	<sql id="selectHearder">
+		<![CDATA[ 
+			select departmentModel.* 
+		]]>
+	</sql>
+	
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_department departmentModel where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	<sql id="exist">
+	<![CDATA[ 
+		select count(1) from op_department where name = ? 
+		<% 
+			if(isNotEmpty(id)){
+				print("and id <> " + id);
+			}
+		%>
+	]]>
+	</sql>
+	
+	
+	<sql id="getMaxChildCodeByPid">
+	<![CDATA[ 
+		select max(code) from op_department where pId = ${pId} 
+	]]>
+	</sql>
+	
+	
+	<sql id="getSubDepartment">
+	<![CDATA[ 
+		select * from op_department where code like '${code}%' and id <> ${id}
+	]]>
+	</sql>
+	
+</sql-statement>

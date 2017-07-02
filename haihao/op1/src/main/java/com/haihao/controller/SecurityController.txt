@@ -1,0 +1,472 @@
+package com.haihao.controller;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.constant.DataConstant;
+import com.haihao.dto.PageResultDto;
+import com.haihao.dto.PageSqlCommond;
+import com.haihao.dto.RequestDTO;
+import com.haihao.dto.ResultDto;
+import com.haihao.dto.SQLCallback;
+import com.haihao.dto.SecurityUser;
+import com.haihao.jfinal.ModelKit;
+import com.haihao.jfinal.SqlXmlPlugin;
+import com.haihao.jfinal.ToolModel;
+import com.haihao.model.security.DepartmentManagerModel;
+import com.haihao.model.security.DepartmentModel;
+import com.haihao.model.security.ListModel;
+import com.haihao.model.security.RoleModel;
+import com.haihao.model.security.RoleRelPrivilegeModel;
+import com.haihao.model.security.UserModel;
+import com.haihao.service.ServiceException;
+import com.haihao.tool.ToolString;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
+import com.jfinal.plugin.activerecord.ICallback;
+import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.Record;
+
+@Controller
+@RequestMapping(value = "/security")
+public class SecurityController extends BaseController {
+
+	@PreAuthorize("hasRole('comm')")
+	@RequestMapping(value = { "", "/", "/index" })
+	public String index(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/security/user.html");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		SecurityUser principal = (SecurityUser) authentication.getPrincipal();
+		model.put("userDto", principal.getUserDto());
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.label.role"));
+		map.put("roles", ToolModel.recordListConvert(find));
+
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		
+		//reload sql
+		SqlXmlPlugin.init(false);
+
+		return "common/content";
+	}
+
+	@RequestMapping("/listUser")
+	@ResponseBody
+	public PageResultDto listUser(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.user.selectBody");
+		pageSqlCommond.setHeadSql("com.user.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+
+	@RequestMapping("/department")
+	public String department(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/security/department.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.department.selectAll"));
+		map.put("departments", ToolModel.recordListConvert(find2));
+		List<Record> find3 = Db.find(ToolSqlXml.getSql("com.user.selectAll"));
+		map.put("users", ToolModel.recordListConvert(find3));
+		model.put("initData", JSON.toJSONString(map));
+		
+
+		
+		return "common/content";
+	}
+
+	@RequestMapping("/listDepartment")
+	@ResponseBody
+	public PageResultDto listDepartment(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.department.selectBody");
+		pageSqlCommond.setHeadSql("com.department.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+
+	@RequestMapping("/saveDepartment")
+	@ResponseBody
+	public ResultDto saveDepartment(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		DepartmentModel model = getModel(request, DepartmentModel.class);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("name", model.getStr("name"));
+		map.put("id", model.get("id"));
+		Long queryInt = Db.queryLong(ToolSqlXml.getSql("com.department.exist", map), model.getStr("name"));
+		if (queryInt > 0) {
+			throw new ServiceException("部门名称已经存在");
+		} else {
+			Db.tx(new IAtom() {
+
+				@Override
+				public boolean run() throws SQLException {
+					if (model.isNew()) {
+						Long pId = model.getLong("pId");
+						map.put("pId", pId);
+						String queryStr = Db.queryStr(ToolSqlXml.getSql("com.department.getMaxChildCodeByPid", map));
+						DepartmentModel findById = DepartmentModel.dao.findById(pId);
+						String parentCode = ToolString.toString(queryStr);
+						if(null == findById){
+							parentCode = "";
+						}else{
+							parentCode = findById.getStr("code");
+						}
+						if (ToolString.isEmptyString(queryStr)) {
+							queryStr = "001";
+						} else {
+							String subSequence = queryStr.substring(queryStr.length() - 3, queryStr.length());
+							queryStr = String.valueOf(Integer.valueOf(subSequence).intValue() + 1);
+						}
+						int parseInt = Integer.parseInt(queryStr);
+						if (parseInt < 10) {
+							queryStr = "00" + parseInt;
+						} else {
+							queryStr = "0" + parseInt;
+						}
+						model.set("code", parentCode + queryStr);
+						model.save();
+						// 设置部门管理员
+						String parameter = request.getParameter("departmentManagerModel");
+						if (!ToolString.isEmptyString(parameter)) {
+							for (String s : parameter.split(",")) {
+								DepartmentManagerModel departmentManagerModel = new DepartmentManagerModel();
+								departmentManagerModel.set("userId", Long.parseLong(s));
+								departmentManagerModel.set("deptId", model.getLong("id"));
+								departmentManagerModel.save();
+							}
+						}
+					} else {
+						DepartmentModel oldDepartmentModel = DepartmentModel.dao.findById(model.getLong("id"));
+						if (!oldDepartmentModel.getLong("pId").equals(model.getLong("pId")) && !model.getLong("pId").equals(model.getLong("id"))) {// 需要重新获取父部门
+							Long pId = model.getLong("pId");
+							map.put("pId", pId);
+							String queryStr = Db.queryStr(ToolSqlXml.getSql("com.department.getMaxChildCodeByPid", map));
+							DepartmentModel findById = DepartmentModel.dao.findById(pId);
+							String parentCode = ToolString.toString(queryStr);
+							if(null == findById){
+								parentCode = "";
+							}else{
+								parentCode = findById.getStr("code");
+							}
+							if (ToolString.isEmptyString(queryStr)) {
+								queryStr = "001";
+							} else {
+								String subSequence = queryStr.substring(queryStr.length() - 3, queryStr.length());
+								queryStr = String.valueOf(Integer.valueOf(subSequence).intValue() + 1);
+							}
+							int parseInt = Integer.parseInt(queryStr);
+							if (parseInt < 10) {
+								queryStr = "00" + parseInt;
+							} else {
+								queryStr = "0" + parseInt;
+							}
+							model.set("code", parentCode + queryStr);
+							map.put("id", oldDepartmentModel.getLong("id"));
+							map.put("code", oldDepartmentModel.getStr("code"));
+							List<DepartmentModel> find = DepartmentModel.dao.find(ToolSqlXml.getSql("com.department.getSubDepartment", map));
+							for(DepartmentModel departmentModel : find){
+								String str = departmentModel.getStr("code");
+								str = parentCode + queryStr + str.substring(oldDepartmentModel.getStr("code").length() + 1, str.length());
+								departmentModel.set("code", str);
+								departmentModel.update();
+							}
+							
+						}
+						model.update();
+						Db.update("delete from op_department_manager where deptId = ?", model.getLong("id"));
+						// 设置部门管理员
+						String parameter = request.getParameter("departmentManagerModel");
+						if (!ToolString.isEmptyString(parameter)) {
+							for (String s : parameter.split(",")) {
+								DepartmentManagerModel departmentManagerModel = new DepartmentManagerModel();
+								departmentManagerModel.set("userId", Long.parseLong(s));
+								departmentManagerModel.set("deptId", model.getLong("id"));
+								departmentManagerModel.save();
+							}
+						}
+					}
+					return true;
+				}
+			});
+
+		}
+		return resultDto;
+	}
+
+	@RequestMapping("/department/{id}")
+	@ResponseBody
+	public ResultDto getDepartment(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		DepartmentModel findById = DepartmentModel.dao.findById(id);
+		Map<String,Object> m = new HashMap<String,Object>();
+		m.put("departmentModel", ModelKit.toMap(findById));
+		m.put("departmentManagerModel", ToolModel.modelListConvert(findById.getDepartmentManagerModel(id)));
+		resultDto.setData(m);
+		return resultDto;
+	}
+	
+	@RequestMapping("/removeDepartment")
+	@ResponseBody
+	public ResultDto removeDepartment(HttpServletRequest request){
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		for(String id : requestDTO.getData().get("ids").toString().split(",")){
+			Long queryLong = Db.queryLong("select count(1) from op_department where pId = ?",id);
+			if(queryLong == 0){
+				Db.update("delete from op_department where id = ?",id);
+			}else{
+				resultDto.setSuccess(false);
+				resultDto.setError("请先删除子目录");
+			}
+		}
+		
+		return resultDto;
+	}
+	
+	
+	@RequestMapping("/role")
+	public String role(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/security/role.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.role.getAllPrivilege"));
+		map.put("privileges", ToolModel.recordListConvert(find2));
+		List<Record> find3 = Db.find(ToolSqlXml.getSql("com.role.getAllPrivilegeMenu"));
+		map.put("privilegeMenus", ToolModel.recordListConvert(find3));
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+
+		
+		return "common/content";
+	}
+
+	@RequestMapping("/listRole")
+	@ResponseBody
+	public PageResultDto listRole(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.role.selectBody");
+		pageSqlCommond.setHeadSql("com.role.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	@RequestMapping("/removeRole")
+	@ResponseBody
+	public ResultDto removeRole(HttpServletRequest request){
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		for(String id : requestDTO.getData().get("ids").toString().split(",")){
+			Db.update("delete from op_role_rel_privilege where roleId = ?",id);
+			Db.update("delete from op_role where id = ?",id);
+		}
+		return resultDto;
+	}
+	
+	@RequestMapping("/saveRole")
+	@ResponseBody
+	public ResultDto saveRole(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RoleModel model = getModel(request, RoleModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.save();
+					long id = model.getLong("id");
+					String parameter = request.getParameter("roleRelPrivilegeModel");
+					if (!ToolString.isEmptyString(parameter)) {
+						for (String s : parameter.split(",")) {
+							RoleRelPrivilegeModel roleRelPrivilegeModel = new RoleRelPrivilegeModel();
+							roleRelPrivilegeModel.set("roleId", id);
+							roleRelPrivilegeModel.set("privilegeId", s);
+							roleRelPrivilegeModel.save();
+						}
+					}
+				}else{
+					model.update();
+					long id = model.getLong("id");
+					Db.update("delete from op_role_rel_privilege where roleId = ?",id);
+					String parameter = request.getParameter("roleRelPrivilegeModel");
+					if (!ToolString.isEmptyString(parameter)) {
+						for (String s : parameter.split(",")) {
+							RoleRelPrivilegeModel roleRelPrivilegeModel = new RoleRelPrivilegeModel();
+							roleRelPrivilegeModel.set("roleId", id);
+							roleRelPrivilegeModel.set("privilegeId", s);
+							roleRelPrivilegeModel.save();
+						}
+					}
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	@RequestMapping("/role/{id}")
+	@ResponseBody
+	public ResultDto getRole(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		RoleModel findById = RoleModel.dao.findById(id);
+		Map<String,Object> m = new HashMap<String,Object>();
+		m.put("roleModel", ModelKit.toMap(findById));
+		m.put("roleRelPrivilegeModel", ToolModel.modelListConvert(findById.getRolePrivilege(id)));
+		resultDto.setData(m);
+		return resultDto;
+	}
+	
+	
+	BCryptPasswordEncoder BCryptPasswordEncoder =  new BCryptPasswordEncoder(DataConstant.BCryptPasswordEncoderStrength);
+	
+	@RequestMapping("/saveUser")
+	@ResponseBody
+	public ResultDto saveUser(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		UserModel model = getModel(request, UserModel.class);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("loginName", model.getStr("loginName"));
+		map.put("id", model.get("id"));
+		Long queryInt = Db.queryLong(ToolSqlXml.getSql("com.department.exist", map), model.getStr("loginName"));
+		if(queryInt > 0)throw new ServiceException("登录名称已经存在");
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					String encode = BCryptPasswordEncoder.encode(DataConstant.defaultPassword);
+					model.set("password", encode);
+					model.set("enable", 1);
+					model.save();
+				}else{
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	@RequestMapping("/removeUser")
+	@ResponseBody
+	public ResultDto removeUser(HttpServletRequest request){
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		for(String id : requestDTO.getData().get("ids").toString().split(",")){
+			Db.update("delete from op_department_manager where userId = ?",id);
+			Db.update("update op_user set enable = -1  where id = ?",id);
+		}
+		return resultDto;
+	}
+	
+	
+	@RequestMapping("/list")
+	public String list(Map<String, Object> model,HttpServletRequest request) {
+		model.put("htmlContent", "/templates/security/listCommon.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		model.put("listId", request.getParameter("listId"));
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	} 
+	
+	@RequestMapping("/listLevel")
+	public String listLevel(Map<String, Object> model,HttpServletRequest request) {
+		model.put("htmlContent", "/templates/security/listLevel.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		model.put("listId", request.getParameter("listId"));
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	} 
+	
+	@RequestMapping("/listCommon")
+	@ResponseBody
+	public PageResultDto listCommon(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.list.selectBody");
+		pageSqlCommond.setHeadSql("com.list.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	@RequestMapping("/removeList")
+	@ResponseBody
+	public ResultDto removeList(HttpServletRequest request){
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		for(String id : requestDTO.getData().get("ids").toString().split(",")){
+			Db.update("delete from op_list where id = ?",id);
+		}
+		return resultDto;
+	}
+	
+	
+	@RequestMapping("/saveList")
+	@ResponseBody
+	public ResultDto saveList(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		ListModel model = getModel(request, ListModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.save();
+					model.set("displayOrder", model.getLong("id"));
+					model.update();
+				}else{
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	
+	
+	
+
+}

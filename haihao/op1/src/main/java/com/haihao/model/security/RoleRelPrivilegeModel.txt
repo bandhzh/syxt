@@ -1,0 +1,14 @@
+package com.haihao.model.security;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_role_rel_privilege")
+public class RoleRelPrivilegeModel extends BaseModel<RoleRelPrivilegeModel> {
+
+	private static final long serialVersionUID = -6149904093598781087L;
+	
+	public static RoleRelPrivilegeModel dao = new RoleRelPrivilegeModel();
+
+}

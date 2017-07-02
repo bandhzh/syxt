@@ -1,0 +1,13 @@
+package com.haihao.model.security;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+@TableBind(tableName="op_list")
+public class ListModel extends BaseModel<ListModel> {
+
+	private static final long serialVersionUID = -3690933683811628128L;
+	
+	public static ListModel dao = new ListModel().dao();
+
+}

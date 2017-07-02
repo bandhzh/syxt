@@ -1,0 +1,35 @@
+package com.haihao.constant;
+
+public class DataConstant {
+	
+	public static final int BCryptPasswordEncoderStrength = 11; 
+	
+	public static final String defaultPassword = "888888";
+	
+	public static final String defaultDepartCode = "000";
+	
+	
+	public static class OpinionStatus{
+		public static final int unVerify = -1;
+		public static final int inVerify = 1;
+		public static final int finishVerify = 2;
+		public static final int toDo = 3;
+		public static final int over = 10;
+		
+	}
+	public static class OpinionToDoStatus{
+		public static final int unDo = 4;
+		public static final int inDo = 5;
+		public static final int finishDo = 6;
+		public static final int untDo = 7;
+		
+	}
+	
+	
+	public static final int Yes = 1;
+	
+	public static final int No = -1;
+	
+	
+	
+}

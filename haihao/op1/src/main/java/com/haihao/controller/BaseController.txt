@@ -1,0 +1,96 @@
+package com.haihao.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.alibaba.fastjson.JSON;
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.dto.PageResultDto;
+import com.haihao.dto.PageSqlCommond;
+import com.haihao.dto.RequestDTO;
+import com.haihao.jfinal.ToolModel;
+import com.haihao.tool.ToolString;
+import com.jfinal.core.Injector;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
+
+public class BaseController  {
+	
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
+	
+	/**
+	 * Get model from http request.
+	 */
+	public <T> T getModel(HttpServletRequest request,Class<T> modelClass) {
+		return (T)Injector.injectModel(modelClass, request, false);
+	}
+	
+	public <T> T getModel(HttpServletRequest request,Class<T> modelClass, boolean skipConvertError) {
+		return (T)Injector.injectModel(modelClass, request, skipConvertError);
+	}
+	
+	/**
+	 * Get model from http request.
+	 */
+	public <T> T getModel(HttpServletRequest request,Class<T> modelClass, String modelName) {
+		return (T)Injector.injectModel(modelClass, modelName, request, true);
+	}
+	
+	public <T> T getModel(HttpServletRequest request,Class<T> modelClass, String modelName, boolean skipConvertError) {
+		return (T)Injector.injectModel(modelClass, modelName, request, skipConvertError);
+	}
+	
+	public <T> T getBean(HttpServletRequest request,Class<T> beanClass) {
+		return (T)Injector.injectBean(beanClass, request, false);
+	}
+	
+	public <T> T getBean(HttpServletRequest request,Class<T> beanClass, boolean skipConvertError) {
+		return (T)Injector.injectBean(beanClass, request, skipConvertError);
+	}
+	
+	public <T> T getBean(HttpServletRequest request,Class<T> beanClass, String beanName) {
+		return (T)Injector.injectBean(beanClass, beanName, request, false);
+	}
+	
+	public <T> T getBean(HttpServletRequest request,Class<T> beanClass, String beanName, boolean skipConvertError) {
+		return (T)Injector.injectBean(beanClass, beanName, request, skipConvertError);
+	}
+	
+	public PageResultDto ajaxList(PageSqlCommond<List<Map<String, Object>>> pageSqlCommond){
+		String data = pageSqlCommond.getRequest().getParameter("data");
+		PageResultDto pageResultDto = new PageResultDto();
+		if(!ToolString.isEmptyString(data)){
+			RequestDTO requestDTO = JSON.parseObject(data, RequestDTO.class);
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("data", requestDTO.getData());
+			params.put("filters", requestDTO.getFilters());
+			params.put("sorts", requestDTO.getSorts());
+			params.put("extraAttributes", requestDTO.getExtraAttributes());
+			Page<Record> paginate = Db.paginate(requestDTO.getPage().getRowStart() , requestDTO.getPage().getLimit(), ToolSqlXml.getSql(pageSqlCommond.getHeadSql(),params),ToolSqlXml.getSql(pageSqlCommond.getBodySql(),params));
+			pageResultDto.setStart(requestDTO.getPage().getRowStart());
+			pageResultDto.setTotalRows(paginate.getTotalRow());
+			pageResultDto.setHits(paginate.getTotalRow());
+			List<Record> list = paginate.getList();
+			List<Map<String, Object>> modelListConvert = ToolModel.recordListConvert(list);
+			pageSqlCommond.getSqlCallback().onComplete(modelListConvert);
+			pageResultDto.setResults(modelListConvert.toArray(new Object[0]));
+		}
+		return pageResultDto;
+		
+	}
+	
+	public RequestDTO getRequestDTO(HttpServletRequest request){
+		String data = request.getParameter("data");
+		RequestDTO requestDTO = JSON.parseObject(data, RequestDTO.class);
+		return requestDTO;
+	}
+	
+
+}

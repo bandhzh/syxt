@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- -->
+<sql-statement namespace="com.opinion">
+	
+	<sql id="selectHearder">
+		<![CDATA[ 
+			select opinionModel.*,userModel.displayName 
+		]]>
+	</sql>
+	
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	<sql id="selectBodyByVerify">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			inner join (
+				select distinct opinionId from op_opinion_verify where departmentId = ${data.departmentId} 
+			) opinionVerifyModel on opinionModel.id = opinionVerifyModel.opinionId 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	<sql id="selectBodyByTodo">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			inner join (
+				select distinct opinionId from op_opinion_todo where departmentId = ${data.departmentId} 
+			) opinionToDoModel on opinionModel.id = opinionToDoModel.opinionId 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	
+	<sql id="selectFollowByOpinionId">
+		<![CDATA[ 
+			select opinionVerifyFollowModel.*,userModel.displayName,departmentModel.name as departmentName  from op_opinion_verify_follow opinionVerifyFollowModel
+			left join 
+			op_user userModel on opinionVerifyFollowModel.userId = userModel.id 
+			left join op_department departmentModel on userModel.departmentId = departmentModel.id
+			where opinionId = ${opinionId} 
+		]]>
+	</sql>
+	
+	<sql id="selectToDoByOpinionId">
+		<![CDATA[ 
+			select opinionToDoFollowModel.*,userModel.displayName,departmentModel.name as departmentName  from op_opinion_todo_follow opinionToDoFollowModel
+			left join 
+			op_user userModel on opinionToDoFollowModel.userId = userModel.id 
+			left join op_department departmentModel on userModel.departmentId = departmentModel.id
+			where opinionId = ${opinionId} 
+		]]>
+	</sql>
+	
+	
+	
+	<sql id="selectInstructionOpinionId">
+		<![CDATA[ 
+			select opinionInstructionModel.*,userModel.displayName,departmentModel.name as departmentName  from op_opinion_instruction opinionInstructionModel
+			left join 
+			op_user userModel on opinionInstructionModel.userId = userModel.id 
+			left join op_department departmentModel on userModel.departmentId = departmentModel.id
+			where opinionId = ${opinionId} 
+		]]>
+	</sql>
+	
+	<sql id="selectBodyByInstruction">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			where 1 = 1 
+			and hasInstruction = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	
+
+</sql-statement>

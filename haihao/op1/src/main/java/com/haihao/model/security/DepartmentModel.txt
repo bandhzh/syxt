@@ -1,0 +1,21 @@
+package com.haihao.model.security;
+
+import java.util.List;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_department")
+public class DepartmentModel extends BaseModel<DepartmentModel> {
+
+	private static final long serialVersionUID = -4425533287969126623L;
+	
+	public static DepartmentModel dao = new DepartmentModel().dao();
+	
+	public List<DepartmentManagerModel>getDepartmentManagerModel(long id){
+		List<DepartmentManagerModel> find = DepartmentManagerModel.dao.find("select * from op_department_manager where deptId = ?",id);
+		return find;
+	}
+
+}

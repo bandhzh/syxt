@@ -1,0 +1,30 @@
+package com.haihao.beetl;
+
+import org.beetl.core.BeetlKit;
+import org.beetl.core.GroupTemplate;
+
+public abstract class ToolBeetl {
+	
+	
+	/**
+	 * 模板扩展
+	 */
+	@SuppressWarnings("static-access")
+	public static GroupTemplate regiseter(){
+		//默认函数
+		GroupTemplate gt = BeetlKit.gt;
+		if(null != gt){
+			gt.registerFunction("commonSql", new CommonSqlFn());
+			gt.registerFunction("inParse", new InParseFn());
+			gt.registerFunction("iifFn", new IIFFn());
+			gt.registerFunction("sqlFn", new SqlFn());
+			gt.registerFunction("callTemplateFn", new CallTemplateFn());
+			gt.registerFunction("reflectFn", new ReflectFn());
+			gt.registerFunction("setFn", new SetFn());
+			gt.registerFunction("authenticationFn", new AuthenticationFn());
+			
+		}
+		return gt;
+	}
+
+}

@@ -1,0 +1,64 @@
+package com.haihao.dto;
+
+public class PageResultDto implements java.io.Serializable  {
+
+	private static final long serialVersionUID = 1L;
+	
+	private int totalRows;
+	private int hits;
+	private int start;
+	
+	private Object[] results;
+	
+	private boolean success = true;
+	
+	private String error;
+
+	public int getTotalRows() {
+		return totalRows;
+	}
+
+	public void setTotalRows(int totalRows) {
+		this.totalRows = totalRows;
+	}
+
+	public int getHits() {
+		return hits;
+	}
+
+	public void setHits(int hits) {
+		this.hits = hits;
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public Object[] getResults() {
+		return results;
+	}
+
+	public void setResults(Object[] results) {
+		this.results = results;
+	}
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+}

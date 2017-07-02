@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+	菜单sql
+-->
+<sql-statement namespace="com.common">
+	
+	<!-- 查询根菜单 -->
+	<sql id="params">
+		<![CDATA[ 
+			<% if(!isEmpty(filters)){ %>
+        		<% 
+				for(entry in filters){%>
+					and ${entry.property} ${entry.operation} 
+					<%
+						switch(entry.operation){
+							case 'is null':
+							print("");
+							break;
+							case 'is not null':
+							print("");
+							break;
+							case '<>':
+							case '=':
+							print("'" +  entry.value +"'");
+							break;
+							case '>':
+							case '>=':
+							case '<':
+							case '<=':
+							print("'" +  entry.value +"'");
+							break;
+							case 'like':
+							print("'%" + entry.value + "%'");
+							break;
+							case 'in':
+							case 'not in':
+							print(inParse(entry.values));
+							break;
+						}
+					%>
+				<% } %>
+        	<% } %>
+        	
+        	<% if(!isEmpty(sorts)){ %>
+        		order by 
+	        	<% 
+					for(entry in sorts){%>
+					${entry.property} ${entry.order}
+						<% if(entryLP.last == false){
+								print(",");
+							}
+						%>
+        		<% } %>
+        	<% } %>
+    	]]>
+	</sql>
+	
+	<sql id="search">
+		<![CDATA[ 
+			from ${tableName}	where 1 = 1 
+			<%
+			commonSql("winbons.common.params",filters!,sorts!);
+			%>
+    	]]>
+	</sql>
+	
+	<sql id="searchBySql">
+	<![CDATA[ 
+		from ${tableName} where 1 = 1 
+	<% if(!isEmpty(sql)){ %>
+		and ${sql}
+	<% } %>
+	]]>
+	</sql>
+	
+	<sql id="aaaa">
+	<![CDATA[ 
+	{
+	"widgetInfos": [{
+		"widgetType": "ListView",
+		"tagName": "listview",
+		"eventHandler":{
+			"onDialogListener":'<%
+var _getView = getView("listview");
+var _item = {"child":[{"widgetType":"TextView","tagName":"textview","widgetParams":{text:"测试1"}},{"widgetType":"ImageView","tagName":"imageview","widgetParams":{imgUrl:"http://omug7953h.bkt.clouddn.com/2017/5/18:20_56_532/C7884266-0F40-0001-8AAA-16007FB01EAF.jpg"}}]};
+addListViewItem(_getView,toJson("1",_item));
+%>'
+		},
+		"widgetParams": {
+			"width": 1920,
+			"height": 1080,
+			"marginLeft": 10,
+			"marginTop": 10,
+			"marginRight": 10,
+			"marginBottom": 10,
+			"backgroundColor": "#ffff00"
+		},
+		"child": [{
+			"widgetType": "ImageView",
+			"tagName": "imageview",
+			"widgetParams": {
+				"width": 200,
+				"height": 200,
+				"marginTop": 10,
+				"marginLeft": 10,
+				"marginRight": 10,
+				"marginBottom": 10
+			}
+		},
+		{
+			"widgetType": "TextView",
+			"tagName": "textview",
+			"widgetParams": {
+				"width": 500,
+				"height": 100,
+				"marginTop": 10,
+				"marginLeft": 300,
+				"marginRight": 10,
+				"marginBottom": 10,
+				"background": "http://588ku.ooopic.com/element_origin_min_pic/00/16/04/13570de203bd7d0.jpg!/fw/202/quality/90/unsharp/true/compress/true/canvas/202x73a0a0"
+			}
+		},
+		{
+			"widgetType": "ImageView",
+			"tagName": "imageview1",
+			"widgetParams": {
+				"width": 200,
+				"height": 200,
+				"marginTop": 10,
+				"marginLeft": 1700,
+				"marginRight": 10,
+				"marginBottom": 10
+			}
+		},
+		{
+			"widgetType": "TextView",
+			"tagName": "textview1",
+			"widgetParams": {
+				"width": 500,
+				"height": 100,
+				"marginTop": 10,
+				"marginLeft": 1100,
+				"marginRight": 10,
+				"marginBottom": 10,
+				"background": "http://588ku.ooopic.com/element_origin_min_pic/00/16/04/13570de203bd7d0.jpg!/fw/202/quality/90/unsharp/true/compress/true/canvas/202x73a0a0"
+			}
+		}]
+	}]
+}
+	]]>
+	</sql>
+	
+</sql-statement>

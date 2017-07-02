@@ -1,0 +1,13 @@
+package com.haihao.model.security;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+@TableBind(tableName="op_privilege")
+public class PrivilegeModel extends BaseModel<PrivilegeModel> {
+
+	private static final long serialVersionUID = -6396658882132061303L;
+	
+	public static PrivilegeModel dao = new PrivilegeModel();
+
+}

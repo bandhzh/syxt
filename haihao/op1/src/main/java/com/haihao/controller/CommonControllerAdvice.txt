@@ -1,0 +1,33 @@
+package com.haihao.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.haihao.dto.ResultDto;
+import com.haihao.tool.ToolString;
+
+
+@ControllerAdvice
+public class CommonControllerAdvice {
+	
+	
+	@ExceptionHandler(value = Exception.class)
+	@ResponseBody
+    public ResultDto defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+		ResultDto resultDto = new ResultDto();
+		resultDto.setSuccess(false);
+		if(null != e){
+			e.printStackTrace();
+			if(!ToolString.isEmptyString(e.getMessage())){
+				resultDto.setError(e.getMessage());
+			}
+		}
+		if(ToolString.isEmptyString(resultDto.getError())){
+			resultDto.setError("系统错误");
+		}
+        return resultDto;
+    }
+}

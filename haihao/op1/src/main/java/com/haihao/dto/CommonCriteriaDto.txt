@@ -1,0 +1,68 @@
+package com.haihao.dto;
+
+public class CommonCriteriaDto implements java.io.Serializable {
+
+	private static final long serialVersionUID = 2652504576694710637L;
+	
+	private FilterDTO[] filters;
+	private SortDTO[] sorts;
+	private PageDTO Page;
+	private boolean Paged;
+	
+	/**
+	 * @return the filters
+	 */
+
+	public FilterDTO[] getFilters() {
+
+		return filters;
+	}
+
+	/**
+	 * @param filters
+	 *            the filters to set
+	 */
+
+	public void setFilters(FilterDTO[] filters) {
+
+		this.filters = filters;
+	}
+
+	/**
+	 * @return the sorts
+	 */
+
+	public SortDTO[] getSorts() {
+
+		return sorts;
+	}
+
+	/**
+	 * @param sorts
+	 *            the sorts to set
+	 */
+
+	public void setSorts(SortDTO[] sorts) {
+
+		this.sorts = sorts;
+	}
+
+	public PageDTO getPage() {
+		return Page;
+	}
+
+	public void setPage(PageDTO page) {
+		Page = page;
+	}
+
+	public boolean isPaged() {
+		return Paged;
+	}
+
+	public void setPaged(boolean paged) {
+		Paged = paged;
+	}
+
+	
+
+}

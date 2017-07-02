@@ -1,0 +1,57 @@
+package com.haihao.service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.haihao.dto.SecurityUser;
+import com.haihao.dto.UserDto;
+import com.haihao.model.security.PrivilegeModel;
+import com.haihao.model.security.RoleModel;
+import com.haihao.model.security.UserModel;
+
+
+@Component
+@Service("userDetailsServiceImpl")
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+	@Override
+	public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
+		if (StringUtils.isBlank(arg0)) {
+			throw new UsernameNotFoundException("用户名为空");
+		}
+		UserModel byLoginName = UserModel.dao.getByLoginName(arg0);
+		if (null == byLoginName)
+			throw new UsernameNotFoundException("用户不存在");
+		if (byLoginName.getInt("enable").intValue() == 0) {
+			throw new UsernameNotFoundException("该用户已被禁用");
+		}
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		List<PrivilegeModel> rolePrivilege = RoleModel.dao.getRolePrivilege(byLoginName.getLong("roleId"));
+		rolePrivilege.forEach(r -> authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getStr("acl"))));
+		
+		SecurityUser securityUser = new SecurityUser();
+		UserDto userDto = new UserDto();
+		userDto.setLoginName(arg0);
+		userDto.setPassword(byLoginName.getStr("password"));
+		userDto.setMobile(byLoginName.getStr("mobile"));
+		userDto.setDepartmentId(byLoginName.getLong("departmentId"));
+		userDto.setGender(byLoginName.getInt("gender"));
+		userDto.setListSimpleGrantedAuthority(authorities.toArray(new SimpleGrantedAuthority[0]));
+		userDto.setDisplayName(byLoginName.getStr("displayName"));
+		userDto.setRoleId(byLoginName.getLong("roleId"));
+		userDto.setUserId(byLoginName.getLong("id"));
+		securityUser.setUserDto(userDto);
+		return securityUser;
+	}
+
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+	
+-->
+<sql-statement namespace="com.role">
+	
+	<sql id="getPrivilegeById">
+		<![CDATA[ 
+			select b.* from op_role_rel_privilege a 
+			inner join 
+			op_privilege b on a.privilegeId = b.id and 
+			a.roleId = ?
+		]]>
+	</sql>
+	
+	
+	<sql id="getAllPrivilege">
+	<![CDATA[ 
+		select * from op_privilege;
+	]]>
+	</sql>
+	
+	<sql id="getAllPrivilegeMenu">
+	<![CDATA[ 
+		select * from op_privilege_menu;
+	]]>
+	</sql>
+	
+	<sql id="selectHearder">
+		<![CDATA[ 
+			select roleModel.* 
+		]]>
+	</sql>
+	
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_role roleModel where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+</sql-statement>
