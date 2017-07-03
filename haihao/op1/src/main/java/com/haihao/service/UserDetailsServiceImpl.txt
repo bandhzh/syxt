@@ -36,8 +36,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("该用户已被禁用");
 		}
 		Set<GrantedAuthority> authorities = new HashSet<>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_COMM"));
 		List<PrivilegeModel> rolePrivilege = RoleModel.dao.getRolePrivilege(byLoginName.getLong("roleId"));
-		rolePrivilege.forEach(r -> authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getStr("acl"))));
+		rolePrivilege.forEach(r -> authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getStr("menuCode") + "_" + r.getStr("acl"))));
 		
 		SecurityUser securityUser = new SecurityUser();
 		UserDto userDto = new UserDto();

@@ -47,7 +47,7 @@ import com.jfinal.plugin.activerecord.Record;
 @RequestMapping(value = "/security")
 public class SecurityController extends BaseController {
 
-	@PreAuthorize("hasRole('comm')")
+	@PreAuthorize("hasRole('user_setting')")
 	@RequestMapping(value = { "", "/", "/index" })
 	public String index(Map<String, Object> model) {
 		model.put("htmlContent", "/templates/security/user.html");

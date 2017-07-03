@@ -9,17 +9,26 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.haihao.aop.TimeBasedInterceptor;
 
 @EnableWebMvc
 @Configuration
 @EnableWebSecurity
 public class WebConfig extends WebMvcConfigurerAdapter {
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new TimeBasedInterceptor()).addPathPatterns("/opinion/**");
+		registry.addInterceptor(new TimeBasedInterceptor()).addPathPatterns("/security/**");
+		super.addInterceptors(registry);
+	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

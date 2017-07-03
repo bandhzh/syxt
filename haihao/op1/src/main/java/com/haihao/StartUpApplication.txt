@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.haihao.beetl.AclFn;
 import com.haihao.beetl.AuthenticationFn;
 
 
@@ -45,6 +46,7 @@ public class StartUpApplication {
 	public BeetlSpringViewResolver getBeetlSpringViewResolver(@Qualifier("beetlConfig") BeetlGroupUtilConfiguration beetlGroupUtilConfiguration) {
 		GroupTemplate groupTemplate = beetlGroupUtilConfiguration.getGroupTemplate();
 		groupTemplate.registerFunction("authenticationFn", new AuthenticationFn());
+		groupTemplate.registerFunction("aclFn", new AclFn());
 		BeetlSpringViewResolver beetlSpringViewResolver = new BeetlSpringViewResolver();
 		beetlSpringViewResolver.setPrefix("/templates/");
 		beetlSpringViewResolver.setSuffix(".html");

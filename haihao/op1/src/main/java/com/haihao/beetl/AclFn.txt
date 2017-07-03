@@ -1,0 +1,19 @@
+package com.haihao.beetl;
+
+import org.beetl.core.Context;
+import org.beetl.core.Function;
+
+import com.haihao.tool.ToolSecurity;
+import com.haihao.tool.ToolString;
+
+public class AclFn implements Function {
+
+	@Override
+	public Object call(Object[] paras, Context ctx) {
+		
+		if(paras.length == 0)return false;
+		Object o = paras[0];
+		return ToolSecurity.checkAcl("ROLE_" + ToolString.toString(o));
+	}
+
+}

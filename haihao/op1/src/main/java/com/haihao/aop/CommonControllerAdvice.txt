@@ -1,4 +1,4 @@
-package com.haihao.controller;
+package com.haihao.aop;
 
 import javax.servlet.http.HttpServletRequest;
 

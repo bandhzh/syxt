@@ -7,9 +7,12 @@
 	
 	<sql id="getPrivilegeById">
 		<![CDATA[ 
-			select b.* from op_role_rel_privilege a 
+			select b.*,c.menuCode from op_role_rel_privilege a 
 			inner join 
-			op_privilege b on a.privilegeId = b.id and 
+			op_privilege b on a.privilegeId = b.id 
+		  INNER JOIN 
+			op_privilege_menu c on b.menuId = c.id 
+		  where  
 			a.roleId = ?
 		]]>
 	</sql>

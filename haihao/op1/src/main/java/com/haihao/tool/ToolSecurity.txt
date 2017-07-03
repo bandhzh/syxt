@@ -1,5 +1,8 @@
 package com.haihao.tool;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.haihao.dto.SecurityUser;
@@ -16,6 +19,17 @@ public class ToolSecurity {
 	
 	public static long getDepartmentId(){
 		return getSecurityUser().getUserDto().getDepartmentId();
+	}
+	
+	public static boolean checkAcl(String acl){
+		Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		if(ToolString.isEmptyString(acl))return false;
+		for(GrantedAuthority grantedAuthority : authorities){
+			if(grantedAuthority.getAuthority().equals(acl)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
