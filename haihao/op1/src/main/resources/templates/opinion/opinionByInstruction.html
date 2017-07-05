@@ -48,7 +48,7 @@
 									</select></td>
 									<td><select class="form-control  form-filter selectpicker" columnName="opinionModel.toDoStatus">
 											<option value="" selected="selected">请选择...</option>
-											<option value="4">待核实</option>
+											<option value="4">待处理</option>
 											<option value="5">处理中</option>
 											<option value="6">处理完成</option>
 											<option value="7">无法处理</option>
@@ -236,6 +236,18 @@
 					}
 
 				});
+				
+			    var setting2 = {
+			  			check: {
+			  				enable: true
+			  			},
+			  			data: {
+			  				simpleData: {
+			  					enable: true
+			  				}
+			  			}
+			  		};
+				
 				$(document).ready(function() {
 					$(window).resize();
 					selectInit("#mainTodo", "departments");
@@ -437,6 +449,7 @@
 							_content.push(String.format("<a href='javascript:initTodo({0});'>{1}</a>&nbsp;&nbsp;", row, "发起转办"));
 							_content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看转办"));
 							_content.push(String.format("<a href='javascript:listInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看批示"));
+							_content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&nbsp;&nbsp;", row, "添加跟进人员"));
 
 							return _content.join("");
 						}
@@ -591,7 +604,7 @@
 										type : "post",
 										data : _data,
 										success : function(data) {
-											$('#large').modal('hide');
+											$('#small').modal('hide');
 											if (data.success) {
 												pager.reload();
 											} else {
@@ -607,7 +620,7 @@
 				function initEditData(id) {
 					var _data = myDataView.getItemByIdx(id);
 					formInit({
-						filter : "#validationForm .columnName",
+						filter : "#validationForm.columnName",
 						data : _data,
 						modelName : "opinionModel"
 					});
@@ -730,64 +743,6 @@
 					}
 					$("#opinionToDoModelOpinionId").val(_item["id"]);
 					$("#small2").modal('show');
-
-					/* 		bootbox.prompt({
-					 title: "请选择转办部门!",
-					 inputType: 'select',
-					 inputOptions: inputOptions,
-					 callback: function (result) {
-					 if(result){
-					 var params = {data:{"id":_item.id,"departmentId":result}};
-					 var _data = {data:JSON.stringify(params)};
-					 $.ajax({
-					 url: "${ctxPath}/opinion/toDoOpinion",
-					 type: "post",
-					 data: _data,
-					 success: function (data) {
-					 $('#large').modal('hide');
-					 if(data.success){
-					 pager.reload();
-					 }else{
-					 toastr.error(data.error);
-					 }
-					 }
-					 });  
-					 }
-					 console.log(result);
-					 }
-					 }); */
-
-				}
-
-				function initInstructionOpinion(id) {
-					var _data = myDataView.getItemByIdx(id);
-					var jsonData = {};
-
-					bootbox.prompt({
-						title : "批示",
-						inputType : 'textarea',
-						callback : function(result) {
-							if ($.trim(result)) {
-								jsonData["opinionInstructionModel.memo"] = result;
-								jsonData["opinionInstructionModel.opinionId"] = _data["id"];
-								var _url = "${ctxPath}/opinion/saveOpinionInstruction";
-								$.ajax({
-									url : _url,
-									type : "post",
-									data : jsonData,
-									success : function(data) {
-										$('#large').modal('hide');
-										if (data.success) {
-											pager.reload();
-										} else {
-											toastr.error(data.error);
-										}
-									}
-								});
-							}
-						}
-					});
-
 				}
 
 				function listInstructionOpinion(id) {
@@ -816,4 +771,5 @@
 						}
 					});
 				}
+				
 			</script>

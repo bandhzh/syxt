@@ -44,7 +44,7 @@
 								</select></td>
 								<td><select class="form-control  form-filter selectpicker" columnName="opinionModel.toDoStatus">
 										<option value="" selected="selected">请选择...</option>
-										<option value="4">待核实</option>
+										<option value="4">待处理</option>
 										<option value="5">处理中</option>
 										<option value="6">处理完成</option>
 										<option value="7">无法处理</option>
@@ -250,11 +250,15 @@
 										  if(status < 6){
 											  _content.push(String.format("<a href='javascript:todo({0});'>{1}</a>&nbsp;&nbsp;",row,"反馈"));
 										  }
-										  _content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"查看"));
+										  _content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"查看"))
+										 
+										  <% if(aclFn("opinion_finish_zb")){ %>
 										  if(status < 6){
 											  _content.push(String.format("<a href='javascript:finishFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"处理完成"));
 											  _content.push(String.format("<a href='javascript:untTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"无法处理"));
 										  }
+										  <% }%>
+										  
 										  return _content.join(""); 
 									  }
 									}

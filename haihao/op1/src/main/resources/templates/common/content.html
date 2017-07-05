@@ -164,7 +164,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                             </a>
                             <ul class="sub-menu">
                             
-                                   <% if(aclFn("opinion_manager")){ %>
+                                 <% if(aclFn("opinion_manager")){ %>
                                 <li class="nav-item  ">
                                     <a href="${ctxPath}/opinion" class="nav-link ">
                                         <span class="title">管理列表</span>
@@ -399,6 +399,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 	  
 	  
 	  <% include(htmlContent){} %>
+
    
    </div>
    </div>

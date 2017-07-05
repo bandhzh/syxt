@@ -63,7 +63,7 @@
 									</select></td>
 									<td><select class="form-control  form-filter selectpicker" columnName="opinionModel.toDoStatus">
 											<option value="" selected="selected">请选择...</option>
-											<option value="4">待核实</option>
+											<option value="4">待处理</option>
 											<option value="5">处理中</option>
 											<option value="6">处理完成</option>
 											<option value="7">无法处理</option>
@@ -261,9 +261,52 @@
 					</div>
 				</div>
 			</div>
+			
+			
+				  
+	  
+	  
+	  
+	  
+	  	<div class="modal fade bs-modal-sm" id="userSelect" tabindex="1" role="dialog" aria-labelledby="mySmallModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title">选择人员</h4>
+						</div>
+											<div class="modal-body">
+						<div class="portlet-body form">
+							<form action="#" class="horizontal-form" >
+								<div class="form-body">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>用户部门树</label>
+												 <ul id="userDepartTree" class="ztree"></ul>
+											</div>
+										</div>
+
+									</div>
+
+								</div>
+							</form>
+						</div>
+					</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn dark btn-outline" data-dismiss="modal">关闭</button>
+							<button type="button" class="btn green" id="saveSelectUser">保存</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
 
 			<script>
-				var myDataView, myGrid, pager, myDataView2, myGrid2, ue;
+				var myDataView, myGrid, pager, myDataView2, myGrid2, ue,userNodes = [],userTreeObj;
 				$(window).resize(function() {
 					$("#slickGrid").width($("#slickGrid").parent().width());
 					$("#slickGrid").height($(document).height() - 380);
@@ -272,6 +315,18 @@
 					}
 
 				});
+				
+			    var setting2 = {
+			  			check: {
+			  				enable: true
+			  			},
+			  			data: {
+			  				simpleData: {
+			  					enable: true
+			  				}
+			  			}
+			  		};
+				
 				$(document).ready(function() {
 					$(window).resize();
 
@@ -354,6 +409,29 @@
 					selectInitList("#levelIds", "lists", 2);
 					selectInitList("#levelIds2", "lists", 2);
 					selectInitList("#sourceIds2", "lists", 3);
+					
+					
+					for(var i = 0;i < initData["departments"].length;i++){
+						  var j = initData["departments"][i];
+						  userNodes.push({
+							  id:"D" + j.id,
+							  pId:"D" + j.pId,
+							  name:j.label,
+							  type:"D",
+							  isParent:true
+						  });
+					}
+					for(var i = 0;i < initData["users"].length;i++){
+						var j = initData["users"][i];
+						userNodes.push({
+							  id:"D" + j.id,
+							  pId:"D" + j.departmentId,
+							  name:j.displayName,
+							  type:"U",
+							  isParent:false
+						  });
+					}
+					userTreeObj = $.fn.zTree.init($("#userDepartTree"), setting2, userNodes);
 
 					var validationForm = $("#validationForm");
 					validationForm.validate({
@@ -532,7 +610,7 @@
 						id : "#",
 						name : "操作",
 						field : "#",
-						width : 300,
+						width : 350,
 						formatter : function(row, cell, value, columnDef, dataContext) {
 							var _content = [];
 							var status = dataContext.status;
@@ -558,6 +636,9 @@
 							if (hasInstruction > 0) {
 								_content.push(String.format("<a href='javascript:listInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看批示"));
 							}
+							
+							_content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&nbsp;&nbsp;", row, "添加跟进人员"));
+							
 
 							return _content.join("");
 						}
@@ -722,6 +803,36 @@
 									});
 							}
 					});
+					
+					
+					$("#saveSelectUser").click(function() {
+						var nodes2 = ztreeObj2.getCheckedNodes(true);
+						var selectUserNodes = [];
+						for(var i = 0;i<nodes2.length;i++){
+					  		 if(nodes2[i].type == 'U'){
+					  			selectUserNodes.push({userId:nodes2[i].id,departId:nodes2[i].pId});
+					  		 }
+					  	 }
+						if(selectUserNodes.length > 0){
+							var jsonData = {users:JSON.stringify(selectUserNodes)};
+				              $.ajax({
+					                url: _url,
+					                type: "post",
+					                data: jsonData,
+					                success: function (data) {
+					                    $('#userSelect').modal('hide');
+					                	if(data.success){
+					                		//pager.reload();
+					                	}else{
+					                		toastr.error(data.error);
+					                	}
+					                }
+					              });	
+						}else{
+							toastr.error("请选择用户");
+						}
+					});
+					
 
 				});
 
@@ -909,5 +1020,10 @@
 							$('#small').modal('show');
 						}
 					});
+				}
+				
+				function addOpinionUsers(){
+					userTreeObj.checkAllNodes(false);
+					$("#userSelect").modal('show');
 				}
 			</script>

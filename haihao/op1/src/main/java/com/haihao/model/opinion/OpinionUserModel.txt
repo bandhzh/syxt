@@ -1,0 +1,13 @@
+package com.haihao.model.opinion;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+@TableBind(tableName="op_opinion_users")
+public class OpinionUserModel extends BaseModel<OpinionUserModel> {
+
+	private static final long serialVersionUID = 4302015190744717571L;
+	
+	public static OpinionUserModel dao = new OpinionUserModel().dao();
+
+}

@@ -51,6 +51,9 @@ public class OpinionController extends BaseController {
 		map.put("departments", ToolModel.recordListConvert(find1));
 		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
 		map.put("lists", ToolModel.recordListConvert(find2));
+		
+		List<Record> find3 = Db.find(ToolSqlXml.getSql("com.user.selectAll"));
+		map.put("users", ToolModel.recordListConvert(find3));
 
 		model.put("initData", JSON.toJSONString(map));
 		return "common/content";
@@ -81,6 +84,10 @@ public class OpinionController extends BaseController {
 			@Override
 			public boolean run() throws SQLException {
 				if (model.isNew()) {
+					if(model.getInt("needVerify") == DataConstant.No){
+						model.set("isVerify", DataConstant.Yes);
+						model.set("status", DataConstant.OpinionStatus.finishVerify);
+					}
 					model.set("createdBy", ToolSecurity.getUserId());
 					long currentTimeMillis = System.currentTimeMillis();
 					model.set("createdDate", currentTimeMillis);
@@ -225,13 +232,14 @@ public class OpinionController extends BaseController {
 				if (null != opinionToDoModelOpinionId) {
 					if(null != departmentId){
 						if(!departmentId.equals(Long.parseLong(mainTodo.toString()))){
-							OpinionToDoModel opinionToDoModel = new OpinionToDoModel();
+							throw new ServiceException("主办部门已经存在,不可修改,只可添加协办部门");
+							/*OpinionToDoModel opinionToDoModel = new OpinionToDoModel();
 							opinionToDoModel.set("opinionId", opinionToDoModelOpinionId);
 							opinionToDoModel.set("departmentId", mainTodo);
 							opinionToDoModel.set("isMaster", DataConstant.Yes);
 							opinionToDoModel.set("createdBy", ToolSecurity.getUserId());
 							opinionToDoModel.set("createdDate", System.currentTimeMillis());
-							opinionToDoModel.save();
+							opinionToDoModel.save();*/
 						}
 					}else{
 						OpinionToDoModel opinionToDoModel = new OpinionToDoModel();
@@ -406,5 +414,27 @@ public class OpinionController extends BaseController {
 		});
 		return ajaxList(pageSqlCommond);
 	}
+	
+	
+	@RequestMapping("/saveOpinionUsers")
+	@ResponseBody
+	public ResultDto saveOpinionUsers(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		String parameter = request.getParameter("users");
+		List<Map> parseArray = JSON.parseArray(parameter, Map.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				for(Map m : parseArray){
+					
+				}
+				return true;
+			}
+		});
+		
+		return resultDto;
+	}
+	
 
 }

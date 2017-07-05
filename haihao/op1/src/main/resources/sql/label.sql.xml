@@ -14,7 +14,7 @@
 	
 	<sql id="department">
 		<![CDATA[ 
-			select id,name as label from op_department
+			select id,name as label,pId from op_department
 		]]>
 	</sql>
 	
