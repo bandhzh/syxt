@@ -1,0 +1,28 @@
+package com.haihao.dto;
+
+public class SendmsDTO extends BaseDTO {
+	private static final long serialVersionUID = 1L;
+	/** 推送人 */
+	private String number;
+	/** 推送内容 */
+	private String content;
+
+	
+	//property accessors
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+}

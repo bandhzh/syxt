@@ -421,6 +421,7 @@ public class OpinionController extends BaseController {
 	public ResultDto saveOpinionUsers(HttpServletRequest request) {
 		ResultDto resultDto = new ResultDto();
 		String parameter = request.getParameter("users");
+		String opinionId = request.getParameter("opinionId");
 		List<Map> parseArray = JSON.parseArray(parameter, Map.class);
 		Db.tx(new IAtom() {
 

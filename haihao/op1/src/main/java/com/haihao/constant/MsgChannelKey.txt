@@ -1,0 +1,21 @@
+package com.haihao.constant;
+
+public class MsgChannelKey {
+	
+	public static final String cpid = "hbjs-ipxmt";
+
+	public static final String cppwd = "SLc3tcyv";
+
+	public static final String apikey = "56c6e6ad7e88a9992574525fefb7f4dd";
+
+	public static final String username = "huabang";
+
+	public static final String password = "win123456";
+
+	public static final String LOCAL_CHANNEL = "http://m.5c.com.cn/api/send/?";
+
+	public static final String HONKANG_CHANNEL = "http://api2.santo.cc/submit?command=MT_REQUEST&";
+
+	public static final String HONGKONG_PRE = "852";
+
+}

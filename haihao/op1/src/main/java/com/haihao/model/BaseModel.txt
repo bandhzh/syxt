@@ -27,6 +27,18 @@ public class BaseModel<M extends Model<M>> extends Model<M> {
 		}
 	}
 	
+	
+	
+	@Override
+	public boolean save() {
+		return super.save();
+	}
+
+	@Override
+	public boolean update() {
+		return super.update();
+	}
+
 	private Table getTable() {
 		return TableMapping.me().getTable(getUsefulClass());
 	}

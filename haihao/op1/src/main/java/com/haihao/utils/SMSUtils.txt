@@ -1,0 +1,73 @@
+package com.haihao.utils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import com.haihao.constant.MessageEncode;
+import com.haihao.constant.MsgChannelKey;
+import com.haihao.dto.SendmsDTO;
+
+public abstract class SMSUtils {
+
+	
+	public static void send(SendmsDTO sendmsDTO){
+		String mobile = sendmsDTO.getNumber();
+		String msg = sendmsDTO.getContent();
+		if(mobile.startsWith(MsgChannelKey.HONGKONG_PRE)){//香港
+			String result = null;
+			try {
+				URL url = new URL(getHkUrl(mobile, msg));
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("POST");
+				BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+				result = in.readLine();
+				in.close();
+				connection.disconnect();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			String result = null;
+			try {
+				URL url = new URL(getDlUrl(mobile, msg));
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("POST");
+				BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+				result = in.readLine();
+				in.close();
+				connection.disconnect();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	private static String getHkUrl(String number, String msg){
+		StringBuilder url = new StringBuilder(MsgChannelKey.HONKANG_CHANNEL);
+		url.append("cpid=" + MsgChannelKey.cpid);
+		url.append("&cppwd=" + MsgChannelKey.cppwd);
+		url.append("&da=" + number + "&dc=" + MessageEncode.GBK);
+		url.append("&sm=" + MessageEncode.encodeHexStr(MessageEncode.GBK, msg));
+		return url.toString();
+	}
+	
+	private static String getDlUrl(String number, String msg){
+		StringBuffer url = new StringBuffer(MsgChannelKey.LOCAL_CHANNEL);
+		url.append("apikey=").append(MsgChannelKey.apikey);
+		url.append("&username=").append(MsgChannelKey.username);
+		url.append("&password=").append(MsgChannelKey.password);
+		url.append("&mobile=").append(number);
+		try {
+			url.append("&content=" + URLEncoder.encode(msg, "GBK"));
+		} catch (UnsupportedEncodingException e) {
+		}
+		return url.toString();
+	}
+	
+}
