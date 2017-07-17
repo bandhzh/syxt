@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>消息中心</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+	<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+	
+<link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+<style>
+.btn {
+	position: absolute;
+	top: -0.5rem;
+	right: -80px;
+	height: 3rem;
+	text-align: center;
+	background: #F00 !important;
+	color: #fff;
+	width: 80px;
+	height: 100%;
+}
+.content .swiper-slide {
+	padding: 0 20px;
+	width: auto;
+}
+.swiper-slide {
+	color: #999
+}
+#header {
+	width: 100%;
+	overflow: hidden
+}
+.btn {
+	position: absolute;
+	top: 0;
+	right: -80px;
+	text-align: center;
+	background: #ffcb20;
+	color: #fff;
+	width: 80px;
+	display: -webkit-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+	display: -moz-box;
+	-moz-box-orient: horizontal;
+	-moz-box-pack: center;
+	-moz-box-align: center;
+	display: -o-box;
+	-o-box-orient: horizontal;
+	-o-box-pack: center;
+	-o-box-align: center;
+	display: -ms-box;
+	-ms-box-orient: horizontal;
+	-ms-box-pack: center;
+	-ms-box-align: center;
+	display: box;
+	box-orient: horizontal;
+	box-pack: center;
+	box-align: center;
+}
+</style>
+</head>
+<body class="chat mbsc-fr-lock">
+<header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-back"></a>
+  <h1 class="mui-title">chats</h1>
+  <a class="mui-icon mui-icon-compose right"></a> </header>
+<div class="heihead"></div>
+<div class="content " >
+  <div class="mui-content">
+    <div   id="header" >
+      <div class="swiper-wrapper">
+        <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+          <div class="swiper-slide"><small><a class="mui-control-item mui-active" href="#item1mobile"> 消息 </a></small></div>
+          <div class="swiper-slide"><small><a class="mui-control-item" href="#item2mobile"> 消息 </a></small></div>
+          <div class="swiper-slide"><small><a class="mui-control-item" href="#item3mobile"> 消息类型 </a></small></div>
+          <div class="swiper-slide"><small><a class="mui-control-item" href="#item4mobile"> 消息类型 </a></small></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+window.onload = function() {
+  var mySwiper1 = new Swiper('#header',{
+	  freeMode : true,
+	  slidesPerView : 'auto',
+	  freeModeSticky : true ,
+  });
+  
+  
+}
+</script>
+    <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+      <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">FIRST TATT2222OO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
+            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
+            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">CAROLINE ROSS<small class="right grew">17 min ago</small></p>
+            <p class='mui-ellipsis'>Yes, I got! Thank you dear!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">CAROLINE ROSS<small class="right grew">17 min ago</small></p>
+            <p class='mui-ellipsis'>Yes, I got! Thank you dear!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+      </ul>
+    </div>
+    <div id="item2mobile" class="mui-slider-item mui-control-content">
+      <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">FIRST TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
+            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
+            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+      </ul>
+    </div>
+    <div id="item3mobile" class="mui-slider-item mui-control-content">
+      <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
+            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
+            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+      </ul>
+    </div>
+    <div id="item4mobile" class="mui-slider-item mui-control-content">
+      <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
+            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
+            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
+            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
+            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
+            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
+            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
+          <div class="mui-media-body">
+            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
+            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
+            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
+          </div>
+          </a>
+          <div class="btn mui-btn-danger">删除</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/zepto.min.js"></script> 
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/zepto.touchWipe.js"></script> 
+<script type="text/javascript">
+  $(function() {
+  $('.mui-table-view-cell').touchWipe({itemDelete: '.btn'});
+  });
+ 
+</script>
+</body>
+</html>

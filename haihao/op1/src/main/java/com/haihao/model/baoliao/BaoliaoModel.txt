@@ -1,0 +1,16 @@
+package com.haihao.model.baoliao;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_baoliao")
+public class BaoliaoModel extends BaseModel<BaoliaoModel> {
+
+	private static final long serialVersionUID = 1L;
+	
+	public static BaoliaoModel dao = new BaoliaoModel().dao();
+	
+	
+
+}

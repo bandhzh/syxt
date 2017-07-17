@@ -185,6 +185,7 @@
 		<commons-lang3.version>3.5</commons-lang3.version>
 		<guava.version>21.0</guava.version>
 		<poi.version>3.10.1</poi.version>
+		<json-lib.version>2.4</json-lib.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -214,7 +215,12 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>${json-lib.version}</version>
+			<classifier>jdk15</classifier>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-redis</artifactId>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>某某某交流中心</title>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+
+<link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/default_skin.css" />
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.sky.carousel-1.0.2.min.js"></script>
+<script type="text/javascript">
+$(function () {
+
+	skyCarousel = $('#character-slider').carousel({
+		itemWidth: 528,
+		itemHeight: 512,
+		enableMouseWheel: false,
+		gradientOverlayVisible: true,
+		gradientOverlayColor: '#F0F3EE',
+		gradientOverlaySize: 300,
+		distance: 30,
+		selectedItemDistance: 80,
+		selectByClick: true,
+		selectedItemZoomFactor: 0.8,
+		unselectedItemZoomFactor: 0.4,
+		navigationButtonsVisible: false,
+		showPreloader: false,
+		autoSlideshow: true
+	})
+
+});
+</script>
+</head>
+<body class="msgbox mbsc-fr-lock">
+<header class="mui-bar mui-bar-nav "> <a class="mui-icon mui-icon-back"></a>
+  <h1 class="mui-title">Edit chat</h1>
+  <a class="mui-icon mui-icon-person right"></a> </header>
+<div class="heihead"></div>
+<div class="content ">
+  <div class="mui-content bgb" style="background:#fff !important">
+   <div class="mui-text-center pad"><div  class="pad"><small class="grew">DECEMBER 15 - 06:35PM</small></div></div>
+    <div class="line"></div>
+    <div id="chat-messages" class="animate">
+      <label></label>
+      <div class="message"> <img src="${ctxPath}/static/assets/phoneui/img/headc.png">
+        <div class="bubble">
+          <p>Can you ?</p>
+          <div class="corner"></div>
+        </div>
+      </div>
+      <div class="message right"> <img src="${ctxPath}/static/assets/phoneui/img/headc.png">
+        <div class="bubble">
+          <p>Can you share a link for the tutorial?</p>
+          <div class="corner"></div>
+        </div>
+      </div>
+      <div class="message"> <img src="${ctxPath}/static/assets/phoneui/img/headc.png">
+        <div class="bubble"> <img src="${ctxPath}/static/assets/phoneui/img/user_06.jpg"> </div>
+      </div>
+      <div class="clear"></div>
+      <div class="message right"> <img src="${ctxPath}/static/assets/phoneui/img/headc.png">
+        <div class="bubble">
+          <p>Can you share a link for the tutorial?</p>
+          <div class="corner"></div>
+        </div>
+      </div>
+      <div class="message"> <img src="${ctxPath}/static/assets/phoneui/img/headc.png">
+        <div class="bubble">
+          <p>Can you ?</p>
+          <div class="corner"></div>
+        </div>
+      </div>
+      <div class="message"> <img src="${ctxPath}/static/assets/phoneui/img/headc.png">
+        <div class="bubble">
+          <p>Can you ?</p>
+          <div class="corner"></div>
+        </div>
+      </div>
+      <div class="message"> <img src="${ctxPath}/static/assets/phoneui/img/headc.png">
+        <div class="bubble">
+          <p>Can you ?</p>
+          <div class="corner"></div>
+        </div>
+      </div>
+      <div class="message"> <img src="${ctxPath}/static/assets/phoneui/img/headc.png">
+        <div class="bubble">
+          <p>Can you share a link for the tutorial?</p>
+          <div class="corner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="heihead"></div>
+<div id="sendmessage">
+  <div class="addico ad" id="shup"> <a href="javascript:void();"><span class="mui-icon mui-icon-plusempty"></span></a> </div>
+  <div class="inp">
+    <input type="text" placeholder="Answer...">
+  </div>
+  <div class="addico ad right">
+    <button id="send" class="mui-icon mui-icon-paperplane"></button>
+  </div>
+</div>
+<div class="three " id="upfi" >
+  <div class=" ad">
+    <input type="file" class="mui-input-speech" >
+    <a href="#"><span class="mui-icon mui-icon-videocam"></span><!--  <i>VIDEO</i> --></a> </div>
+  <div class=" ad">
+    <input type="file" class="mui-input-speech" >
+    <a href="#"><span class="mui-icon mui-icon-mic"></span><!--  <i>AUDIO</i> --></a> </div>
+  <div class=" ad">
+    <input type="file" class="mui-input-speech" >
+    <a href="#"><span class="mui-icon mui-icon-image"></span><!--  <i>IMAGE</i> --></a> </div>
+</div>
+<script type="text/javascript">
+   function stopPropagation(e) { 
+if (e.stopPropagation) 
+e.stopPropagation(); 
+else 
+e.cancelBubble = true; 
+} 
+$(document).bind('click',function(){ 
+$(".three").removeClass("on");
+
+}); 
+$("#shup").on("click", function(){
+	if($(".three").hasClass("on")){
+	  $(".three").removeClass("on");
+   }
+   else{
+	    $(".three").addClass("on");
+	   }
+})
+   
+$('#shup').bind('click',function(e){ 
+stopPropagation(e); 
+}); 
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+!function(){var n,f={};f.curr=1,n=20;var a=function(){},c=function(){$(".lazy-img").lazyload({effect:"fadeIn"})},i=function(){a(),c()};i()}();

@@ -1,0 +1,290 @@
+package com.haihao.controller;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.dto.RequestDTO;
+import com.haihao.dto.ResultDto;
+import com.haihao.dto.SendmsDTO;
+import com.haihao.jfinal.ModelKit;
+import com.haihao.jfinal.ToolModel;
+import com.haihao.model.baoliao.AccessTokenCustom;
+import com.haihao.model.baoliao.AccessUserInfo;
+import com.haihao.model.baoliao.BaoliaoModel;
+import com.haihao.model.opinion.OpinionModel;
+import com.haihao.model.security.UserModel;
+import com.haihao.utils.AccessTokenUtil;
+import com.haihao.utils.SMSUtils;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
+import com.jfinal.plugin.activerecord.Record;
+/**
+ * JOHN 测试 控制器
+ * @author Administrator
+ *
+ */
+
+@Controller
+@RequestMapping(value = "/baoliao")
+public class BaoliaoController  extends BaseController{
+	
+	@RequestMapping(value = { "", "/", "/index" })
+	public String index(Map<String, Object> model) {
+		
+		
+		
+		
+		
+		
+		
+		
+		return "baoliao/my";
+	}
+	
+	/**
+	 * 我要报料
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/addbaoliao"})
+	public String addbaoliao(Map<String, Object> model,HttpSession session,HttpServletRequest request) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+		model.put("initData", JSON.toJSONString(map));
+		
+		
+		//获取微信端用户授权信息
+//		String code=request.getParameter("code");
+//	    String oppenId="";
+//	    AccessUserInfo accessUserInfo=(AccessUserInfo)session.getAttribute("accessUserInfo");
+//	    if(null==accessUserInfo){
+//	    	 AccessTokenCustom accessTokenCustom=AccessTokenUtil.getAccessToken(code);
+//	    	 String  accessToken= accessTokenCustom.getAccessToken();
+//	    	 oppenId =accessTokenCustom.getOpenId();
+//		 	 accessUserInfo = AccessTokenUtil.geAccesstUserInfo(accessToken, oppenId);
+//		 	 session.setAttribute("accessUserInfo", accessUserInfo);
+//	    }
+//	    
+//	    request.setAttribute("accessUserInfo",accessUserInfo);
+		
+		
+		
+		
+		
+		
+		
+		
+		return "baoliao/addbaoliao";
+	}
+	
+	/**
+	 * 报料列表  -首页
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/listbaoliaos"})
+	public String listbaoliaos(Map<String, Object> model) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> opennews = Db.find(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyisopen"));//开放的报料
+		map.put("listopennews", ToolModel.recordListConvert(opennews));
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "baoliao/listbaoliaos";
+	}
+	
+	
+	/**
+	 * 报料详情
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/baoliaoinfo"})
+	public String baoliaoinfo(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		int bid = Integer.parseInt(request.getParameter("id"));
+		//这里应该是返回单个对象！！！！
+//		Db.findFirst(sqlPara);//返回对象
+//		Db.findById(tableName, idValue);//根据主键返回对象
+//		BaoliaoModel baoliaofirst = BaoliaoModel.dao.findFirst(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyid",map));
+		
+		BaoliaoModel baoliaobyid = BaoliaoModel.dao.findById(bid);
+		model.put("baoliao", ModelKit.toMap(baoliaobyid));
+		
+		return "baoliao/baoliaoinfo";
+	}
+	
+	/**
+	 * 进度查询
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/getschedule"})
+	public String getschedule(Map<String, Object> model) {
+		
+		
+		//获取授权信息
+//		AccessUserInfo accessUserInfo=(AccessUserInfo)session.getAttribute("accessUserInfo");
+		String openid="ss";
+//		
+//	    if(null==accessUserInfo){//从其他路径进入
+//	    	
+//	    }else{
+	    	//检测当前用户发布的报料
+	    	
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			map.put("openid", openid);//accessUserInfo.getOpenId()
+			
+			List<Record> listbaoliaoings = Db.find(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyopeniding",map));//处理中
+			map.put("listbaoliaoings", ToolModel.recordListConvert(listbaoliaoings));
+			
+			List<Record> listbaoliaoends = Db.find(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyopenidend",map));//处理完成
+			map.put("listbaoliaoends", ToolModel.recordListConvert(listbaoliaoends));
+			
+			
+			
+			model.put("initData", JSON.toJSONString(map));
+//	    }
+			
+		
+		return "baoliao/getschedule";
+	}
+	
+	/**
+	 * 个人中心
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/mycenter"})
+	public String mycenter(Map<String, Object> model,HttpSession session) {
+		
+		
+		return "baoliao/my";
+	}
+	
+	
+	
+	@RequestMapping("/ajaxaddbaoliaoinfo")
+	@ResponseBody
+	public ResultDto ajaxaddbaoliaoinfo(HttpServletRequest request,HttpSession session) {
+		ResultDto resultDto = new ResultDto();
+		BaoliaoModel model = getModel(request, BaoliaoModel.class);
+		
+		String yzm = request.getParameter("yzm");
+		
+		if(session.getAttribute("code")==null){//验证码为null 或者不相同
+			resultDto.setSuccess(false);
+			resultDto.setError("验证码错误！");
+		}else if(!session.getAttribute("code").toString().equals(yzm)){
+			resultDto.setSuccess(false);
+			resultDto.setError("验证码错误！");
+		}else{
+			
+			Db.tx(new IAtom() {//手动事务处理
+
+				@Override
+				public boolean run() throws SQLException {
+					if (model.isNew()) {
+						model.set("title", request.getParameter("title"));
+						model.set("telphone",  request.getParameter("telphone"));
+						model.set("imgurl", request.getParameter("mainImg"));
+						model.set("cont", request.getParameter("cont"));
+						model.set("typeid", request.getParameter("type"));
+						model.set("wxuserid", 1);
+						long currentTimeMillis = System.currentTimeMillis();
+						model.set("createtime", currentTimeMillis);
+						model.save();
+						
+					} else {
+						model.update();
+					}
+					return true;
+				}
+			});
+			
+			resultDto.setSuccess(true);
+			
+		}
+		
+	
+		return resultDto;
+		
+	
+	}
+	
+	/**
+	 * 异步发送手机验证码
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ajaxsendCode")//, method = RequestMethod.POST
+	@ResponseBody
+	public ResultDto ajaxsendCode(HttpServletRequest request,HttpSession session) {
+		
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		Map<String, Object> data = requestDTO.getData();
+		
+		Object telphone = data.get("telphone");
+		
+		int code =(int)(Math.random()*9+1)*1000;
+		
+		
+		System.out.println(code+"验证码");
+		session.setAttribute("code", code);
+		
+		try {
+			//TimerTask实现3分钟后从session中删除code  
+	        final Timer timer=new Timer();
+	        timer.schedule(new TimerTask() {
+	            @Override
+	            public void run() {
+	            	session.removeAttribute("code");
+	                System.out.println("code清除成功");
+	                timer.cancel();
+	            }
+	        },3*60*1000);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		
+		
+		String content = "验证码为【"+code+"】，您正在进行报料，如非本人操作，请勿泄露。";
+		
+		resultDto.setData(code);
+		SendmsDTO sendmsdto = new SendmsDTO();
+		sendmsdto.setNumber(telphone.toString());
+		sendmsdto.setContent(content);
+		SMSUtils.send(sendmsdto);
+		
+		return resultDto;
+		
+	}
+	
+	
+	
+
+}

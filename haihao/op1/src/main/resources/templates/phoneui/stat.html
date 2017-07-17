@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>统计</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+	<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+	
+<link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/demo.css" type="text/css"/>
+
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/ichart.1.2.1.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+			var data = [
+			        	{name : 'HTML5&CSS3',value : 30,color:'#e8e8e8'},
+			        	{name : 'JavaScript',value : 45,color:'#019fe8'},
+			        	{name : 'Java',value : 15,color:'#01cae8'},
+			        	
+		        	];
+	    	
+			var chart = new iChart.Donut2D({
+				render : 'canvasDiv',
+				center:{
+					text:'3 conutris\n 5 citys',
+					shadow:true,
+					shadow_offsetx:0,
+					shadow_offsety:0,
+					shadow_blur:2,
+					shadow_color:'#fff',
+					color:'#6f6f6f',
+					
+				},
+				data: data,
+				offsetx:0,
+				shadow:true,
+				background_color:'#fff',
+				separate_angle:10,//分离角度
+				tip:{
+					enable:true,
+					showType:'fixed'
+				},
+				legend : {
+					enable : true,
+					shadow:true,
+					background_color:null,
+					border:false,
+					legend_space:30,//图例间距
+					line_height:34,//设置行高
+					sign_space:10,//小图标与文本间距
+					sign_size:0,//小图标大小
+					color:'#6f6f6f',
+					fontsize:0//文本大小
+				},
+				sub_option:{
+					label:false,
+					color_factor : 0.3
+				},
+				showpercent:true,
+				decimalsnum:2,
+				width : 360,
+				height : 300,
+				radius:140
+			});
+
+			/**
+			 *利用自定义组件构造左侧说明文本。
+			 */
+			chart.plugin(new iChart.Custom({
+					drawFn:function(){
+						/**
+						 *计算位置
+						 */	
+						var y = chart.get('originy');
+						/**
+						 *在左侧的位置，设置竖排模式渲染文字。
+						 */
+						chart.target.textAlign('center')
+						.textBaseline('middle')
+						.textFont('100 15px 微软雅黑')
+						.fillText('',100,y,false,'#ccc', 'tb',16,false,0,'middle');
+						
+					}
+			}));
+			
+			chart.draw();
+		});
+	</script>
+
+<style>
+.content .swiper-slide {
+	padding: 0 20px;
+	width: auto;
+}
+.swiper-slide {
+	color: #999
+}
+#header {
+	width: 100%;
+	overflow: hidden
+}
+</style>
+</head>
+<body class="chat mbsc-fr-lock">
+<header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-back"></a>
+  <h1 class="mui-title">统计</h1>
+  <a class="mui-icon mui-icon-more-filled right"></a> </header>
+<div class="heihead"></div>
+
+<div class="content ">
+<div id="header" style="border:none">
+  <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
+  <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+    <div class="swiper-slide black"><a class="mui-control-item mui-active" href="#item1mobile"><small>菜单名称</small></a></div>
+    <div class="swiper-slide"><a class="mui-control-item " href="#item1mobile"><small>菜单名称</small></a></div>
+    <div class="swiper-slide"><a class="mui-control-item " href="#item1mobile"><small>菜单名称</small></a></div>
+    <div class="swiper-slide"><a class="mui-control-item " href="#item1mobile"><small>菜单名称</small></a></div>
+    </div>
+  </div>
+</div>
+
+<div class="line"></div>
+<script type="text/javascript">
+window.onload = function() {
+  var mySwiper1 = new Swiper('#header',{
+	  freeMode : true,
+	  slidesPerView : 'auto',
+	  freeModeSticky : true ,
+  });
+  
+  
+}
+</script>
+<div class="mui-content">
+  <div class="hei"></div>
+  <div class="mui-text-center"><a href="#" class="grew">HOURLY</a>&nbsp;&nbsp;&nbsp;<a href="#" class="black">WEEK</a>&nbsp;&nbsp;&nbsp;<a href="#" class="grew">MOUTH</a></div>
+  <DIV class="mui-text-center">
+    <select style="display:inline-block; width:auto; font-size:22px">
+      <option>JULE,20,26</option>
+      <option>JULE,20,26</option>
+    </select>
+    
+    <span class="mui-icon mui-icon-arrowdown font-sm"></span></DIV>
+   <div id='canvasDiv'></div>
+
+  <div class="tj">
+   <div class="tjleft mui-pull-left">
+    <h2><small>countrin</small></h2>
+    <ul class="font-sm">
+     <li><B></B><i>USA</i><span>37%</span><strong></strong></li>
+     <li>&nbsp;</li>
+     <li><B></B><i>CHINA</i><span>37%</span><strong></strong></li>
+     <li>&nbsp;</li>
+     <li><B></B><i>FRANCE</i><span>37%</span><strong></strong></li>
+
+    </ul>
+   </div>
+   <div class="tjmid  mui-pull-left" style="display:none"> <h2><small>&nbsp;</small></h2>
+    <ul>
+     <li><div>&nbsp;</div></li>
+     <li><div>&nbsp;</div><strong></strong></li>
+      <li><div>&nbsp;</div></li>
+     <li><div>&nbsp;</div></li>
+      <li><div>&nbsp;</div></li>
+    
+    </ul>
+   </div>
+   <div class="tjright mui-pull-right">
+    <h2><small>CITYS</small></h2>
+    <ul class="font-sm">
+     <li><strong></strong><B></B><i>LASVGIS</i><span>37%</span></li>
+     <li><strong></strong><B></B><i>NEWYORK</i><span>37%</span><p></p></li>
+     <li><strong></strong><B></B><i>USA</i><span>37%</span></li>
+     <li><strong></strong><B></B><i>USA</i><span>37%</span><p></p></li>
+     <li><strong></strong><B></B><i>PAIRS</i><span>37%</span></li>
+  
+    </ul>
+    
+   </div>
+  </div>
+</div>
+</div>
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
+
+</body>
+</html>

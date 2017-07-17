@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sql-statement namespace="com.baoliao">
+
+	<!-- 查询出所有的报料 -->
+	<sql id="selectAllbaoliao">
+		<![CDATA[ 
+			select * from op_baoliao
+		]]>
+	</sql>
+
+	<!-- 查询当前未删除的报料 -->
+	<sql id="selectbaoliaobyisvalid">
+		<![CDATA[ 
+			select * from op_baoliao where isvalid = 'Y'
+		]]>
+	</sql>
+	
+	<!-- 查询当前被公开的报料 -->
+	<sql id="selectbaoliaobyisopen">
+		<![CDATA[ 
+			select * from op_baoliao where isvalid = 'Y' and isopen = 'Y'
+		]]>
+	</sql>
+	
+	<!-- 根据id查询报料主体信息 -->
+	<sql id="selectbaoliaobyid">
+		<![CDATA[ 
+			select * from op_baoliao where id = ${id}
+		]]>
+	</sql>
+	
+	
+	<!-- 根据openid 查询出当前用户发布的正在处理中的报料 -->
+	<sql id="selectbaoliaobyopeniding">
+		<![CDATA[ 
+			select * from op_baoliao where status='处理中' and wxuserid in (select op_wxuseropen.id from op_wxuseropen where openid='${openid}')
+		]]>
+	</sql>
+	
+	
+	<!-- 根据openid 查询出当前用户发布的处理完成的报料 -->
+	<sql id="selectbaoliaobyopenidend">
+		<![CDATA[ 
+			select * from op_baoliao where status='处理完成' and wxuserid in (select op_wxuseropen.id from op_wxuseropen where openid='${openid}')
+		]]>
+	</sql>
+	
+	
+	
+	
+
+
+
+</sql-statement>

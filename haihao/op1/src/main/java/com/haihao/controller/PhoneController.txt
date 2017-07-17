@@ -1,0 +1,199 @@
+package com.haihao.controller;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * 移动端APP UI控制器
+ * @author Administrator
+ *
+ */
+
+@Controller
+@RequestMapping(value = "/phoneui")
+public class PhoneController extends BaseController{
+	
+	
+	@RequestMapping(value = { "", "/", "/index" })
+	public String index(Map<String, Object> model) {
+		
+		return "phoneui/login";
+	}
+	
+	/**
+	 * app 登录界面
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/login"})
+	public String login(Map<String, Object> model) {
+		
+		return "phoneui/login";
+	}
+	
+	/**
+	 * app 注册界面
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/reg"})
+	public String reg(Map<String, Object> model) {
+		
+		return "phoneui/reg";
+	}
+	
+	
+	/**
+	 * app 用户中心界面
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/usercenter"})
+	public String usercenter(Map<String, Object> model) {
+		
+		
+		return "phoneui/usercenter";
+	}
+	
+	/**
+	 * app 统计中心
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/stat"})
+	public String stat(Map<String, Object> model) {
+		
+		
+		return "phoneui/stat";
+	}
+	
+	
+	/**
+	 * app 新闻中心 默认第一版式 列表模式
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/listnews"})
+	public String listnews(Map<String, Object> model) {
+		
+		
+		return "phoneui/listnews";
+	}
+	
+	/**
+	 * app 新闻中心 默认第二版式 块级版式
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/listnewsblock"})
+	public String listnewsblock(Map<String, Object> model) {
+		
+		
+		return "phoneui/listnewsblock";
+	}
+	
+	
+	
+	
+	/**
+	 * app 新闻详情
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/newsinfo"})
+	public String newsinfo(Map<String, Object> model) {
+		
+		
+		return "phoneui/newsinfo";
+	}
+	
+	
+	/**
+	 * app 消息中心
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/message"})
+	public String message(Map<String, Object> model) {
+		
+		
+		return "phoneui/message";
+	}
+	
+	
+	/**
+	 * app 待办事项中心
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/todolist"})
+	public String todolist(Map<String, Object> model) {
+		
+		
+		return "phoneui/todolist";
+	}
+	
+	
+	/**
+	 * app 群组列表
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/listgroups"})
+	public String listgroups(Map<String, Object> model) {
+		
+		return "phoneui/listgroups";
+	}
+	
+	
+	/**
+	 * 通讯录
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/book"})
+	public String book(Map<String, Object> model) {
+		
+		return "phoneui/book";
+	}
+	
+	
+	/**
+	 * 交流中心
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/groupcommon"})
+	public String groupcommon(Map<String, Object> model) {
+		
+		return "phoneui/groupcommon";
+	}
+	
+	/**
+	 * 修改群组成员
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/editgroup"})
+	public String editgroup(Map<String, Object> model) {
+		
+		return "phoneui/editgroup";
+	}
+	
+	/**
+	 * 用户基本信息
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/userinfo"})
+	public String userinfo(Map<String, Object> model) {
+		
+		return "phoneui/userinfo";
+	}
+
+	
+	
+	
+}

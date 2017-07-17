@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<meta content="" name="description" />
+<meta content="" name="author" />
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        
+<title>报料列表</title>
+
+<script src="${ctxPath}/static/assets/baoliao/js/flexible.js"></script>
+<link rel="stylesheet" href="${ctxPath}/static/assets/baoliao/css/common.css" type="text/css">
+<link rel="stylesheet" href="${ctxPath}/static/assets/baoliao/css/index.css" type="text/css">
+<script src="${ctxPath}/static/assets/baoliao/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/baoliao/js/common.js"></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/baoliao/js/jquery.lazyload.js"></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/baoliao/js/index.js"></script>
+<!-- 配置文件 -->
+<script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
+<script type="text/javascript">
+   var userInfo ;
+</script>
+
+
+</head>
+<body style="font-size: 36px;">
+<input type="hidden" id="initData" value='${initData!}'>
+<script type="text/javascript">
+var initData = {};
+if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+</script>
+	
+	
+<main>	
+<div class="head-bg">
+	<div class="all-skills">
+		<ul class="course-class clearfix" id="typelist">
+			<!-- 加载报料类别 -->
+		</ul>
+	</div>
+</div>
+
+
+<div class="course-list js-course-list">
+	<dl id="contlist">
+		
+				       
+		
+				 
+		
+	</dl>
+</div>
+</main>
+
+
+    
+<footer>
+    <ul class="footer clearfix">
+    	<li class="cur"><a href="#"><i class="icon icon-home"></i><span>首页</span></a></li>
+    	<li><a href="getschedule"><i class="icon course icon-clock"></i><span>进度查询</span></a></li>
+    	<li><a href="addbaoliao"><i class="icon icon-note"></i><span>我要报料</span></a></li>
+    	<li><a href="mycenter"><i class="icon icon-user"></i><span>我</span></a></li>
+    </ul>
+</footer>
+
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	 function selectInitList(domId,initDataId,listId){
+			var _items = initData[initDataId];
+			$(domId).append(String.format('<li alt="{0}" class="active"><a href="javascript:void(0)">{1}</a></li>',"","全部"));
+			for(var i = 0;i < _items.length;i++){
+				var j = _items[i];
+				if(j.listId == listId){
+		 			$(domId).append(String.format('<li alt="{0}"><a href="javascript:void(0)">{1}</a></li>',j["id"],j["label"]));
+				}
+			}
+		}
+	 selectInitList("#typelist", "lists", 1);
+	 
+	 
+	 
+	 function InitOpenNewsList(domId,initDataId){
+			var _items = initData[initDataId];
+			for(var i = 0;i < _items.length;i++){
+				var j = _items[i];
+		 			$(domId).append(
+		 					String.format('<dd class="clearfix">'
+		 					+'<a href="baoliaoinfo">'
+		 					+'<div class="cell cell-left">'				
+		 					+'	<div class="course-img-bg lazy-img" style="display: block; background-image: url(${ctxPath}/static/assets/baoliao/images/b1.jpg);"></div>'
+		 					+'</div>'
+		 					+'<div class="cell r-cell">'
+		 					+'	<p class="class-name">{0}</p>'
+		 					+'	<p class="class-desc">{1}</p>'
+		 					+'	<div class="class-info clearfix">'
+		 					+'		<span class="class-info-study l">{2}<i class="pt">·</i>{3}</span>'
+		 					+'		<span class="class-info-price r">{4}</span>'
+		 					+'	</div>'
+		 					+'</div>'
+		 					+'</a></dd>',j["title"],j["cont"],listFormatter({id:"lists"},j["typeid"]),j["status"],dateFormatter(j["createtime"])));
+			}
+		}
+		
+		InitOpenNewsList("#contlist", "listopennews");
+		
+		
+		 function listFormatter(columnDef, value){
+         	var _items = initData[columnDef.id];
+         	 for(var i = 0;i < _items.length;i++){
+         		 var j = _items[i];
+	   				 if(j["id"] == value){
+	   					 return j["label"];
+	   				 }
+         	 }
+         }
+         
+         function dateFormatter(value){
+				  var d = new Date();
+				  d.setTime(value);
+				  return d.pattern("MM-dd HH:mm");
+         }
+         
+		
+		
+		
+});
+</script>
+
+
+</body>
+</html>

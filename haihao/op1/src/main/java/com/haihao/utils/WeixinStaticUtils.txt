@@ -1,0 +1,36 @@
+package com.haihao.utils;
+
+/**
+ * 微信全局变量
+ * @author Administrator
+ *
+ */
+public class WeixinStaticUtils {
+	
+	
+	//阿里云oss 地址变量
+	public final static String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
+	public final static String accessKeyId = "xjgYb9llECf7uSo9";
+	public final static String accessKeySecret = "9oH86WR9PuSSx9eGd1uGM9mMZL0CTw";
+	public final static String bucketName = "mhyt-static-images";
+	public final static String namekey = "object-get-progress-sample";//命名规范
+     
+     
+	
+	//圳在前进
+	public final static String appId="wx1bfcdd61bda80301";
+	public final static String appSecret="45c05cdc040785ed9395edc740e20cb4";
+	public final static String httpurl="zzqj.hi-hone.cn/zzqj";
+	public final static String PapersNewsID="HrXhwjl-ivFLtzqE6v9fD771ah_t7C06p1DhYPwWLdw";//微商报审核消息模板id
+	public final static String ZhaoJiLingID="HrXhwjl-ivFLtzqE6v9fD771ah_t7C06p1DhYPwWLdw";//召集令-地铁八号线审核消息模板id
+	public final static String MessageID="KTmwokzEY2BJMb0UxmM-nRG05cFxYxN35D7vJ_WuXds";//系统消息推送-微发布评论回复
+	public final static String VoiceID="TGmi26NVxOPjd40Ku2DgItEOAFE3Trg4I4ok24EpNiQ";//系统消息推送-声音平台 待办事项
+	public static final String MCH_ID = "1285518101";      //商户号  
+	public static final String KEY = "3d8eaf840835b5daf75630a38c6f45a5";         //秘钥~
+	public static final String CERTIFICATE = "/data/ftp/QHWL/apiclient_cert.p12"; //证书的路径
+	public static final String RED_PAY = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack"; //红包接口
+	
+	
+	
+
+}

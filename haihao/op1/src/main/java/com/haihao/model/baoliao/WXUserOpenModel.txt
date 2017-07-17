@@ -1,0 +1,29 @@
+package com.haihao.model.baoliao;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+/**
+ * 授权用户表
+ * @author Administrator
+ *
+ */
+@TableBind(tableName="op_wxuseropen")
+public class WXUserOpenModel extends BaseModel<WXUserOpenModel>{
+	
+	
+	private static final long serialVersionUID = 4104675810019508260L;
+	public static WXUserOpenModel dao = new WXUserOpenModel().dao();
+	
+//	
+//	private int id;
+//	private String openid;
+//	private String nickname;//昵称
+//	private String sex;//性别
+//	private String province;
+//	private String city;
+//	private String country;
+//	private String headimgurl;//头像地址
+	
+}

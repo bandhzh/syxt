@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<meta content="" name="description" />
+<meta content="" name="author" />
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        
+<title>进度查询</title>
+
+<link rel="stylesheet" href="${ctxPath}/static/assets/baoliao/css/main.css" type="text/css">
+<link rel="stylesheet" href="${ctxPath}/static/assets/baoliao/css/base.css" type="text/css">
+<script src="${ctxPath}/static/assets/baoliao/js/tab.js" type="text/javascript"></script>
+
+<style type="text/css">
+	
+   /*  body{background: #fafcff;} */
+    .tabClick{  overflow: hidden;background: #ffffff;}
+    .tabClick li{ height:50px; line-height: 50px; width: 48%; float: left; text-align: center;font-size: 0.8rem;}
+    .tabClick li.active{ color: #71777d; transition: 0.1s;font-size: 0.8rem; }
+    .tabCon{ overflow: hidden;margin-top: 2px;}
+    .tabBox{ position: relative}
+    .tabList{word-break: break-all; width:100%;float:left; text-align:center; color:#2b333b; font-size:13px; font-family: "Microsoft YaHei"}
+    .lineBorder{ height: 2px; overflow: hidden; /* border-bottom:1px solid #e2e8e8; */ background: #f3f3f3}
+    .lineDiv{ background: #e5005c; height: 2px; width: 48%;}
+	.pay_order { 
+  float: right;
+  height: 1.45rem;
+  width: 3.5rem;
+  color: #71777d;
+  line-height: 1.45rem;
+  text-align: center;
+  /* padding-left: 0.2rem; */
+  border-radius: 0.1rem;
+  /* vertical-align: middle; */
+  border: 1px solid #b7bbbf;
+  margin-right: 1rem;
+  margin-top: 0.2rem;
+  background-color: #fff;
+}
+.cancel_order {
+  float: right;
+  height: 1.50rem;
+  width: 3.5rem;
+  color: #fff;
+  line-height: 1.45rem;
+  text-align: center;
+  /* padding-left: 0.2rem; */
+  border-radius: 0.1rem;
+  /* vertical-align: middle; */
+  margin-top: 0.2rem;
+  background-color: #14b4ff;
+}
+.jindulist{
+	padding: 15px 16px 0px 16px;background: #fafcff;margin-top: 15px;
+}
+.jdleft{
+	border-bottom: 1px solid #d9dde1;border-top: 1px solid #d9dde1;height: 110px;
+}
+.jdleftimg{
+	float: left;width: 30%;padding: 20px 1px 1px 1px;
+}
+.jdcont{
+	float: right;width: 65%;padding: 22px 0px 2px 7px;text-align: left;
+}
+.jdcz{
+	height: 40px;width:100%;padding:10px 10px 10px 0px;
+}
+</style>
+<script src="${ctxPath}/static/assets/baoliao/js/jquery-2.1.0.min.js"></script>
+<!-- 配置文件 -->
+<script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
+<script type="text/javascript">
+   var userInfo ;
+</script>
+
+
+    
+</head>
+<body>
+
+<input type="hidden" id="initData" value='${initData!}'>
+<script type="text/javascript">
+var initData = {};
+if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+</script>
+
+
+<header>
+		<div class="newheader">
+			<a class="imwap-arrow_l goback l" href="javscript:void(0)" onclick="javascript:history.back(-1);">
+				<i class="icon-arrow-left"></i>
+			</a>
+			<span class="js-header-name header-name l"> 进度查询 </span> 
+			<a href="mycenter" class="right-box r js-header-avator">
+				<img src="http://img.mukewang.com/user/54584cc500019c5b02200220-40-40.jpg" width="40" height="40">
+			</a>
+			<a class="header-share r js-share" href="javascript:void(0);">
+				<i class="icon-share"></i>
+			</a>
+		</div>
+	</header>
+
+	<div style="height:2.4rem"></div>
+	
+	<div class="wrap" id="wrap">
+    <ul class="tabClick">
+        <li class="active">处理中</li>
+        <li class="">已处理</li>
+    </ul>
+    <div class="lineBorder">
+        <div class="lineDiv" style="transform: translate3d(0px, 0px, 0px); transition: all 0.1s ease-in-out;"><!--移动的div--></div>
+    </div>
+    <div class="tabCon">
+        <div class="tabBox" style="overflow: hidden; position: relative; width: 1656px; transform: translate3d(0px, 0px, 0px); transition: all 0.3s ease-in-out;">
+            <div class="tabList" style="width: 48%; float: left; padding: 0px; margin: 0px; vertical-align: top; display: table-cell;" id="nowing">
+           		<!-- 处理中 -->
+            
+            </div>
+            
+            
+            <!-- 已经处理 -->
+            <div class="tabList" style="width: 48%; float: left; padding: 0px; margin: 0px; vertical-align: top; display: table-cell;" id="ending">
+				
+           	   
+            
+            </div>
+        </div>
+    </div>
+</div>
+	
+
+</body>
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	 
+	 
+	 function InitOpenNewsList(domId,initDataId){
+			var _items = initData[initDataId];
+			for(var i = 0;i < _items.length;i++){
+				var j = _items[i];
+		 			$(domId).append(
+		 					String.format('<div class="jindulist">'
+		 		           			+'<div class="jdleft">'
+		 		           			+'<div class="jdleftimg">'
+		 		           			+'	<img class="img" src="http://szimg.mukewang.com/5931273d0001289a05400300-160-90.jpg" style="width: 100%;">'
+		 		           			+'</div>'
+		 		           			+'<div class="jdcont">'
+		 		           			+'	<div>{0}</div>'
+		 		           			+'	<div style="font-size: 11px;padding-top: 5px;"><i class="icon-clock"></i>&nbsp;{1}</div>'
+		 		           			+'</div>'
+		 		           			+'</div>'
+		 		           		+'<div class="jdcz">'
+		 		           		+'	<span class="cancel_order" alt="{2}">查看进度</span>'
+		 		           		+'		<span class="pay_order" >取消报料</span>'
+		 		           		+'</div>'
+		 		           		+'</div>',j["title"],dateFormatter(j["createtime"]),j["id"]));
+			}
+		}
+		
+		InitOpenNewsList("#nowing", "listbaoliaoings");
+		
+		
+		 
+		 function InitEndNewsList(domId,initDataId){
+				var _items = initData[initDataId];
+				for(var i = 0;i < _items.length;i++){
+					var j = _items[i];
+			 			$(domId).append(
+			 					String.format('<div class="jindulist">'
+			 		           			+'<div class="jdleft">'
+			 		           			+'<div class="jdleftimg">'
+			 		           			+'	<img class="img" src="http://szimg.mukewang.com/5931273d0001289a05400300-160-90.jpg" style="width: 100%;">'
+			 		           			+'</div>'
+			 		           			+'<div class="jdcont">'
+			 		           			+'	<div>{0}</div>'
+			 		           			+'	<div style="font-size: 11px;padding-top: 5px;"><i class="icon-clock"></i>&nbsp;{1}</div>'
+			 		           			+'</div>'
+			 		           			+'</div>'
+			 		           		+'<div class="jdcz">'
+			 		           		+'	<span class="cancel_order"  alt="{2}">查看回复</span>'
+			 		           		+'		<span class="pay_order" >评价</span>'
+			 		           		+'</div>'
+			 		           		+'</div>',j["title"],dateFormatter(j["createtime"]),j["id"]));
+				}
+			}
+		
+		InitEndNewsList("#ending", "listbaoliaoends");
+		
+		
+	
+         function dateFormatter(value){
+				  var d = new Date();
+				  d.setTime(value);
+				  return d.pattern("MM-dd HH:mm");
+         }
+         
+		
+         $(".cancel_order").click(function(){
+        	 
+        	location.href="${ctxPath}/baoliao/baoliaoinfo?id="+$(this).attr("alt");
+        	 
+         });
+		
+		
+});
+</script>
+</html>
