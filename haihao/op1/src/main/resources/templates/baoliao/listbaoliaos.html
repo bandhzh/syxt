@@ -84,6 +84,37 @@ $(document).ready(function() {
 		}
 	 selectInitList("#typelist", "lists", 1);
 	 
+	 //点击类别进行检索
+	 $("#typelist li").click(function(){
+		 
+		 $("#typelist li").each(function(){
+			$(this).removeClass("active"); 
+		 });
+		 
+		 $(this).addClass("active");
+		 
+		$.ajax({
+			url : "${ctxPath}/baoliao/ajaxselectbytype",//根据类别异步检索出对应新闻
+			type : "post",
+			data : {typeid:$(this).attr("alt")},
+			dataType:"json",
+			success : function(data) {
+				if (data.success) {
+					
+					$("#initData").val(data.data.initData);
+					if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+					$("#contlist").html("");
+					InitOpenNewsList("#contlist", "listopennews");
+					
+				}else{
+					//暂无数据
+					$("#contlist").html('<dd class="clearfix" style="text-align:center;">暂无数据</dd>');
+				}
+			}
+		});
+	 });
+	 
+		
 	 
 	 
 	 function InitOpenNewsList(domId,initDataId){
@@ -92,7 +123,7 @@ $(document).ready(function() {
 				var j = _items[i];
 		 			$(domId).append(
 		 					String.format('<dd class="clearfix">'
-		 					+'<a href="baoliaoinfo">'
+		 					+'<a href="baoliaoinfo?id={5}">'
 		 					+'<div class="cell cell-left">'				
 		 					+'	<div class="course-img-bg lazy-img" style="display: block; background-image: url(${ctxPath}/static/assets/baoliao/images/b1.jpg);"></div>'
 		 					+'</div>'
@@ -104,7 +135,7 @@ $(document).ready(function() {
 		 					+'		<span class="class-info-price r">{4}</span>'
 		 					+'	</div>'
 		 					+'</div>'
-		 					+'</a></dd>',j["title"],j["cont"],listFormatter({id:"lists"},j["typeid"]),j["status"],dateFormatter(j["createtime"])));
+		 					+'</a></dd>',j["title"],j["cont"],listFormatter({id:"lists"},j["typeid"]),j["status"],dateFormatter(j["createtime"]),j["id"]));
 			}
 		}
 		

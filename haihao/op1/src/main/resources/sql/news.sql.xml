@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sql-statement namespace="com.news">
+
+<sql id="selectHearder">
+		<![CDATA[ 
+			select newsModel.*,userModel.displayName 
+		]]>
+	</sql>
+	
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_news newsModel left join 
+			op_user userModel on newsModel.createdBy = userModel.id 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	<sql id="selectFollowByNewsId">
+		<![CDATA[ 
+			select newsVerifyFollowModel.*,userModel.displayName,departmentModel.name as departmentName  from op_news_verify_follow newsVerifyFollowModel
+			left join 
+			op_user userModel on newsVerifyFollowModel.userId = userModel.id 
+			left join op_department departmentModel on userModel.departmentId = departmentModel.id
+			where newsId = ${newsId} 
+		]]>
+	</sql>
+	
+	<sql id="selectToDoByNewsId">
+		<![CDATA[ 
+			select newsToDoFollowModel.*,userModel.displayName,departmentModel.name as departmentName  from op_news_todo_follow newsToDoFollowModel
+			left join 
+			op_user userModel on newsToDoFollowModel.userId = userModel.id 
+			left join op_department departmentModel on userModel.departmentId = departmentModel.id
+			where newsId = ${newsId} 
+		]]>
+	</sql>
+	
+	
+	<sql id="selectInstructionNewsId">
+		<![CDATA[ 
+			select newsInstructionModel.*,userModel.displayName,departmentModel.name as departmentName  from op_news_instruction newsInstructionModel
+			left join 
+			op_user userModel on newsInstructionModel.userId = userModel.id 
+			left join op_department departmentModel on userModel.departmentId = departmentModel.id
+			where newsId = ${newsId} 
+		]]>
+	</sql>
+	
+	<sql id="selectBodyByVerify">
+		<![CDATA[ 
+			from op_news newsModel left join 
+			op_user userModel on newsModel.createdBy = userModel.id 
+			inner join (
+				select distinct newsId from op_news_verify where departmentId = ${data.departmentId} 
+			) newsVerifyModel on newsModel.id = newsVerifyModel.newsId 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	<sql id="selectBodyByTodo">
+		<![CDATA[ 
+			from op_news newsModel left join 
+			op_user userModel on newsModel.createdBy = userModel.id 
+			inner join (
+				select distinct newsId from op_news_todo where departmentId = ${data.departmentId} 
+			) newsToDoModel on newsModel.id = newsToDoModel.newsId 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	<sql id="selectBodyByInstruction">
+		<![CDATA[ 
+			from op_news newsModel left join 
+			op_user userModel on newsModel.createdBy = userModel.id 
+			where 1 = 1 
+			and hasInstruction = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+
+</sql-statement>

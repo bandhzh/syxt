@@ -1,0 +1,590 @@
+package com.haihao.controller;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.constant.DataConstant;
+import com.haihao.constant.DataConstant.NewsStatus;
+import com.haihao.constant.DataConstant.OpinionToDoStatus;
+import com.haihao.dto.PageResultDto;
+import com.haihao.dto.PageSqlCommond;
+import com.haihao.dto.RequestDTO;
+import com.haihao.dto.ResultDto;
+import com.haihao.dto.SQLCallback;
+import com.haihao.jfinal.ToolModel;
+import com.haihao.model.news.NewsInstructionModel;
+import com.haihao.model.news.NewsModel;
+import com.haihao.model.news.NewsToDoFollowModel;
+import com.haihao.model.news.NewsToDoModel;
+import com.haihao.model.news.NewsVerifyFollowModel;
+import com.haihao.model.news.NewsVerifyModel;
+import com.haihao.model.opinion.OpinionModel;
+import com.haihao.model.opinion.OpinionToDoFollowModel;
+import com.haihao.model.opinion.OpinionVerifyFollowModel;
+import com.haihao.service.ServiceException;
+import com.haihao.tool.ToolSecurity;
+import com.haihao.tool.ToolString;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
+import com.jfinal.plugin.activerecord.Record;
+
+@Controller
+@RequestMapping(value = "/news")
+public class NewsController extends BaseController{
+	
+	@RequestMapping(value = { "", "/", "/index" })
+	public String index(Map<String, Object> model) {
+		
+		
+		
+		return "news/addnews";
+	}
+	
+	
+	
+	
+	
+	/**
+	 * pc后台 新闻管理列表
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/newsmanage"})
+	public String newsmanage(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/news/newsmanage.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+		
+		List<Record> find3 = Db.find(ToolSqlXml.getSql("com.user.selectAll"));
+		map.put("users", ToolModel.recordListConvert(find3));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+		
+	}
+	
+	
+	
+	/**
+	 * pc加载 新闻列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listnewsmanages")
+	@ResponseBody
+	public PageResultDto listnewsmanages(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.news.selectBody");
+		pageSqlCommond.setHeadSql("com.news.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	
+	/**
+	 * 提交核实
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/verifyNews")
+	@ResponseBody
+	public ResultDto verifyNews(HttpServletRequest request) {
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		Map<String, Object> data = requestDTO.getData();
+		Object id = data.get("id");
+		Object departmentId = data.get("departmentId");
+		Long queryLong = Db.queryLong("select count(1) from op_news_verify where newsId = ? and departmentId = ?", id, departmentId);
+		if (queryLong > 0)
+			throw new ServiceException("该部门已经被委托");
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				Db.update("update op_news set status = ? where id = ?", NewsStatus.inVerify, id);
+				NewsVerifyModel newsVerifyModel = new NewsVerifyModel();
+				newsVerifyModel.set("newsId", id);
+				newsVerifyModel.set("departmentId", departmentId);
+				newsVerifyModel.set("createdBy", ToolSecurity.getUserId());
+				newsVerifyModel.set("createdDate", System.currentTimeMillis());
+				newsVerifyModel.save();
+				return true;
+
+			}
+		});
+		return resultDto;
+	}
+	
+	
+	/**
+	 * pc 查看核实 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listVerifyFollerNews")
+	@ResponseBody
+	public ResultDto listVerifyFollerNews(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.news.selectFollowByNewsId", requestDTO.getData()));
+		resultDto.setData(ToolModel.recordListConvert(find));
+		return resultDto;
+	}
+	
+	
+	
+	/**
+	 * pc  保存转办
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/toDoNews")
+	@ResponseBody
+	public ResultDto toDoNews(HttpServletRequest request) {
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		Map<String, Object> data = requestDTO.getData();
+		Object newsToDoModelNewsId = data.get("newsToDoModelNewsId");
+		Object mainTodo = data.get("mainTodo");
+		Object subTodo = data.get("subTodo");
+		if(ToolString.isEmptyString(mainTodo))throw new ServiceException("主办部门不能为空");
+		Long departmentId = Db.queryLong("select departmentId from op_news_todo where newsId = ? and isMaster = 1", newsToDoModelNewsId);
+		
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				Db.update("update op_news set toDoStatus = ? where id = ?", OpinionToDoStatus.inDo, newsToDoModelNewsId);
+				if (null != newsToDoModelNewsId) {
+					if(null != departmentId){
+						if(!departmentId.equals(Long.parseLong(mainTodo.toString()))){
+							throw new ServiceException("主办部门已经存在,不可修改,只可添加协办部门");
+						}
+					}else{
+						NewsToDoModel newsToDoModel = new NewsToDoModel();
+						newsToDoModel.set("newsId", newsToDoModelNewsId);
+						newsToDoModel.set("departmentId", mainTodo);
+						newsToDoModel.set("isMaster", DataConstant.Yes);
+						newsToDoModel.set("createdBy", ToolSecurity.getUserId());
+						newsToDoModel.set("createdDate", System.currentTimeMillis());
+						newsToDoModel.save();
+					}
+				}
+
+				for (String id : ToolString.toString(subTodo).split(",")) {
+					NewsToDoModel newsToDoModel = new NewsToDoModel();
+					if (Db.queryLong("select count(1) from op_news_todo where newsId = ? and departmentId = ?", newsToDoModelNewsId, id) == 0) {
+						newsToDoModel.set("newsId", newsToDoModelNewsId);
+						newsToDoModel.set("departmentId", id);
+						newsToDoModel.set("isMaster", DataConstant.No);
+						newsToDoModel.set("createdBy", ToolSecurity.getUserId());
+						newsToDoModel.set("createdDate", System.currentTimeMillis());
+						newsToDoModel.save();
+					}
+
+				}
+
+				return true;
+
+			}
+		});
+		return resultDto;
+	}
+	
+	
+	/**
+	 * pc 查看转办
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listToDoFoller")
+	@ResponseBody
+	public ResultDto listTodoFoller(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.news.selectToDoByNewsId", requestDTO.getData()));
+		resultDto.setData(ToolModel.recordListConvert(find));
+		return resultDto;
+	}
+	
+	
+	
+	/**
+	 * pc 保存批示
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/saveNewsInstruction")
+	@ResponseBody
+	public ResultDto saveNewsInstruction(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		NewsInstructionModel model = getModel(request, NewsInstructionModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdDate", System.currentTimeMillis());
+					model.set("userId", ToolSecurity.getUserId());
+					model.save();
+
+					NewsModel findById = NewsModel.dao.findById(model.getLong("newsId"));
+					findById.set("hasInstruction", DataConstant.Yes);
+					findById.update();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	
+	/**
+	 * pc 查看批示
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listInstructionNews")
+	@ResponseBody
+	public ResultDto listInstructionNews(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.news.selectInstructionNewsId", requestDTO.getData()));
+		resultDto.setData(ToolModel.recordListConvert(find));
+		return resultDto;
+	}
+	
+	
+	/**
+	 * cp  新闻核实列表
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/newsByVerify")
+	public String newsByVerify(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/news/newsByVerify.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+	
+	
+	/**
+	 * pc 加载核实列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listNewsByVerify")
+	@ResponseBody
+	public PageResultDto listNewsByVerify(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.news.selectBodyByVerify");
+		pageSqlCommond.setHeadSql("com.news.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	/**
+	 * pc 保存反馈内容
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/saveVerifyFollerNews")
+	@ResponseBody
+	public ResultDto saveVerifyFollerNews(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		NewsVerifyFollowModel model = getModel(request, NewsVerifyFollowModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdDate", System.currentTimeMillis());
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	
+	/**
+	 * pc 新闻核实完毕
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/finishVerifyFollerNews/{id}")
+	@ResponseBody
+	public ResultDto finishVerifyFollerNews(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		NewsModel findById = NewsModel.dao.findById(id);
+		findById.set("status", DataConstant.OpinionStatus.finishVerify);
+		findById.update();
+		return resultDto;
+	}
+	
+	
+	
+	@RequestMapping("/newsByTodo")
+	public String newsByTodo(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/news/newsByToDo.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+	
+	
+	/**
+	 * pc 转办列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/listNewsByTodo")
+	@ResponseBody
+	public PageResultDto listNewsByTodo(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.news.selectBodyByTodo");
+		pageSqlCommond.setHeadSql("com.news.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	/**
+	 * pc 保存核实反馈内容
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/saveToDoFoller")
+	@ResponseBody
+	public ResultDto saveToDoFoller(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		NewsToDoFollowModel model = getModel(request, NewsToDoFollowModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdDate", System.currentTimeMillis());
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	
+	/**
+	 * pc 新闻处理完成
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/finishTodoFoller/{id}")
+	@ResponseBody
+	public ResultDto finishTodoFoller(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		NewsModel findById = NewsModel.dao.findById(id);
+		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.finishDo);
+		findById.update();
+		return resultDto;
+	}
+	
+	
+	/**
+	 * pc 新闻 无法处理
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/untTodoFollerOpinion/{id}")
+	@ResponseBody
+	public ResultDto untTodoFollerOpinion(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		NewsModel findById = NewsModel.dao.findById(id);
+		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.untDo);
+		findById.update();
+		return resultDto;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 含批示列表
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/newsByInstruction")
+	public String newsByInstruction(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/news/newsByInstruction.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+	
+	
+	
+	
+/**
+ * pc 加载出 含批示的列表
+ * @param request
+ * @return
+ */
+	@RequestMapping("/listNewsByInstruction")
+	@ResponseBody
+	public PageResultDto listNewsByInstruction(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.news.selectBodyByInstruction");
+		pageSqlCommond.setHeadSql("com.news.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * app 用户新增新闻
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/addnews"})
+	public String addnews(Map<String, Object> model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "news/addnews";
+	}
+	
+	
+	/**
+	 * app 用户异步提交新闻
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/ajaxsavenews")
+	@ResponseBody
+	public ResultDto ajaxsavenews(HttpServletRequest request,HttpSession session) {
+		ResultDto resultDto = new ResultDto();
+		NewsModel model = getModel(request, NewsModel.class);
+		
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					
+					model.set("createdBy", ToolSecurity.getUserId());
+					long currentTimeMillis = System.currentTimeMillis();
+					model.set("createdDate", currentTimeMillis);
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		
+		resultDto.setSuccess(true);
+			
+		
+	
+		return resultDto;
+		
+	
+	}
+	
+	
+	
+
+}

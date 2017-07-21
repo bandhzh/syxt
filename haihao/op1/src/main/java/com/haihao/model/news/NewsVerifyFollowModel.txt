@@ -1,0 +1,12 @@
+package com.haihao.model.news;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_news_verify_follow")
+public class NewsVerifyFollowModel extends BaseModel<NewsVerifyFollowModel> {
+
+	private static final long serialVersionUID = -1658354762004192287L;
+
+}

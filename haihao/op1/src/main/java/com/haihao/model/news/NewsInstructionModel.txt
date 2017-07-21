@@ -1,0 +1,12 @@
+package com.haihao.model.news;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_news_instruction")
+public class NewsInstructionModel extends BaseModel<NewsInstructionModel> {
+
+	private static final long serialVersionUID = 1577540801696294002L;
+
+}

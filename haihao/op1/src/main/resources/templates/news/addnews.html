@@ -11,7 +11,7 @@
 <link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
         
-<title>我要报料</title>
+<title>添加新闻</title>
 
 <link rel="stylesheet" href="${ctxPath}/static/assets/baoliao/css/course.css" type="text/css">
 <link rel="stylesheet" href="${ctxPath}/static/assets/baoliao/css/main.css" type="text/css">
@@ -91,7 +91,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 			<a class="imwap-arrow_l goback l" href="javscript:void(0)" onclick="javascript:history.back(-1);">
 				<i class="icon-arrow-left"></i>
 			</a>
-			<span class="js-header-name header-name l"> 我要报料 </span> 
+			<span class="js-header-name header-name l"> 添加新闻 </span> 
 			<a href="mycenter" class="right-box r js-header-avator">
 				<img src="http://img.mukewang.com/user/54584cc500019c5b02200220-40-40.jpg" width="40" height="40">
 			</a>
@@ -104,44 +104,68 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 	<div style="height:1.5rem"></div>
 
 	<section class="course-content">
-		<p class="course-intro">请网友客观、理性、正当地进行报料。要求实事求是，有理有据；严禁恶意中伤、打击报复、造谣诽谤、猜测夸大等报料，以及牵涉他人隐私、涉及人身攻击等违反法律法规规定、国家政策的报料和内容。报料台工作人员一经发现，有权对该报料进行处理。</p>
+		<p class="course-intro">请网友客观、理性、正当地进行筛选。要求实事求是，有理有据。</p>
 	</section>
 
 
 	<section class="course-container">
     <div style="height:1rem"></div>
     
-    <form action="#" method="post" id="baoliaoform" onsubmit="return false;">
+    <form action="#" method="post" id="newsform" onsubmit="return false;">
     <ul class="course-chapter">
        <li>
         	<h3 class="chapter-title">标题</h3>
 			<ul class="course-sections">
 				<li>
-					<input type="text" class="txtinput required" id="title" name="title" placeholder="请用一句话概括描述您的报料，限制30字符内" maxlength="30"/>
+					<input type="text" class="txtinput required columnName" id="title" name="title" placeholder="请输入新闻标题" maxlength="30" columnName="newsModel.title"/>
 				</li>
 			</ul>
 		</li>
+		
 		
 		 <li>
         	<h3 class="chapter-title">类别</h3>
 			<ul class="course-sections">
 				<li>
-					<select id="type" name="type">
+					<select id="typeid" name="typeid" class="columnName" columnName="newsModel.typeid">
 						
 					</select>
 				</li>
 			</ul>
 		</li>
 		
-		
 		<li>
-        	<h3 class="chapter-title">内容</h3>
+        	<h3 class="chapter-title">新闻来源</h3>
 			<ul class="course-sections">
 				<li>
-					<textarea rows="12" cols="10" id="cont" name="cont" placeholder="最多输入1000字。" maxlength="1000" class="required"></textarea>
+					<select id="sourceIds2" name="sourceIds2" class="columnName" columnName="newsModel.sourceid">
+						
+					</select>
 				</li>
 			</ul>
 		</li>
+		
+		<li id="wburl">
+        	<h3 class="chapter-title">新闻链接</h3>
+			<ul class="course-sections">
+				<li>
+					<input type="text" class="txtinput url columnName" id="newsurl" name="newsurl" placeholder="请输入新闻链接地址" maxlength="30" columnName="newsModel.newsurl"/>
+				</li>
+			</ul>
+		</li>
+		
+		
+		
+		
+		<li id="sscont" style="display: none;">
+        	<h3 class="chapter-title">内容</h3>
+			<ul class="course-sections">
+				<li>
+					<textarea rows="12" cols="10" id="cont" name="cont" placeholder="最多输入1000字。" maxlength="1000" class="columnName" columnName="newsModel.cont"></textarea>
+				</li>
+			</ul>
+		</li>
+		
 		
 		<li id="imglistli" style="display: none;">
 			<h3 class="chapter-title">图片列表</h3>
@@ -160,33 +184,12 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                     <a class="btn btn-default btn-lg " id="pickfiles" href="#" > <i class="glyphicon glyphicon-plus"></i> <span>✚选择文件</span></a>
 				</li>
 			</ul>
-		</li>
+		</li> 
 		
 		
-		<li>
-        	<h3 class="chapter-title">验证方式</h3>
-			<ul class="course-sections">
-				<li style="padding-left: 1.6rem;">
-					<input type="text" class="txtinput required digits number" name="telphone" id="telphone" placeholder="请输入手机号，您的手机和个人信息将受到保护" maxlength="11"/>
-					<i class="icon-call-end"></i>
-				</li>
-				<li style="padding-left: 1.6rem;min-height: 34px;">
-					
-					<div style="float: left;width:70%;">
-					<i class="icon-envelope"></i>
-						<input type="hidden" id="code" name="code"  value=""/>
-						<input type="text" class="txtinput" id="yzm" name="yzm" placeholder="请输入验证码" maxlength="8"/>
-					</div>
-					<div style="float: right;width: 25%;padding:0.2rem;">
-						<button style="background:white;" id="personreset">获取验证码</button>
-					</div>
-					
-					
-				</li>
-			</ul>
-		</li>
+		
          
-         <li><a href="javascript:void(0)" class="btn-course-green">提交报料</a></li>
+         <li><a href="javascript:void(0)" class="btn-course-green">提交新闻</a></li>
                   
       </ul>
       
@@ -196,58 +199,12 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 </body>
 <script type="text/javascript">
 
-var num=60;
-var settime;
-function showTime(){
-	var but=$("#personreset").html("重新获取"+num);
-	num--;	
-	if(num<0){
-		num=60;		
-		var but=$("#personreset").html("重新获取");
-		var but=$("#code").val("");
-		$('#personreset').attr("disabled",false);					
-		return false;
-	}
-	settime=setTimeout("showTime()",1000);  		
- }
+
  
 
 
 $(document).ready(function() {
-	 //点击验证码 
-	  $("#personreset").click(function(){
-		var telphone=$("#telphone").val();
-		if(!$("#telphone").valid()){//验证手机未通过 
-			return false;
-		}else{
-			showTime();
-			
-			var params = {
-					data : {
-						"telphone":telphone
-					}
-				};
-				var _data = {
-					data : JSON.stringify(params)
-				};
-				
-				$.ajax({
-					url : "${ctxPath}/baoliao/ajaxsendCode",
-					type : "post",
-					data : _data,
-					success : function(data) {
-						if (data.success) {
-							$("#code").val(data.data);
-						}
-					}
-				});
-			
-		
-			}
-	 	
-	  	});
-	
-	
+	 
 	
 		//上传
 	 
@@ -299,8 +256,8 @@ $(document).ready(function() {
       
 	 });
 	 
-	var baoliaoform = $("#baoliaoform");
-	baoliaoform.validate({
+	var newsform = $("#newsform");
+	newsform.validate({
 		errorElement : 'span', //default input error message container
 		errorClass : 'help-block help-block-error'
 	});
@@ -309,26 +266,44 @@ $(document).ready(function() {
 	
 	
 	 //点击保存
-	 $(".btn-course-green").click(function(){
+	 $(".btn-course-green").click(function() {
+			if (newsform.valid()) {
+				var jsonData = {};
 
-		 if (baoliaoform.valid()) {
-      		clearTimeout(settime);
-      		$.ajax({
-				url : "ajaxaddbaoliaoinfo",
-				type : "post",
-				data : $('#baoliaoform').serialize(),
-				success : function(data) {
-					if (data.success) {
-						//新增成功 
-						toastr.success("提交成功！");  
-						setTimeout('location.href="${ctxPath}/baoliao/getschedule"', 3000);
-					} else {
-						toastr.error(data.error);
+				$("#newsform .columnName").each(function() {
+					if ($(this).val() != "") {
+						jsonData[$(this).attr("columnName")] = $(this).val();
 					}
-				}
-			}); 
-	 	}
-	});
+				});
+
+				var _url = "${ctxPath}/news/ajaxsavenews";
+				$.ajax({
+					url : _url,
+					type : "post",
+					data : jsonData,
+					success : function(data) {
+						$('#large').modal('hide');
+						if (data.success) {
+							toastr.success("提交成功，等待后台审核！");
+							//提交成功后刷新当前页面
+							
+						} else {
+							toastr.error(data.error);
+						}
+					}
+				});
+
+			}
+		});
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	 
 	 function selectInitList(domId,initDataId,listId){
 			var _items = initData[initDataId];
@@ -341,7 +316,25 @@ $(document).ready(function() {
 			}
 		}
 
-		selectInitList("#type", "lists", 1);
+	 
+	 
+	 	//安全等
+		selectInitList("#typeid", "lists", 1);
+		//网报 、声视等
+		selectInitList("#sourceIds2", "lists", 3);
+		
+		$("#sourceIds2").change(function () {
+			$("#cont").val("");
+			if($(this).find("option:selected").text()=="声视新闻"||$(this).find("option:selected").text()=="媒体聚焦"){
+				
+				$("#wburl").hide();
+				$("#sscont").show();
+			}else{
+				$("#wburl").show();
+				$("#sscont").hide();
+			}
+			
+		});
 	 
 	 
 	 

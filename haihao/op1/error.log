@@ -1,6 +1,4 @@
-2017-07-14 12:05:19.634 [http-nio-8084-exec-1] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.label.selectbaoliaobyopenid
-2017-07-14 13:58:53.471 [http-nio-8084-exec-1] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.baoliao.selectbaoliaobyopeniding
-2017-07-14 13:59:28.922 [http-nio-8084-exec-4] ERROR o.s.security.web.authentication.UsernamePasswordAuthenticationFilter-An internal error occurred while trying to authenticate the user.
+2017-07-20 18:21:15.947 [http-nio-8084-exec-3] ERROR o.s.security.web.authentication.UsernamePasswordAuthenticationFilter-An internal error occurred while trying to authenticate the user.
 org.springframework.security.authentication.InternalAuthenticationServiceException: null
 	at org.springframework.security.authentication.dao.DaoAuthenticationProvider.retrieveUser(DaoAuthenticationProvider.java:126)
 	at org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider.authenticate(AbstractUserDetailsAuthenticationProvider.java:144)
@@ -52,7 +50,65 @@ Caused by: java.lang.NullPointerException: null
 	at com.haihao.service.UserDetailsServiceImpl.loadUserByUsername(UserDetailsServiceImpl.java:32)
 	at org.springframework.security.authentication.dao.DaoAuthenticationProvider.retrieveUser(DaoAuthenticationProvider.java:114)
 	... 42 common frames omitted
-2017-07-14 15:40:28.201 [http-nio-8084-exec-3] ERROR o.s.security.web.authentication.UsernamePasswordAuthenticationFilter-An internal error occurred while trying to authenticate the user.
+2017-07-21 14:28:48.840 [http-nio-8084-exec-5] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 14:39:10.716 [http-nio-8084-exec-3] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 14:39:35.951 [http-nio-8084-exec-3] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 14:39:38.871 [http-nio-8084-exec-7] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 14:39:48.576 [http-nio-8084-exec-5] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 14:59:51.046 [http-nio-8084-exec-4] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 15:00:02.490 [http-nio-8084-exec-1] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 15:00:07.666 [http-nio-8084-exec-10] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 15:00:16.951 [http-nio-8084-exec-8] ERROR com.haihao.beetl.ToolSqlXml-sql语句不存在：sql id是com.news.selectFollowByOpinionId
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectAllbaoliao
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectbaoliaobyisvalid
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectbaoliaobyisopen
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectbaoliaobyid
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectbaoliaobyopeniding
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectbaoliaobyopenidend
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectbaoliaobytype
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectbaoliaobyopeniddelete
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectBody
+2017-07-21 15:11:50.161 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件baoliao.sql.xml的sql语句重复，sqlId = com.baoliao.selectHearder
+2017-07-21 15:11:50.163 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件common.sql.xml的sql语句重复，sqlId = com.common.params
+2017-07-21 15:11:50.163 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件common.sql.xml的sql语句重复，sqlId = com.common.search
+2017-07-21 15:11:50.163 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件common.sql.xml的sql语句重复，sqlId = com.common.searchBySql
+2017-07-21 15:11:50.163 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件common.sql.xml的sql语句重复，sqlId = com.common.aaaa
+2017-07-21 15:11:50.164 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件department.sql.xml的sql语句重复，sqlId = com.department.selectAll
+2017-07-21 15:11:50.164 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件department.sql.xml的sql语句重复，sqlId = com.department.selectHearder
+2017-07-21 15:11:50.164 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件department.sql.xml的sql语句重复，sqlId = com.department.selectBody
+2017-07-21 15:11:50.164 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件department.sql.xml的sql语句重复，sqlId = com.department.exist
+2017-07-21 15:11:50.164 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件department.sql.xml的sql语句重复，sqlId = com.department.getMaxChildCodeByPid
+2017-07-21 15:11:50.164 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件department.sql.xml的sql语句重复，sqlId = com.department.getSubDepartment
+2017-07-21 15:11:50.165 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件label.sql.xml的sql语句重复，sqlId = com.label.role
+2017-07-21 15:11:50.165 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件label.sql.xml的sql语句重复，sqlId = com.label.department
+2017-07-21 15:11:50.165 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件label.sql.xml的sql语句重复，sqlId = com.label.list
+2017-07-21 15:11:50.166 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件list.sql.xml的sql语句重复，sqlId = com.list.selectAll
+2017-07-21 15:11:50.166 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件list.sql.xml的sql语句重复，sqlId = com.list.selectHearder
+2017-07-21 15:11:50.166 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件list.sql.xml的sql语句重复，sqlId = com.list.selectBody
+2017-07-21 15:11:50.167 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件news.sql.xml的sql语句重复，sqlId = com.news.selectHearder
+2017-07-21 15:11:50.167 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件news.sql.xml的sql语句重复，sqlId = com.news.selectBody
+2017-07-21 15:11:50.168 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件news.sql.xml的sql语句重复，sqlId = com.news.selectFollowByNewsId
+2017-07-21 15:11:50.168 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件news.sql.xml的sql语句重复，sqlId = com.news.selectToDoByNewsId
+2017-07-21 15:11:50.168 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件news.sql.xml的sql语句重复，sqlId = com.news.selectInstructionNewsId
+2017-07-21 15:11:50.169 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件opinion.sql.xml的sql语句重复，sqlId = com.opinion.selectHearder
+2017-07-21 15:11:50.169 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件opinion.sql.xml的sql语句重复，sqlId = com.opinion.selectBody
+2017-07-21 15:11:50.169 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件opinion.sql.xml的sql语句重复，sqlId = com.opinion.selectBodyByVerify
+2017-07-21 15:11:50.169 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件opinion.sql.xml的sql语句重复，sqlId = com.opinion.selectBodyByTodo
+2017-07-21 15:11:50.169 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件opinion.sql.xml的sql语句重复，sqlId = com.opinion.selectFollowByOpinionId
+2017-07-21 15:11:50.169 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件opinion.sql.xml的sql语句重复，sqlId = com.opinion.selectToDoByOpinionId
+2017-07-21 15:11:50.169 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件opinion.sql.xml的sql语句重复，sqlId = com.opinion.selectInstructionOpinionId
+2017-07-21 15:11:50.169 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件opinion.sql.xml的sql语句重复，sqlId = com.opinion.selectBodyByInstruction
+2017-07-21 15:11:50.170 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件role.sql.xml的sql语句重复，sqlId = com.role.getPrivilegeById
+2017-07-21 15:11:50.170 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件role.sql.xml的sql语句重复，sqlId = com.role.getAllPrivilege
+2017-07-21 15:11:50.170 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件role.sql.xml的sql语句重复，sqlId = com.role.getAllPrivilegeMenu
+2017-07-21 15:11:50.170 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件role.sql.xml的sql语句重复，sqlId = com.role.selectHearder
+2017-07-21 15:11:50.170 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件role.sql.xml的sql语句重复，sqlId = com.role.selectBody
+2017-07-21 15:11:50.171 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件user.sql.xml的sql语句重复，sqlId = com.user.getByLoginName
+2017-07-21 15:11:50.171 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件user.sql.xml的sql语句重复，sqlId = com.user.selectAll
+2017-07-21 15:11:50.171 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件user.sql.xml的sql语句重复，sqlId = com.user.selectHearder
+2017-07-21 15:11:50.171 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件user.sql.xml的sql语句重复，sqlId = com.user.selectBody
+2017-07-21 15:11:50.171 [http-nio-8084-exec-9] ERROR com.haihao.jfinal.SqlXmlPlugin-sql xml文件user.sql.xml的sql语句重复，sqlId = com.user.exist
+2017-07-21 17:30:08.911 [http-nio-8084-exec-3] ERROR o.s.security.web.authentication.UsernamePasswordAuthenticationFilter-An internal error occurred while trying to authenticate the user.
 org.springframework.security.authentication.InternalAuthenticationServiceException: null
 	at org.springframework.security.authentication.dao.DaoAuthenticationProvider.retrieveUser(DaoAuthenticationProvider.java:126)
 	at org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider.authenticate(AbstractUserDetailsAuthenticationProvider.java:144)

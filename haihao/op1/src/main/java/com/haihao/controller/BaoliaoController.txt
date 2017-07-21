@@ -16,17 +16,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.haihao.beetl.ToolSqlXml;
+import com.haihao.constant.DataConstant;
+import com.haihao.dto.PageResultDto;
+import com.haihao.dto.PageSqlCommond;
 import com.haihao.dto.RequestDTO;
 import com.haihao.dto.ResultDto;
+import com.haihao.dto.SQLCallback;
 import com.haihao.dto.SendmsDTO;
 import com.haihao.jfinal.ModelKit;
 import com.haihao.jfinal.ToolModel;
-import com.haihao.model.baoliao.AccessTokenCustom;
-import com.haihao.model.baoliao.AccessUserInfo;
 import com.haihao.model.baoliao.BaoliaoModel;
 import com.haihao.model.opinion.OpinionModel;
-import com.haihao.model.security.UserModel;
-import com.haihao.utils.AccessTokenUtil;
+import com.haihao.service.ServiceException;
+import com.haihao.tool.ToolSecurity;
+import com.haihao.tool.ToolString;
 import com.haihao.utils.SMSUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -39,16 +42,10 @@ import com.jfinal.plugin.activerecord.Record;
 
 @Controller
 @RequestMapping(value = "/baoliao")
-public class BaoliaoController  extends BaseController{
+public class BaoliaoController extends BaseController{
 	
 	@RequestMapping(value = { "", "/", "/index" })
 	public String index(Map<String, Object> model) {
-		
-		
-		
-		
-		
-		
 		
 		
 		return "baoliao/my";
@@ -212,6 +209,7 @@ public class BaoliaoController  extends BaseController{
 						model.set("cont", request.getParameter("cont"));
 						model.set("typeid", request.getParameter("type"));
 						model.set("wxuserid", 1);
+						model.set("isfenfa", -1);//默认未分发
 						long currentTimeMillis = System.currentTimeMillis();
 						model.set("createtime", currentTimeMillis);
 						model.save();
@@ -248,7 +246,7 @@ public class BaoliaoController  extends BaseController{
 		
 		Object telphone = data.get("telphone");
 		
-		int code =(int)(Math.random()*9+1)*1000;
+		int code =1 + (int)(Math.random() * ((999999 - 1) + 1));
 		
 		
 		System.out.println(code+"验证码");
@@ -283,6 +281,240 @@ public class BaoliaoController  extends BaseController{
 		return resultDto;
 		
 	}
+	
+	
+	/**
+	 * 异步检索出当前类别新闻列表
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/ajaxselectbytype"})
+	@ResponseBody
+	public ResultDto ajaxselectbytype(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		ResultDto resultDto = new ResultDto();
+		List<Record> opennews = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		
+		if(request.getParameter("typeid").equals("")){//全部
+			
+			opennews = Db.find(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyisopen"));//开放的报料
+		}else{
+			int typeid = Integer.parseInt(request.getParameter("typeid"));
+			map.put("typeid", typeid);
+			opennews = Db.find(ToolSqlXml.getSql("com.baoliao.selectbaoliaobytype",map));//开放的报料
+			
+		}
+		
+		if(null==opennews||opennews.size()==0){
+			resultDto.setSuccess(false);
+		}else{
+			resultDto.setSuccess(true);
+			map.put("listopennews", ToolModel.recordListConvert(opennews));
+			model.put("initData", JSON.toJSONString(map));
+			
+			resultDto.setData(model);
+		}
+		
+		
+		
+		return resultDto;
+	}
+	
+	
+	/**
+	 * 取消报料
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = { "/ajaxcancelbaoliao"})
+	@ResponseBody
+	public ResultDto ajaxcancelbaoliao(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		int bid = Integer.parseInt(request.getParameter("bid"));
+		
+		ResultDto resultDto = new ResultDto();
+		//获取授权信息
+//		AccessUserInfo accessUserInfo=(AccessUserInfo)session.getAttribute("accessUserInfo");
+		String openid="ss";
+//		
+//	    if(null==accessUserInfo){//从其他路径进入
+//	    	
+//	    }else{
+			
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("openid", openid);//accessUserInfo.getOpenId()
+		map.put("bid", bid);
+		
+		int cancelnum = Db.update(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyopeniddelete",map));//取消报料
+		
+		
+		
+		List<Record> listbaoliaoings = Db.find(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyopeniding",map));//处理中
+		map.put("listbaoliaoings", ToolModel.recordListConvert(listbaoliaoings));
+		
+		List<Record> listbaoliaoends = Db.find(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyopenidend",map));//处理完成
+		map.put("listbaoliaoends", ToolModel.recordListConvert(listbaoliaoends));
+		
+		model.put("initData", JSON.toJSONString(map));
+		resultDto.setSuccess(true);
+		resultDto.setData(model);
+//	    }
+		
+		
+		return resultDto;
+	}
+	
+	
+	@RequestMapping(value = {"/listbaoliaopc" })
+	public String listbaoliaopc(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/baoliao/listbaoliaopc.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		
+		List<Record> find3 = Db.find(ToolSqlXml.getSql("com.user.selectAll"));
+		map.put("users", ToolModel.recordListConvert(find3));
+		
+
+		model.put("initData", JSON.toJSONString(map));
+		return "baoliao/blcontent";
+	}
+	
+	
+	@RequestMapping("/listOpinion")
+	@ResponseBody
+	public PageResultDto listOpinion(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.baoliao.selectBody");
+		pageSqlCommond.setHeadSql("com.baoliao.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	
+	
+	
+	@RequestMapping("/ajaxtofenfatype")
+	@ResponseBody
+	public ResultDto ajaxtofenfatype(HttpServletRequest request) {
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		Map<String, Object> data = requestDTO.getData();
+		Object newstype = data.get("newstype");
+		
+		//获取报料的主体信息
+		Object blid = data.get("blid");
+		BaoliaoModel baoliaomodel = BaoliaoModel.dao.findById(blid);
+		int needverify =Integer.parseInt(data.get("needVerify").toString());//报料分发，默认已经过核实
+		baoliaomodel.set("isfenfa", "1");
+		
+		String [] imgurl = baoliaomodel.get("imgurl").toString().split(",");//多图
+		//主图
+		String mainimg = imgurl[0];
+		String cont ="";
+		//其他附件新增到内容中
+		for(int i=0;i<imgurl.length;i++){
+			cont += "<p><img src='"+imgurl[i]+"'></p>";
+		}
+		
+		String allcont = cont+baoliaomodel.get("cont");
+		
+		
+		
+		Object levelId = data.get("levelId");
+		
+		if(newstype.equals("舆论")){
+			
+			OpinionModel model = getModel(request, OpinionModel.class);
+			Db.tx(new IAtom() {
+
+				@Override
+				public boolean run() throws SQLException {
+					if (model.isNew()) {
+						if( needverify== DataConstant.No){//不需要审核
+							model.set("isVerify", DataConstant.Yes);
+							model.set("status", DataConstant.OpinionStatus.finishVerify);
+						}
+						model.set("createdBy", ToolSecurity.getUserId());
+						long currentTimeMillis = System.currentTimeMillis();
+						model.set("createdDate", currentTimeMillis);
+						model.set("publishDate", currentTimeMillis);
+						model.set("content", allcont);
+						model.set("subject", baoliaomodel.get("title"));
+						model.set("categoryId", baoliaomodel.get("typeid"));
+						model.set("levelId", levelId);
+						model.set("sourceId", data.get("sourceId"));//信息来源  --网友报料
+						model.set("mainImg", mainimg);
+						
+						model.save();
+						
+						System.out.println(model.get("id"));
+						baoliaomodel.set("opinionid", model.get("id"));
+						
+						
+						
+						baoliaomodel.update();
+						
+					} else {
+						model.update();
+					}
+					return true;
+				}
+			});
+			
+			
+			
+			
+			
+		}
+		else if(newstype.equals("马上办")){
+			
+		}
+		else if(newstype.equals("安全")){
+			
+		}
+		else if(newstype.equals("信息")){
+			
+		}
+		else if(newstype.equals("新闻")){
+			
+		}
+		else if(newstype.equals("信访")){
+			
+		}else{
+			
+		}
+		
+		
+		
+		
+			
+		
+			
+		resultDto.setSuccess(true);
+		
+		return resultDto;
+	}
+	
+	
 	
 	
 	

@@ -26,6 +26,15 @@ public class DataConstant {
 	}
 	
 	
+	public static class NewsStatus{
+		public static final int unVerify = -1;
+		public static final int inVerify = 1;
+		public static final int finishVerify = 2;
+		public static final int toDo = 3;
+		public static final int over = 10;
+		
+	}
+	
 	public static final int Yes = 1;
 	
 	public static final int No = -1;

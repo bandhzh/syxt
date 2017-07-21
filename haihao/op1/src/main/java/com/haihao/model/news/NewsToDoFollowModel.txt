@@ -1,0 +1,13 @@
+package com.haihao.model.news;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_news_todo_follow")
+public class NewsToDoFollowModel extends BaseModel<NewsToDoFollowModel> {
+
+	private static final long serialVersionUID = -7305582585890718043L;
+
+
+}
