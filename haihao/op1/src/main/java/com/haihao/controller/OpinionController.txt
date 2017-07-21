@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,7 @@ import com.jfinal.plugin.activerecord.Record;
 @RequestMapping(value = "/opinion")
 public class OpinionController extends BaseController {
 
+	@PreAuthorize("hasRole('opinion_manager')")
 	@RequestMapping(value = { "", "/", "/index" })
 	public String index(Map<String, Object> model) {
 		model.put("htmlContent", "/templates/opinion/opinion.html");

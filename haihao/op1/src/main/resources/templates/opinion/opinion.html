@@ -43,7 +43,7 @@
 									<td>
 										<div class="form-group" style="margin-bottom: 0px;">
 											<div class="input-group input-large date-picker input-daterange" data-date="2012-11-10" data-date-format="yyyy-mm-dd">
-												<input type="text" class="form-control form-filter" name="opinionModel.publishDate" operation=">="> <span class="input-group-addon"> to </span> <input type="text" class="form-control form-filter" name="opinionModel.publishDate" operation="<=">
+												<input type="text" controlType="date" class="form-control form-filter" columnName="opinionModel.publishDate" operation=">="> <span class="input-group-addon"> to </span> <input type="text" class="form-control form-filter" columnName="opinionModel.publishDate" operation="<=" controlType="date">
 											</div>
 										</div>
 									</td>
@@ -469,18 +469,7 @@
 
 					$(".filter-submit").bind("click", function() {
 						var filterParameters = [];
-						$(".form-filter").each(function() {
-							if ($(this).val() != "") {
-								var _operation = $(this).attr("operation");
-								if (!_operation)
-									_operation = "=";
-								filterParameters.push({
-									property : $(this).attr("columnName"),
-									value : $(this).val(),
-									operation : _operation
-								});
-							}
-						});
+						filterParameters = filterParametersBuild({filter:".form-filter"});
 						filterParameters.push({
 							property : "opinionModel.enabled",
 							value : "1",

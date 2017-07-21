@@ -558,6 +558,45 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         		 });
             }
             
+            function filterParametersBuild(opt){
+            	var filterParameters = [];
+            	$(opt.filter).each(function() {
+            		if ($(this).val() != "") {
+            			var _operation = $(this).attr("operation");
+						if (!_operation)_operation = "=";
+						var _value = $(this).val();
+						var _columnName = $(this).attr("columnName");
+						if($(this).attr("controlType") == "date"){
+							 var d = new Date(_value);
+							if(_operation.indexOf(">") != -1){
+								d.setHours(0);
+								d.setMinutes(0);
+								d.setSeconds(0);
+								d.setMilliseconds(0);
+							}else{
+								d.setHours(0);
+								d.setMinutes(0);
+								d.setSeconds(0);
+								d.setMilliseconds(0);
+								d.setTime(d.getTime() + 1000 * 60 * 60 * 24);
+							}
+							filterParameters.push({
+								property : _columnName,
+								value : d.getTime(),
+								operation : _operation
+							});
+						}else{
+							filterParameters.push({
+								property : _columnName,
+								value : _value,
+								operation : _operation
+							});
+						}
+            		}
+            	});
+            	return filterParameters;
+            }
+            
             </script>
             
 
