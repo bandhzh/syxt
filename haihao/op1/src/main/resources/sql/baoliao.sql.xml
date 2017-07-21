@@ -34,7 +34,7 @@
 	<!-- 根据openid 查询出当前用户发布的正在处理中的报料 -->
 	<sql id="selectbaoliaobyopeniding">
 		<![CDATA[ 
-			select * from op_baoliao where status='处理中' and wxuserid in (select op_wxuseropen.id from op_wxuseropen where openid='${openid}')
+			select * from op_baoliao where isvalid='Y' and status='处理中' and wxuserid in (select op_wxuseropen.id from op_wxuseropen where openid='${openid}')
 		]]>
 	</sql>
 	
@@ -42,14 +42,42 @@
 	<!-- 根据openid 查询出当前用户发布的处理完成的报料 -->
 	<sql id="selectbaoliaobyopenidend">
 		<![CDATA[ 
-			select * from op_baoliao where status='处理完成' and wxuserid in (select op_wxuseropen.id from op_wxuseropen where openid='${openid}')
+			select * from op_baoliao where isvalid='Y' and status='处理完成' and wxuserid in (select op_wxuseropen.id from op_wxuseropen where openid='${openid}')
 		]]>
 	</sql>
 	
 	
+	<!-- 根据类别查询当前的报料 -->
+	<sql id="selectbaoliaobytype">
+		<![CDATA[ 
+			select * from op_baoliao where isvalid = 'Y' and isopen = 'Y' and typeid=${typeid}
+		]]>
+	</sql>
 	
-	
+	<!-- 根据openid 和报料id 删除对应的报料 -->
+	<sql id="selectbaoliaobyopeniddelete">
+		<![CDATA[ 
+			update op_baoliao set isvalid='N' where id=${bid} and wxuserid in (select op_wxuseropen.id from op_wxuseropen where openid='${openid}')
+		]]>
+	</sql>
 
+
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_baoliao baoliaoModel 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	<sql id="selectHearder">
+		<![CDATA[ 
+			select baoliaoModel.*
+		]]>
+	</sql>
+	
 
 
 </sql-statement>

@@ -155,71 +155,13 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                     <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                     <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                     <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                    <% if(aclFn("opinion_query")){ %>
-                        <li class="nav-item  start active open">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-diamond"></i>
-                                <span class="title">舆论</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                            
-                                 <% if(aclFn("opinion_manager")){ %>
-                                <li class="nav-item  ">
-                                    <a href="${ctxPath}/opinion" class="nav-link ">
-                                        <span class="title">管理列表</span>
-                                    </a>
-                                </li>
-                                 <% }%>
-                                
-                                <% if(aclFn("opinion_verify")){ %>
-                                <li class="nav-item  ">
-                                    <a href="${ctxPath}/opinion/opinionByVerify" class="nav-link ">
-                                        <span class="title">核实列表</span>
-                                    </a>
-                                </li>
-                                <% }%>
-                                
-                                <% if(aclFn("opinion_query_zb")){ %>
-                                 <li class="nav-item  ">
-                                    <a href="${ctxPath}/opinion/opinionByTodo" class="nav-link ">
-                                        <span class="title">转办列表</span>
-                                    </a>
-                                </li>
-                              	<% }%>
-                                
-                                 <% if(aclFn("user_instruction")){ %>
-                                 <li class="nav-item  ">
-                                    <a href="${ctxPath}/opinion/opinionByInstruction" class="nav-link ">
-                                        <span class="title">含批示列表</span>
-                                    </a>
-                                </li>
-                                 <% }%>
-                            </ul>
-                        </li>
-                        <% }%>
+                   
+                        
+                        
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>
-                                <span class="title">马上办</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                            </ul>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-bulb"></i>
-                                <span class="title">安全</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                            </ul>
-                        </li>
-                          <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-bulb"></i>
-                                <span class="title">信息</span>
+                                <span class="title">微信报料</span>
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
@@ -227,125 +169,6 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                         </li>
                         
                         
-                        
-                        
-                        <!-- 新闻权限判断 -->
-                        <% if(aclFn("new_query")){ %>
-                        <li class="nav-item  start active open">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-bulb"></i>
-                                <span class="title">新闻</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                            
-                                 <% if(aclFn("new_manager")){ %>
-                                <li class="nav-item  ">
-                                    <a href="${ctxPath}/news/newsmanage" class="nav-link ">
-                                        <span class="title">新闻管理列表</span>
-                                    </a>
-                                </li>
-                                 <% }%>
-                                
-                                <% if(aclFn("new_verify")){ %>
-                                <li class="nav-item  ">
-                                    <a href="${ctxPath}/news/newsByVerify" class="nav-link ">
-                                        <span class="title">核实列表</span>
-                                    </a>
-                                </li>
-                                <% }%>
-                                
-                                <% if(aclFn("new_query_zb")){ %>
-                                 <li class="nav-item  ">
-                                    <a href="${ctxPath}/news/newsByTodo" class="nav-link ">
-                                        <span class="title">转办列表</span>
-                                    </a>
-                                </li>
-                              	<% }%>
-                                
-                                 <% if(aclFn("user_instruction")){ %>
-                                 <li class="nav-item  ">
-                                    <a href="${ctxPath}/news/newsByInstruction" class="nav-link ">
-                                        <span class="title">含批示列表</span>
-                                    </a>
-                                </li>
-                                 <% }%>
-                            </ul>
-                        </li>
-                        <% }%>
-                        
-                        
-                        
-                         <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-bulb"></i>
-                                <span class="title">信访</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                            </ul>
-                        </li>
-                          <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-puzzle"></i>
-                                <span class="title">统计分析</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                            </ul>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="?p=" class="nav-link nav-toggle">
-                                <i class="icon-settings"></i>
-                                <span class="title">用户管理</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item  ">
-                                    <a href="${ctxPath}/security" class="nav-link ">
-                                        <span class="title">用户列表</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="${ctxPath}/security/department" class="nav-link ">
-                                        <span class="title">部门列表</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="${ctxPath}/security/role" class="nav-link ">
-                                        <span class="title">角色列表</span>
-                                    </a>
-                                </li>
-                                
-                                <li class="nav-item  ">
-                                    <a href="javascript:;" class="nav-link ">
-                                        <span class="title">列表配置</span>
-                                    </a>
-                                    
-                                    <ul class="sub-menu">
-                                        <li class="nav-item  ">
-		                                    <a href="${ctxPath}/security/list?listId=1" class="nav-link ">
-		                                        <span class="title">类别列表</span>
-		                                    </a>
-		                                </li>
-		                                
-		                                 <li class="nav-item  ">
-		                                    <a href="${ctxPath}/security/list?listId=3" class="nav-link ">
-		                                        <span class="title">来源列表</span>
-		                                    </a>
-		                                </li>
-		                                
-		                                 <li class="nav-item  ">
-		                                    <a href="${ctxPath}/security/listLevel?listId=2" class="nav-link ">
-		                                        <span class="title">等级列表</span>
-		                                    </a>
-		                                </li>
-                                
-                                    </ul>
-                                </li>
-                                
-                            </ul>
-                        </li>
                     </ul>
                     <!-- END SIDEBAR MENU -->
                 </div>
@@ -462,10 +285,10 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
     </div> 
             <!-- END FOOTER -->
             <!--[if lt IE 9]>
-<script src="${ctxPath}/static/assets/global/plugins/respond.min.js"></script>
-<script src="${ctxPath}/static/assets/global/plugins/excanvas.min.js"></script> 
-<script src="${ctxPath}/static/assets/global/plugins/ie8.fix.min.js"></script> 
-<![endif]-->
+			<script src="${ctxPath}/static/assets/global/plugins/respond.min.js"></script>
+			<script src="${ctxPath}/static/assets/global/plugins/excanvas.min.js"></script> 
+			<script src="${ctxPath}/static/assets/global/plugins/ie8.fix.min.js"></script> 
+			<![endif]-->
             <!-- BEGIN CORE PLUGINS -->
             <script src="${ctxPath}/static/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
             <script src="${ctxPath}/static/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
@@ -499,6 +322,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
  			<script src="${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/plupload.full.min.js" type="text/javascript"></script>
  			<script src="${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/i18n/zh_CN.js" type="text/javascript"></script>
  			<script src="${ctxPath}/static/assets/global/plugins/qiniu/dist/qiniu.min.js" type="text/javascript"></script>
+ 			
 			<script type="text/javascript" charset="utf-8" src="${ctxPath}/static/plugins/ueditor/ueditor.config.js"></script>
 			<!-- 编辑器源文件 -->
 			<script type="text/javascript" charset="utf-8" src="${ctxPath}/static/plugins/ueditor/ueditor.all.js"></script>

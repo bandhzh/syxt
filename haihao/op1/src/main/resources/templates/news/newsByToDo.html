@@ -10,68 +10,75 @@
 
 
 			<div class="portlet-body">
-				<div class="table-container">
-					<table class="table table-striped table-bordered table-hover table-checkable" id="datatable_orders">
-						<thead>
-							<tr role="row" class="heading">
-								<th width="20%">主题</th>
-								<th width="10%">类别</th>
-								<th width="10%">等级</th>
-								<th width="20%">发布时间</th>
-								<th width="10%">核实状态</th>
-								<th width="10%">处理状态</th>
-								<th width="20%">操作</th>
-							</tr>
-							<tr role="row" class="filter">
-								<td><input type="text" class="form-control form-filter input-sm" columnName="opinionModel.subject" operation="like"></td>
-								<td><select id="categoryIds" class="form-control  form-filter selectpicker" columnName="opinionModel.categoryId"></select></td>
-								<td><select id="levelIds" class="form-control  form-filter selectpicker" columnName="opinionModel.levelId"></select></td>
-								<td>
-									<div class="form-group" style="margin-bottom: 0px;">
-										<div class="input-group input-large date-picker input-daterange" data-date="2012-11-10" data-date-format="yyyy-mm-dd">
-											<input type="text" class="form-control form-filter" name="opinionModel.publishDate" operation=">="> <span class="input-group-addon"> to </span> <input type="text" class="form-control form-filter" name="opinionModel.publishDate" operation="<=">
+					<div class="table-container">
+						<table class="table table-striped table-bordered table-hover table-checkable" id="datatable_orders">
+							<thead>
+								<tr role="row" class="heading">
+									<th width="20%">标题</th>
+									<th width="15%">新闻来源</th>
+									<th width="15%">类别</th>
+									<th width="20%">发布时间</th>
+									<th width="10%">批示状态</th>
+									<th width="10%">核实状态</th>
+									<th width="10%">处理状态</th>
+									<th width="20%">操作</th>
+								</tr>
+								<tr role="row" class="filter">
+									<td><input type="text" class="form-control form-filter input-sm" columnName="newsModel.title" operation="like"></td>
+									<td><select id="categoryIds" class="form-control  form-filter selectpicker" columnName="newsModel.sourceid"></select></td><!-- 来源 -->
+									<td><select id="typeids" class="form-control  form-filter selectpicker" columnName="newsModel.typeid"></select></td><!-- 类别 -->
+									<td>
+										<div class="form-group" style="margin-bottom: 0px;">
+											<div class="input-group input-large date-picker input-daterange" data-date="2012-11-10" data-date-format="yyyy-mm-dd">
+												<input type="text" class="form-control form-filter" name="newsModel.createdDate" operation=">="> <span class="input-group-addon"> to </span> <input type="text" class="form-control form-filter" name="newsModel.createdDate" operation="<=">
+											</div>
 										</div>
-									</div>
-								</td>
-								<td><select class="form-control  form-filter selectpicker" columnName="opinionModel.status">
-										<option value="" selected="selected">请选择...</option>
-										<option value="-1">待核实</option>
-										<option value="1">核实中</option>
-										<option value="2">已核实</option>
-										<option value="3">已转办</option>
-										<option value="10">归档</option>
+									</td>
+									<td><select class="form-control  form-filter selectpicker" columnName="newsModel.hasInstruction">
+											<option value="" selected="selected">请选择...</option>
+											<option value="-1">不含批示</option>
+											<option value="1">含批示</option>
+									</select></td>
+									<td><select class="form-control  form-filter selectpicker" columnName="newsModel.status">
+											<option value="" selected="selected">请选择...</option>
+											<option value="-1">待核实</option>
+											<option value="1">核实中</option>
+											<option value="2">已核实</option>
+											<option value="3">已转办</option>
+											<option value="10">归档</option>
 
-								</select></td>
-								<td><select class="form-control  form-filter selectpicker" columnName="opinionModel.toDoStatus">
-										<option value="" selected="selected">请选择...</option>
-										<option value="4">待处理</option>
-										<option value="5">处理中</option>
-										<option value="6">处理完成</option>
-										<option value="7">无法处理</option>
-								</select></td>
-								<td>
+									</select></td>
+									<td><select class="form-control  form-filter selectpicker" columnName="newsModel.toDoStatus">
+											<option value="" selected="selected">请选择...</option>
+											<option value="4">待处理</option>
+											<option value="5">处理中</option>
+											<option value="6">处理完成</option>
+											<option value="7">无法处理</option>
+									</select></td>
+									<td>
 									<div class="margin-bottom-5">
 										<button class="btn btn-sm btn-success filter-submit margin-bottom">
 											<i class="fa fa-search"></i> 查询
 										</button>
 									</div>
 								</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td colspan="8">
-									<div id="slickGrid" class="grid"></div>
-									<div id="pager" class="om-grid om-widget om-widget-content" style="width: 100%; height: 30px;"></div>
-								</td>
-							</tr>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="8">
+										<div id="slickGrid" class="grid"></div>
+										<div id="pager" class="om-grid om-widget om-widget-content" style="width: 100%; height: 30px;"></div>
+									</td>
+								</tr>
 
-						</tbody>
-					</table>
-				</div>
-			</div>
-
+							</tbody>
+						</table>
 					</div>
+				</div>
+
+
+			</div>
 			</div>
 			</div>
 
@@ -106,8 +113,8 @@
 					function() {
 						$(window).resize();
 						
-						selectInitList("#categoryIds","lists",1);//类别
-						selectInitList("#levelIds","lists",2);//星级
+						selectInitList("#typeids","lists",1);//类别
+						selectInitList("#categoryIds","lists",3);//来源
 						
  						$(".filter-submit").bind("click",function(){
  							  var filterParameters = [];
@@ -118,9 +125,9 @@
  									  filterParameters.push({property:$(this).attr("columnName"),value:$(this).val(),operation:_operation});
  								  }
  							  });
- 							 filterParameters.push({property:"opinionModel.enabled",value:"1",operation:"="});
+ 							 filterParameters.push({property:"newsModel.enabled",value:"1",operation:"="});
  							  pager.setSearch(filterParameters);
-  							 pager.setSort([{"property":"opinionModel.id","order":"desc"}]);
+  							 pager.setSort([{"property":"newsModel.id","order":"desc"}]);
   							pager.setData({"departmentId":"${authenticationFn().userDto.departmentId}"});
   							 
  							  pager.reload();
@@ -149,22 +156,22 @@
 						var columnsSortable = [
 								checkboxSelector.getColumnDefinition(),
 								{
-									id : "subject",
-									name : "主题",
-									field : "subject",
+									id : "title",
+									name : "标题",
+									field : "title",
 									width : 150,
 									sortable : true
 								}, {
 									id : "lists",
-									name : "类别",
-									field : "categoryId",
+									name : "来源",
+									field : "sourceid",
 									formatter: listFormatter,
 									width : 100,
 									sortable : true
 								} , {
 									id : "lists",
-									name : "等级",
-									field : "levelId",
+									name : "类别",
+									field : "typeid",
 									width : 100,
 									formatter: listFormatter,
 									sortable : true
@@ -176,19 +183,12 @@
 									formatter: dateFormatter,
 									sortable : true
 								}, {
-									id : "displayName",
+									id : "createdBy",
 									name : "发布者",
-									field : "displayName",
+									field : "createdBy",
 									width : 100,
 									sortable : false
 								}, {
-									id : "lists",
-									name : "来源",
-									field : "sourceId",
-									width : 100,
-									formatter: listFormatter,
-									sortable : true
-								} , {
 									id : "status",
 									name : "状态",
 									field : "status",
@@ -239,21 +239,39 @@
 									},
 									sortable : true
 								}, {
+									id : "hasInstruction",
+									name : "是否批示",
+									field : "hasInstruction",
+									width : 100,
+									formatter : function(row, cell, value, columnDef, dataContext) {
+										if (value == "-1") {
+											return "不含批示";
+										} else {
+											return "含批示";
+										}
+									},
+									sortable : true
+								}, {
 									  id: "#",
 									  name: "操作",
 									  field: "#",
 									  width: 300,
 									  formatter:function(row, cell, value, columnDef, dataContext){
 										  var _content = [];
-										  var status = dataContext.status;
+										  var status = dataContext.toDoStatus;
 										  var isVerify = dataContext.isVerify;
-										  if(status < 2){
-											  _content.push(String.format("<a href='javascript:verifyed({0});'>{1}</a>&nbsp;&nbsp;",row,"反馈"));
+										  if(status < 6){
+											  _content.push(String.format("<a href='javascript:todo({0});'>{1}</a>&nbsp;&nbsp;",row,"反馈"));
 										  }
-										  _content.push(String.format("<a href='javascript:listVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"查看"));
-										  if(status < 2){
-											  _content.push(String.format("<a href='javascript:finishVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"核实完毕"));
+										  _content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"查看"))
+										 
+										  <% if(aclFn("opinion_finish_zb")){ %>
+										  if(status < 6){
+											  _content.push(String.format("<a href='javascript:finishFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"处理完成"));
+											  _content.push(String.format("<a href='javascript:untTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"无法处理"));
 										  }
+										  <% }%>
+										  
 										  return _content.join(""); 
 									  }
 									}
@@ -265,7 +283,7 @@
 							enableForHeaderCells : true
 						}));
 						myGrid.registerPlugin(checkboxSelector);
-						pager = new Slick.Controls.Pager(myDataView, myGrid, $("#pager"),{pagesize:100,url:"${ctxPath}/opinion/listOpinionByVerify"});
+						pager = new Slick.Controls.Pager(myDataView, myGrid, $("#pager"),{pagesize:100,url:"${ctxPath}/news/listNewsByTodo"});
 						 $(".filter-submit").trigger("click");
 						 
 						 myDataView.onPagingInfoChanged.subscribe(function (e, pagingInfo) {
@@ -353,11 +371,11 @@
 	
 	function initEditData(id){
 		var _data = myDataView.getItemByIdx(id);
-		formInit({filter:"#validationForm .columnName",data:_data,modelName:"opinionModel"});
+		formInit({filter:"#validationForm .columnName",data:_data,modelName:"newsModel"});
 		 $('#large').modal('show'); 
 	}
 	
-	function verifyed(id){
+	function todo(id){
 		var _data = myDataView.getItemByIdx(id);
 		bootbox.prompt({
 		    title: "请输入核实内容",
@@ -365,14 +383,14 @@
 		    callback: function (result) {
 		    	if($.trim(result)){
 		    		var _item = {
-			    			"opinionVerifyFollowModel.opinionId":_data.id,
-			    			"opinionVerifyFollowModel.departmentId":"${authenticationFn().userDto.departmentId}",
-			    			"opinionVerifyFollowModel.userId":"${authenticationFn().userDto.userId}",
-			    			"opinionVerifyFollowModel.memo":result,
+			    			"newsToDoFollowModel.newsId":_data.id,
+			    			"newsToDoFollowModel.departmentId":"${authenticationFn().userDto.departmentId}",
+			    			"newsToDoFollowModel.userId":"${authenticationFn().userDto.userId}",
+			    			"newsToDoFollowModel.memo":result,
 			    	
 			    	};
 			    	$.ajax({
-		                url: "${ctxPath}/opinion/saveVerifyFollerOpinion",
+		                url: "${ctxPath}/news/saveToDoFoller",
 		                type: "post",
 		                data: _item,
 		                success: function (data) {
@@ -390,15 +408,15 @@
 		
 	}
 	
-	function listVerifyFollerOpinion(id){
+	function listTodoFollerOpinion(id){
 		var _data = myDataView.getItemByIdx(id);
 		
-		var params = {data:{"opinionId":_data["id"]}};
+		var params = {data:{"newsId":_data["id"]}};
 		
 		var _item = {data:JSON.stringify(params)};
 		
 		$.ajax({
-            url: "${ctxPath}/opinion/listVerifyFollerOpinion",
+            url: "${ctxPath}/news/listToDoFoller",
             type: "post",
             data: _item,
             success: function (data) {
@@ -412,10 +430,23 @@
 		
 	}
 	
-	function finishVerifyFollerOpinion(id){
+	function finishFollerOpinion(id){
 		var _data = myDataView.getItemByIdx(id);
 		$.ajax({
-            url: "${ctxPath}/opinion/finishVerifyFollerOpinion/" + _data["id"],
+            url: "${ctxPath}/news/finishTodoFoller/" + _data["id"],
+            type: "post",
+            success: function (data) {
+            	if(data.success){
+            		pager.reload();
+            	}
+            }
+          });  
+	}
+	
+	function untTodoFollerOpinion(id){
+		var _data = myDataView.getItemByIdx(id);
+		$.ajax({
+            url: "${ctxPath}/news/untTodoFollerOpinion/" + _data["id"],
             type: "post",
             success: function (data) {
             	if(data.success){

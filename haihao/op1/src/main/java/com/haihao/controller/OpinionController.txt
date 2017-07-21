@@ -49,6 +49,7 @@ public class OpinionController extends BaseController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
 		map.put("departments", ToolModel.recordListConvert(find1));
+		
 		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
 		map.put("lists", ToolModel.recordListConvert(find2));
 		
