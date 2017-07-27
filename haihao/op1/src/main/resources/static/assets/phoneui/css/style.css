@@ -675,7 +675,7 @@ body.open .alert_bg .btn .btnRight{
 	float: left;
 }
 .mui-bar{ 
-	height: 1.88rem !important; background:#48a1dd
+	height: 1.88rem !important; background:#333
 
 	}.mui-grid-view.mui-grid-9{ border:none}
 	.pad{ padding:0.4rem}
@@ -1732,10 +1732,10 @@ body.examine .mui-content #main div canvas{height: auto!important;}
 .info .mui-content{ background:none !important}
 .bgy{ background:#f5f0e9}.bgy *{ color:#333 !important;}
 .info .mui-table-view:before{ display:none}
-.addmsg { display:none; padding:.6rem .3rem; background:#fff; border:#f5f0e9 solid 1px;}
+.addmsg { display:none; padding:.4rem .3rem; background:#fff; border:#f5f0e9 solid 1px;}
 .addmsg #textarea{ background:none; margin-left:2rem; border:none}
 .addmsg span{ margin:-.3rem 0; font-size:1.5rem; position:absolute}
 .addmsg  textarea{ width:auto}
 .addmsg.on{ display:block}
-.info .mui-bar-tab{ background:#fcfbf9; border-top:#d8d8d8 solid 1px}
+.info .mui-bar-tab{ background:#f1efec; border-top:#d8d8d8 solid 1px}
 .info .mui-bar-tab .mui-tab-item.mui-active span{ color:#FC0}

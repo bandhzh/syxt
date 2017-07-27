@@ -21,21 +21,22 @@
     </script>
     </head>
     <body class="login">
-<div class="banner"> <img src="${ctxPath}/static/assets/phoneui/img/login.jpg" width="100%" /> </div>
-<div class="content mid">
-      <form>
-    <div class="log">
-         <div class="form-input"> <input type="text" placeholder="E-mail" id="num"  class="font-avenir"/></div>
-      
-         <div class="form-input"> <input type="password" placeholder="Password" id="psd" class="font-avenir"/></div>
-        </div>
-  </form>
-      <div class="hei"></div>
-      <div class="login_btn">
-    <input type="submit" value="登 录" class="ok font-avenir">
-  </div>
-  <div class="hei"></div>
-      <div class="mywidth mui-text-center font-avenir" onclick="location.href='/phoneui/reg'">
+	<div class="banner"> <img src="${ctxPath}/static/assets/phoneui/img/login.jpg" width="100%" /> </div>
+	<div class="content mid">
+      <form action="${ctxPath}/phoneui/usercenter">
+		    <div class="log">
+		         <div class="form-input"> <input type="text" placeholder="E-mail" id="num"  class="font-avenir"/></div>
+		         <div class="form-input"> <input type="password" placeholder="Password" id="psd" class="font-avenir"/></div>
+	        </div>
+	  
+	      <div class="hei"></div>
+	      <div class="login_btn">
+		    <input type="submit" value="登 录" class="ok font-avenir">
+		  </div>
+	  
+	  </form>
+	  <div class="hei"></div>
+      <div class="mywidth mui-text-center font-avenir" onclick="location.href='${ctxPath}/phoneui/reg'">
 	    <p>还没有注册？ 请先去注册>>></p>
 	  </div>
     </div>

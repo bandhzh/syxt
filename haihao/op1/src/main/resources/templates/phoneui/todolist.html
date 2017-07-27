@@ -12,10 +12,17 @@
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
-<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
-
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery-1.11.2.min.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
+<script type="text/javascript" charset="utf-8">
+	mui.init({
+		swipeBack:true //启用右滑关闭功能
+	});
+
+</script>
 <style>
 .content .swiper-slide {
 	padding: 0 20px;
@@ -251,8 +258,12 @@ window.onload = function() {
   </div>
 </div>
 
-<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery-1.11.2.min.js" ></script>
+
 
 
 </body>
+
+<!-- 返回上一步操作 -->
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
+
 </html>

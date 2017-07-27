@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+
 <style>
 .btn {
 	position: absolute;
@@ -69,9 +70,11 @@
 </style>
 </head>
 <body class="chat mbsc-fr-lock">
-<header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-back"></a>
-  <h1 class="mui-title">消息中心</h1>
-  <a class="mui-icon mui-icon-compose right"></a> </header>
+<header class="mui-bar mui-bar-nav bgh">
+	<a class="mui-icon mui-icon-back"></a>
+  	<h1 class="mui-title">消息中心</h1>
+  <!-- <a class="mui-icon mui-icon-compose right"></a> -->
+</header>
 <div class="heihead"></div>
 <div class="content " >
   <div class="mui-content">
@@ -198,10 +201,20 @@ window.onload = function() {
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/zepto.min.js"></script> 
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/zepto.touchWipe.js"></script> 
 <script type="text/javascript">
+	mui.init({
+		swipeBack:true //启用右滑关闭功能
+	});
+
   $(function() {
-  $('.mui-table-view-cell').touchWipe({itemDelete: '.btn'});
+  	$('.mui-table-view-cell').touchWipe({itemDelete: '.btn'});
+  	
+  	$(".mui-icon-back").click(function(){
+  		mui.back()
+  	})
+  	
   });
  
 </script>
 </body>
+
 </html>

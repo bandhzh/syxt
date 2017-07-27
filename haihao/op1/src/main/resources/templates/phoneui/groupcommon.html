@@ -15,7 +15,14 @@
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.sky.carousel-1.0.2.min.js"></script>
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
 <script type="text/javascript">
+
+mui.init({
+	swipeBack:true  //启用右滑关闭功能
+});
+
+
 $(function () {
 
 	skyCarousel = $('#character-slider').carousel({
@@ -39,9 +46,11 @@ $(function () {
 </script>
 </head>
 <body class="msgbox mbsc-fr-lock">
-<header class="mui-bar mui-bar-nav "> <a class="mui-icon mui-icon-back"></a>
-  <h1 class="mui-title">某某某交流中心</h1>
-  <a class="mui-icon mui-icon-person right"></a> </header>
+<header class="mui-bar mui-bar-nav ">
+	<a class="mui-icon mui-icon-back"></a>
+  	<h1 class="mui-title">某某某交流中心</h1>
+  	<a class="mui-icon mui-icon-person right" href="${ctxPath}/phoneui/editgroup"></a>
+</header>
 <div class="heihead"></div>
 <div class="content ">
   <div class="mui-content bgb" style="background:#fff !important">
@@ -144,4 +153,7 @@ stopPropagation(e);
 }); 
 </script>
 </body>
+<!-- 返回上一步操作 -->
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
+
 </html>

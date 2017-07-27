@@ -17,6 +17,13 @@
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+  	mui.init({
+  		swipeBack:true //启用右滑关闭功能
+  	});
+  
+</script>
 <style>
 .content .swiper-slide {
 	padding: 0 20px;
@@ -34,7 +41,8 @@
 <body class="chat mbsc-fr-lock">
 <header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-back"></a>
   <h1 class="mui-title">通讯录</h1>
-  <a class=" mui-btn mui-btn-blue mui-btn-link mui-pull-right">保存</a> </header>
+  <a class=" mui-btn mui-btn-blue mui-btn-link mui-pull-right" >保存</a>
+</header>
 <div class="heihead"></div>
 
 <div class="content ">
@@ -303,4 +311,6 @@
  <a href="#z">Z</a></div>
 </div>
 </body>
+<!-- 返回上一步操作 -->
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
 </html>

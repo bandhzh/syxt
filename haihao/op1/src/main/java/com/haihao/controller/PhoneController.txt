@@ -192,6 +192,12 @@ public class PhoneController extends BaseController{
 		
 		return "phoneui/userinfo";
 	}
+	
+	@RequestMapping(value = { "/setting"})
+	public String setting(Map<String, Object> model) {
+		
+		return "phoneui/setting";
+	}
 
 	
 	

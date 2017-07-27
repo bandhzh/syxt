@@ -44,45 +44,46 @@
         <div class="content">
           <button type="hidden" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px; display:none"></button>
         </div>
-       
         <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
-         <li class="mui-table-view-cell mui-collapse">
-						<a class="" href="#">首页</a>
-						
-					</li>
-					<li class="mui-table-view-cell mui-collapse">
-						<a class="mui-navigate-right" href="#">类别</a>
-						<div class="mui-collapse-content">
-						<p>安全</p>
-                            <p>城管</p>
-                            <p>教育</p><p>卫生</p>
-						</div>
-					</li>
-					<li class="mui-table-view-cell mui-collapse">
-						<a class="mui-navigate-right" href="#">类别2</a>
-						<div class="mui-collapse-content">
-							<p>安全</p>
-                            <p>城管</p>
-                            <p>教育</p><p>卫生</p>
-						</div>
-					</li>
-                      <li class="mui-table-view-cell mui-collapse">
-						<a class="" href="#">我要发布</a>
-						
-					</li>
-                      <li class="mui-table-view-cell mui-collapse">
-						<a class="green" id="offCanvasHide"  href="#">关闭</a>
-						
-					</li>
+	         <li class="mui-table-view-cell mui-collapse">
+				<a class="" href="${ctxPath}/phoneui/usercenter">返回个人中心</a>
+			</li>
+			<li class="mui-table-view-cell mui-collapse">
+				<a class="mui-navigate-right" href="#">类别</a>
+				<div class="mui-collapse-content">
+					<p>安全</p>
+	                <p>城管</p>
+	                <p>教育</p>
+	                <p>卫生</p>
+				</div>
+			</li>
+			<li class="mui-table-view-cell mui-collapse">
+				<a class="mui-navigate-right" href="#">类别2</a>
+				<div class="mui-collapse-content">
+					<p>安全</p>
+                    <p>城管</p>
+                    <p>教育</p>
+                    <p>卫生</p>
+				</div>
+			</li>
+	        <li class="mui-table-view-cell mui-collapse">
+				<a class="" href="#">我要发布</a>
+			</li>
+	        <li class="mui-table-view-cell mui-collapse">
+				<a class="green" id="offCanvasHide"  href="#">关闭</a>
+			</li>
         </ul>
       </div>
     </div>
   </aside>
   <!--主界面部分-->
   <div class="mui-inner-wrap">
-    <header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-bars" href="#offCanvasSide"></a>
-      <h1 class="mui-title">新闻中心</h1>
-      <a class="mui-icon mui-icon-compose right"></a> </header>
+    <header class="mui-bar mui-bar-nav bgh">
+    	<a class="mui-icon mui-icon-bars" href="#offCanvasSide"></a>
+      	<h1 class="mui-title">新闻中心</h1>
+      	<!-- <a class="mui-icon mui-icon-compose right"></a> -->
+      	<a  href="${ctxPath}/phoneui/listnewsblock" class="mui-icon mui-icon-settings right"></a>
+     </header>
     <div class="heihead"></div>
     <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
       <div class="mui-scroll">
@@ -90,239 +91,155 @@
           <div class="content ">
           <div class="heihead"></div>
             <div id="header">
-              <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);"><div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-                <div class="swiper-slide "><a  class="mui-control-item mui-active" href="#item1mobile"><small>网络新闻</small></a></div>
-                <div class="swiper-slide"><a  class="mui-control-item " href="#item2mobile"><small>网报新闻</small></a></div>
-                <div class="swiper-slide"><a  class="mui-control-item " href="#item3mobile"><small>声视新闻</small></a></div>
-                <div class="swiper-slide"><a  class="mui-control-item " href="#item4mobile"><small>媒体聚焦</small></a></div>
-                </div>
+              <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
+	              	<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+		                <div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>网络新闻</small></a></div>
+		                <div class="swiper-slide"><a class="mui-control-item " href="#item2mobile"><small>网报新闻</small></a></div>
+		                <div class="swiper-slide"><a class="mui-control-item " href="#item3mobile"><small>声视新闻</small></a></div>
+		                <div class="swiper-slide"><a class="mui-control-item " href="#item4mobile"><small>媒体聚焦</small></a></div>
+	                </div>
               </div>
             </div>
             <script type="text/javascript">
-window.onload = function() {
-  var mySwiper1 = new Swiper('#header',{
-	  freeMode : true,
-	  slidesPerView : 'auto',
-	  freeModeSticky : true ,
-  });
-  
-  
-}
-</script>
+				window.onload = function() {
+				  var mySwiper1 = new Swiper('#header',{
+					  freeMode : true,
+					  slidesPerView : 'auto',
+					  freeModeSticky : true ,
+				  });
+				  
+				  
+				}
+				</script>
             <div class="mui-content">
-            
-            
-             <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
-              <ul class="mui-table-view news">
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-              </ul>
-              </div>
-              
-              
-              <div id="item2mobile" class="mui-slider-item mui-control-content ">
-              <ul class="mui-table-view news">
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRS撒旦T TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-              </ul>
-              </div>
-              
-              
-              
-              <div id="item3mobile" class="mui-slider-item mui-control-content ">
-              <ul class="mui-table-view news">
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">F方法IRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-              </ul>
-              </div>
-              
-              
-              <div id="item4mobile" class="mui-slider-item mui-control-content">
-              <ul class="mui-table-view news">
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIR改过ST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-                <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
-                  <div class="mui-media-body">
-                    <p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
-                    <p class="hei"></p>
-                    <p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
-                    <p class="hei"></p>
-                    <p> <span class="mui-icon-extra mui-icon-extra-heart font-sm"></span> <font class="black">TATTOO</font> <font class="grew">minnitus</font> &nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span> 5 </p>
-                  </div>
-                  </a> </li>
-              </ul>
-              </div>
-              
-              
-              
-              
+
+
+				<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+					<ul class="mui-table-view news">
+						<li class="mui-table-view-cell mui-media">
+							<a href="${ctxPath}/phoneui/newsinfo">
+								<img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
+								<div class="mui-media-body">
+									<p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
+									<p class="hei"></p>
+									<p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
+									<p class="hei"></p>
+									<p><span class="mui-icon-extra mui-icon-extra-heart font-sm"></span><font class="black">TATTOO</font> <font class="grew">minnitus</font>&nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span>5</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a href="${ctxPath}/phoneui/newsinfo">
+								<img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
+								<div class="mui-media-body">
+									<p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
+									<p class="hei"></p>
+									<p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
+									<p class="hei"></p>
+									<p><span class="mui-icon-extra mui-icon-extra-heart font-sm"></span><font class="black">TATTOO</font> <font class="grew">minnitus</font>&nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span>5</p>
+								</div>
+							</a>
+						</li>
+
+					</ul>
+				</div>
+				
+				<div id="item2mobile" class="mui-slider-item mui-control-content">
+					<ul class="mui-table-view news">
+						<li class="mui-table-view-cell mui-media">
+							<a href="${ctxPath}/phoneui/newsinfo">
+								<img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
+								<div class="mui-media-body">
+									<p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
+									<p class="hei"></p>
+									<p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
+									<p class="hei"></p>
+									<p><span class="mui-icon-extra mui-icon-extra-heart font-sm"></span><font class="black">TATTOO</font> <font class="grew">minnitus</font>&nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span>5</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a href="${ctxPath}/phoneui/newsinfo">
+								<img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
+								<div class="mui-media-body">
+									<p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
+									<p class="hei"></p>
+									<p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
+									<p class="hei"></p>
+									<p><span class="mui-icon-extra mui-icon-extra-heart font-sm"></span><font class="black">TATTOO</font> <font class="grew">minnitus</font>&nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span>5</p>
+								</div>
+							</a>
+						</li>
+
+					</ul>
+				</div>
+				
+				<div id="item3mobile" class="mui-slider-item mui-control-content">
+					<ul class="mui-table-view news">
+						<li class="mui-table-view-cell mui-media">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
+								<div class="mui-media-body">
+									<p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
+									<p class="hei"></p>
+									<p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
+									<p class="hei"></p>
+									<p><span class="mui-icon-extra mui-icon-extra-heart font-sm"></span><font class="black">TATTOO</font> <font class="grew">minnitus</font>&nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span>5</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
+								<div class="mui-media-body">
+									<p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
+									<p class="hei"></p>
+									<p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
+									<p class="hei"></p>
+									<p><span class="mui-icon-extra mui-icon-extra-heart font-sm"></span><font class="black">TATTOO</font> <font class="grew">minnitus</font>&nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span>5</p>
+								</div>
+							</a>
+						</li>
+
+					</ul>
+				</div>
+				
+				
+				<div id="item4mobile" class="mui-slider-item mui-control-content">
+					<ul class="mui-table-view news">
+						<li class="mui-table-view-cell mui-media">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
+								<div class="mui-media-body">
+									<p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
+									<p class="hei"></p>
+									<p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
+									<p class="hei"></p>
+									<p><span class="mui-icon-extra mui-icon-extra-heart font-sm"></span><font class="black">TATTOO</font> <font class="grew">minnitus</font>&nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span>5</p>
+								</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" src="img/t01d9a8207cdec0dd4b.jpg">
+								<div class="mui-media-body">
+									<p><small class="blue">FIRST TATTOO</small> &nbsp; &nbsp;<small class="grew">15 minnitus</small></p>
+									<p class="hei"></p>
+									<p class="black ">我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手我是我是歌手</p>
+									<p class="hei"></p>
+									<p><span class="mui-icon-extra mui-icon-extra-heart font-sm"></span><font class="black">TATTOO</font> <font class="grew">minnitus</font>&nbsp; &nbsp;<span class="font-sm mui-icon mui-icon-chatbubble-filled"></span>5</p>
+								</div>
+							</a>
+						</li>
+
+					</ul>
+				</div>
+				
               
             </div>
           </div>
           <div class="heihead"></div>
+          
           <button id="offCanvasShow"  type="hidden" class="mui-btn mui-btn-primary mui-btn-block" style="padding: 10px; display:none"> </button>
         </div>
         <form class="mui-input-group" style="margin-bottom: 15px;display:none">
@@ -331,38 +248,56 @@ window.onload = function() {
             <input name="style" type="radio" value="all-move">
           </div>
         </form>
+        
       </div>
-      <nav class="mui-bar mui-bar-tab foot"> <a class="mui-tab-item mui-active" href="#offCanvasSide"> <span class="mui-icon mui-icon-list"></span>
-        <p>首页</p>
-        </a> <a class="mui-tab-item" href="#"><span class="mui-icon mui-icon-star"></span>
-        <p>分类</p>
-        </a> <a class="mui-tab-item " href="#"><span class="mui-icon mui-icon-search"></span>
-        <p>搜索</p>
-        </a> <a class="mui-tab-item" href="#forward"> <span class="mui-icon-extra mui-icon-extra-heart "></span>
-        <p>我</p>
-        </a> </nav>
-    </div>
+		<nav class="mui-bar mui-bar-tab foot">
+			<a class="mui-tab-item mui-active" href="#"> 
+				
+				<span class="mui-icon mui-icon-home"></span>
+				<p>首页</p>
+			</a>
+			<a class="mui-tab-item" href="#offCanvasSide">
+				<span class="mui-icon mui-icon-bars"></span>
+				<p>分类</p>
+			</a>
+			<a class="mui-tab-item " href="#">
+				<span class="mui-icon mui-icon-search"></span>
+				<p>搜索</p>
+			</a>
+			<a class="mui-tab-item" href="${ctxPath}/phoneui/usercenter">
+				<span class="mui-icon mui-icon-person"></span>
+				<p>个人中心</p>
+			</a>
+		</nav>
+	</div>
     <!-- off-canvas backdrop -->
     <div class="mui-off-canvas-backdrop"></div>
   </div>
-</div> <script>
+</div>
+<script>
           
   $(".mui-table-view-cell a").click(function(){
 	  if($(this).parent().find("ul").hasClass("on")){
-   
-	$(this).parent().find("ul").removeClass("on");
-	  }
-	  else{
-		 
+		  
+		$(this).parent().find("ul").removeClass("on");
+		
+	  }else{
+		  
 		 $(this).parent().find("ul").addClass("on"); 
-		  }
+		 
+	  }
 });
-        </script>
-<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
+</script>
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
 <script>
 			mui.init({
-				swipeBack:true //启用右滑关闭功能
+				//swipeBack:true //启用右滑关闭功能
 			});
+			
+			//解决a标签失效的问题
+			mui('body').on('tap','a',function(){document.location.href=this.href;});
+			
+			
 			 //侧滑容器父节点
 			var offCanvasWrapper = mui('#offCanvasWrapper');
 			 //主界面容器

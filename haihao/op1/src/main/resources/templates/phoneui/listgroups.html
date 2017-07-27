@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title>处理中心</title>
+<title>群组列表</title>
 
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+
 <style>
 .content .swiper-slide {
 	padding: 0 20px;
@@ -33,69 +34,49 @@
 </style>
 </head>
 <body class="info mbsc-fr-lock">
-<header class="mui-bar mui-bar-nav bgy"> <a class="mui-icon mui-icon-bars font-sm" style="margin:0.2rem"></a>
-  <h1 class="mui-title" style="color:#4da885 !important">群组列表</h1>
-  </header>
+<header class="mui-bar mui-bar-nav ">
+	<a class="mui-icon mui-icon-back"></a>
+  	<h1 class="mui-title">群组列表</h1>
+</header>
 <div class="heihead"></div>
-<div class="top2 mui-text-center">
- <div id="sliderSegmentedControl" class=" mui-segmented-control ">
- <a class="mui-control-item mui-active" href="#item1mobile"><span class="ico9"></span></a>
- <a class="mui-control-item " href="#item2mobile"><span class="ico10"></span></a>
- </div>
-</div>
 <div class="content pad "> 
 
   <div class="mui-content">
    <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
-    <div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left">
-      <div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">某某路交通事故……</p></div>
-      <ul>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="${ctxPath}/phoneui/editgroup"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>
-      </ul>
+	    <div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left">
+	      <div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">某某路交通事故……</p></div>
+	      <ul>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="${ctxPath}/phoneui/editgroup"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>
+	      </ul>
+	    </div>
+	    <div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left">
+	      <div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">某某某道路塌陷……</p></div>
+	      <ul>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="${ctxPath}/phoneui/editgroup"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>
+	      </ul>
+	    </div>
+	    <div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left">
+	      <div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">某某某纵火案……</p></div>
+	      <ul>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
+		       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="${ctxPath}/phoneui/editgroup"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>
+	      </ul>
+	    </div>
     </div>
-    <div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left">
-      <div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">某某某道路塌陷……</p></div>
-      <ul>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="${ctxPath}/phoneui/editgroup"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>
-      </ul>
-    </div>
-    <div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left">
-      <div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">某某某纵火案……</p></div>
-      <ul>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="${ctxPath}/phoneui/editgroup"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>
-      </ul>
-    </div>
-    </div>
-     <div id="item2mobile" class="mui-slider-item mui-control-content">
-    <div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left">
-    <div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon"><img src="${ctxPath}/static/assets/phoneui/img/2.png" width="24%"></a><p class="black">momomommomo</p></div>
-      <ul>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>
-       <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="${ctxPath}/phoneui/editgroup"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>
-      </ul>
-    </div>
-    </div>
-    
-     
   </div>
   
   <div class="login_btn " style="position:fixed; bottom:10px; display:block ; width:92%; left:4%">
@@ -104,5 +85,14 @@
   
 </div>
 <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
+<script type="text/javascript" charset="utf-8">
+ 	mui.init({
+ 		swipeBack:true //启用右滑关闭功能
+ 	});
+ 
+</script>
+
+<!-- 返回上一步操作 -->
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
 </body>
 </html>
