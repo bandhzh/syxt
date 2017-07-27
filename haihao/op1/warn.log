@@ -1,21 +1,7 @@
-2017-07-21 11:15:46.944 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 11:15:47.833 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 14:21:41.805 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 14:21:42.659 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 14:24:35.080 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 14:24:35.810 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 14:28:01.985 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 14:28:02.834 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 14:38:54.315 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 14:38:55.107 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 15:02:07.307 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 15:02:08.189 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 15:18:11.775 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 15:18:12.601 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 15:44:36.126 [http-nio-8084-exec-1] WARN  org.springframework.web.servlet.PageNotFound-No mapping found for HTTP request with URI [/news/newsByVerify] in DispatcherServlet with name 'dispatcherServlet'
-2017-07-21 15:58:40.591 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 15:58:41.417 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 17:14:48.532 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 17:14:49.360 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-07-21 17:30:04.654 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-07-21 17:30:05.493 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
+2017-07-27 11:21:50.832 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
+2017-07-27 11:21:51.436 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
+2017-07-27 11:22:19.027 [http-nio-8084-exec-1] WARN  org.springframework.web.servlet.PageNotFound-No mapping found for HTTP request with URI [/favicon.ico] in DispatcherServlet with name 'dispatcherServlet'
+2017-07-27 11:25:38.671 [http-nio-8084-exec-8] WARN  org.springframework.web.servlet.PageNotFound-No mapping found for HTTP request with URI [/phoneui/img/t01d9a8207cdec0dd4b.jpg] in DispatcherServlet with name 'dispatcherServlet'
+2017-07-27 11:25:38.739 [http-nio-8084-exec-10] WARN  org.springframework.web.servlet.PageNotFound-No mapping found for HTTP request with URI [/phoneui/img/t01d9a8207cdec0dd4b.jpg] in DispatcherServlet with name 'dispatcherServlet'
+2017-07-27 11:27:35.602 [http-nio-8084-exec-1] WARN  org.springframework.web.servlet.PageNotFound-No mapping found for HTTP request with URI [/phoneui/img/t01d9a8207cdec0dd4b.jpg] in DispatcherServlet with name 'dispatcherServlet'
+2017-07-27 11:27:35.661 [http-nio-8084-exec-2] WARN  org.springframework.web.servlet.PageNotFound-No mapping found for HTTP request with URI [/phoneui/img/t01d9a8207cdec0dd4b.jpg] in DispatcherServlet with name 'dispatcherServlet'
