@@ -44,6 +44,17 @@ public class PhoneController extends BaseController{
 		return "phoneui/reg";
 	}
 	
+	/**
+	 * 设置手势密码
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/locker"})
+	public String locker(Map<String, Object> model) {
+		
+		return "phoneui/locker";
+	}
+	
 	
 	/**
 	 * app 用户中心界面
@@ -92,6 +103,18 @@ public class PhoneController extends BaseController{
 		
 		
 		return "phoneui/listnewsblock";
+	}
+	
+	/**
+	 * app 新闻中心 默认第三版式 块级版式
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/listnewsblock2"})
+	public String listnewsblock2(Map<String, Object> model) {
+		
+		
+		return "phoneui/listnewsblock2";
 	}
 	
 	
