@@ -55,6 +55,17 @@ public class PhoneController extends BaseController{
 		return "phoneui/locker";
 	}
 	
+	/**
+	 * 解锁界面
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/unlock"})
+	public String unlock(Map<String, Object> model) {
+		
+		return "phoneui/unlock";
+	}
+	
 	
 	/**
 	 * app 用户中心界面
