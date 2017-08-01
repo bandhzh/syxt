@@ -29,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.headers().frameOptions().disable().and()
 				.authorizeRequests()
+				.antMatchers("/phoneui/**").permitAll()
 				.anyRequest().authenticated()
 				.and().csrf().disable()
                 .formLogin().loginPage("/login").permitAll().failureUrl("/login?error=true")
