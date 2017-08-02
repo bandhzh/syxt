@@ -1,0 +1,16 @@
+package com.haihao.model.reguser;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_reguser")
+public class RegUserModel extends BaseModel<RegUserModel> {
+
+	
+	private static final long serialVersionUID = 1378171538097443232L;
+	public static RegUserModel dao = new RegUserModel().dao();
+	
+	
+
+}
