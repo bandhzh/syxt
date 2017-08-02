@@ -2,6 +2,7 @@ package com.haihao.tool;
 
 import java.util.Collection;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -30,6 +31,10 @@ public class ToolSecurity {
 			}
 		}
 		return false;
+	}
+	
+	public static void addSecurityUser(UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken){
+		SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 	}
 
 }
