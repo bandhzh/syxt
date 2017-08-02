@@ -1,22 +1,38 @@
 package com.haihao.controller;
 
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.haihao.constant.DataConstant;
 import com.haihao.dto.RequestDTO;
 import com.haihao.dto.ResultDto;
+import com.haihao.dto.SecurityUser;
 import com.haihao.dto.SendmsDTO;
+import com.haihao.dto.UserDto;
 import com.haihao.model.baoliao.BaoliaoModel;
 import com.haihao.model.reguser.RegUserModel;
+import com.haihao.model.security.PrivilegeModel;
+import com.haihao.model.security.RoleModel;
+import com.haihao.model.security.UserModel;
+import com.haihao.tool.ToolSecurity;
 import com.haihao.utils.SMSUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -36,6 +52,57 @@ public class PhoneController extends BaseController{
 	public String index(Map<String, Object> model) {
 		
 		return "phoneui/login";
+	}
+	
+	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(DataConstant.BCryptPasswordEncoderStrength);
+	
+	@RequestMapping("/ajaxLoginCheck")
+	@ResponseBody
+	public ResultDto ajaxLoginCheck(HttpServletRequest request){
+		ResultDto resultDto = new ResultDto();
+		String loginName = request.getParameter("loginName");
+		String password = request.getParameter("password");
+		try{
+			if (StringUtils.isBlank(loginName)) {
+				throw new UsernameNotFoundException("用户名为空");
+			}
+			UserModel byLoginName = UserModel.dao.getByLoginName(loginName);
+			if (null == byLoginName)
+				throw new UsernameNotFoundException("用户不存在");
+			if (byLoginName.getInt("enable").intValue() == 0) {
+				throw new UsernameNotFoundException("该用户已被禁用");
+			}
+			
+			boolean matches = passwordEncoder.matches(password, byLoginName.getStr("password"));
+			if(!matches){
+				throw new UsernameNotFoundException("账号或密码错误");
+			}
+			
+			Set<GrantedAuthority> authorities = new HashSet<>();
+			authorities.add(new SimpleGrantedAuthority("ROLE_COMM"));
+			List<PrivilegeModel> rolePrivilege = RoleModel.dao.getRolePrivilege(byLoginName.getLong("roleId"));
+			rolePrivilege.forEach(r -> authorities.add(new SimpleGrantedAuthority("ROLE_" + r.getStr("menuCode") + "_" + r.getStr("acl"))));
+			
+			SecurityUser securityUser = new SecurityUser();
+			UserDto userDto = new UserDto();
+			userDto.setLoginName(loginName);
+			userDto.setPassword(byLoginName.getStr("password"));
+			userDto.setMobile(byLoginName.getStr("mobile"));
+			userDto.setDepartmentId(byLoginName.getLong("departmentId"));
+			userDto.setGender(byLoginName.getInt("gender"));
+			userDto.setListSimpleGrantedAuthority(authorities.toArray(new SimpleGrantedAuthority[0]));
+			userDto.setDisplayName(byLoginName.getStr("displayName"));
+			userDto.setRoleId(byLoginName.getLong("roleId"));
+			userDto.setUserId(byLoginName.getLong("id"));
+			securityUser.setUserDto(userDto);
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(securityUser, password, authorities);
+			ToolSecurity.addSecurityUser(usernamePasswordAuthenticationToken);
+		}catch(Exception e){
+			e.printStackTrace();
+			resultDto.setSuccess(false);
+			resultDto.setData(e.getMessage());
+		}
+		return resultDto;
 	}
 	
 	

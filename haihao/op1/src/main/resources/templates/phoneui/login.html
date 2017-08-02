@@ -21,7 +21,7 @@
     <body class="login">
 	<div class="banner"> <img src="${ctxPath}/static/assets/phoneui/img/login.jpg" width="100%" /> </div>
 	<div class="content mid">
-      <form action="${ctxPath}/login">
+      <form action="#">
 		    <div class="log">
 		         <div class="form-input"> <input type="text" placeholder="用户名" id="loginName" name="username"  class="font-avenir"/></div>
 		         <div class="form-input"> <input type="password" placeholder="Password" id="password" name="password" class="font-avenir"/></div>
@@ -41,20 +41,28 @@
 </body>
  <script type="text/javascript" charset="utf-8">
       	mui.init();
-      	
       	document.getElementById("loginbtn").addEventListener('tap', function() {
-      		
       		if($("#loginName").val().length==0||$("#password").val().length==0){
       			mui.toast('用户名/密码不能为空！');
       		}else{
-      		
       			
+      			mui.ajax('${ctxPath}/phoneui/ajaxLoginCheck',{
+      				data:{
+      					loginName:$("#loginName").val(),
+      					password:$("#password").val()
+      				},
+      				dataType:'json',//服务器返回json格式数据
+      				type:'post',//HTTP请求类型
+      				success:function(data){
+      					if(data.success){
+      						location.href='${ctxPath}/phoneui/usercenter';	
+      					}else{
+      						mui.toast(data.data);
+      					}
+      					
+      				}
+      			});
       		}
-      		
-      		
-      		
-      		
-			
 		});
       	
     </script>
