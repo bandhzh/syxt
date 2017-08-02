@@ -1,4 +1,0 @@
-2017-08-01 11:32:58.962 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-08-01 11:32:59.625 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
-2017-08-01 14:21:15.899 [main] WARN  org.beetl.ext.spring.BeetlSpringViewResolver-Beetl不建议使用使用spring前缀，会导致include,layout找不到对应的模板，请使用beetl的配置RESOURCE.ROOT来配置模板根目录
-2017-08-01 14:21:16.684 [main] WARN  o.s.boot.starter.redis.RedisStarterDeprecationWarningAutoConfiguration-spring-boot-starter-redis is deprecated as of Spring Boot 1.4, please migrate to spring-boot-starter-data-redis
