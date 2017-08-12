@@ -119,11 +119,11 @@
  								  }
  							  });
  							 filterParameters.push({property:"opinionModel.enabled",value:"1",operation:"="});
- 							  pager.setSearch(filterParameters);
+ 							 pager.setSearch(filterParameters);
   							 pager.setSort([{"property":"opinionModel.id","order":"desc"}]);
-  							pager.setData({"departmentId":"${authenticationFn().userDto.departmentId}"});
+  							 pager.setData({"departmentId":"${authenticationFn().userDto.departmentId}"});
   							 
- 							  pager.reload();
+ 							 pager.reload();
 						 });
 						
 						
@@ -266,7 +266,7 @@
 						}));
 						myGrid.registerPlugin(checkboxSelector);
 						pager = new Slick.Controls.Pager(myDataView, myGrid, $("#pager"),{pagesize:100,url:"${ctxPath}/opinion/listOpinionByVerify"});
-						 $(".filter-submit").trigger("click");
+						$(".filter-submit").trigger("click");
 						 
 						 myDataView.onPagingInfoChanged.subscribe(function (e, pagingInfo) {
 						});

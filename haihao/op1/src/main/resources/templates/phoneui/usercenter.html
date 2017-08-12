@@ -94,6 +94,9 @@
 				}
 		}
 		
+		body{
+			background: -webkit-gradient(linear, 0 0, 0 bottom, from(#f6f9f9), to(#d3d3d4));
+		}
 		
 	</style>
 </head>
@@ -107,41 +110,53 @@
 	<div class="heihead"></div>
 	<div class="mui-content">
 		<div class="banner">
-			<img src="${ctxPath}/static/assets/phoneui/img/user_06.jpg" width="100%" />
+			<img src="${ctxPath}/static/assets/phoneui/img/user_06.png" width="100%" style="box-shadow:7px 1px 39px #c3bdbd;" />
 		</div>
 		<div class="mui-text-center u-text pad">
 			<h1 class="font-avenir" style="color: #536a78; padding: .4rem 0">区委宣传部</h1>
 		</div>
 		<ul class="mui-table-view mui-grid-view mui-grid-9">
+			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/listnewsblock2">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u1.jpg" width="90%"></P>
-					<div class="mui-media-body">安全</div>
-				</a>
-			</li>
-			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/listnewsblock2">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u2.jpg" width="90%"></P>
+				<a href="javscript:void(0);" class="daikaifang">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u2.png" width="90%"></P>
 					<div class="mui-media-body">马上办</div>
 				</a>
 			</li>
+			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/listnewsblock2">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u3.jpg" width="90%"></P>
-					<div class="mui-media-body">信访</div>
+				<a href="javscript:void(0);" class="daikaifang">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u1.png" width="90%"></P>
+					<div class="mui-media-body">安全</div>
 				</a>
 			</li>
+			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/listnewsblock2">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u5.jpg" width="90%"></P>
+				<a href="${ctxPath}/phoneui/listnewsblock">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u5.png" width="90%"></P>
 					<div class="mui-media-body">新闻</div>
 				</a>
 			</li>
 			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/listnewsblock2">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u5.jpg" width="90%"></P>
+				<a href="javscript:void(0);" class="daikaifang">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u3.png" width="90%"></P>
+					<div class="mui-media-body">信访</div>
+				</a>
+			</li>
+			
+			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<a href="${ctxPath}/phoneui/listopinionsblock">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u6.png" width="90%"></P>
 					<div class="mui-media-body">舆情</div>
+				</a>
+			</li>
+			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<a href="${ctxPath}/phoneui/setting">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u7.png" width="90%"></P>
+					<div class="mui-media-body">设置</div>
 				</a>
 			</li>
 			
@@ -181,6 +196,19 @@
 		mui('body').on('hidden', '.mui-popover', function(e) {
 			//console.log('hidden', e.detail.id);//detail为当前popover元素
 		});
+		
+		mui('body').on('tap','a',function(){document.location.href=this.href;});
+		
+		mui('body').on('tap','.daikaifang',function(){
+			
+			mui.alert("攻城狮正在血战……", '助手', function() {
+				
+			});
+		});
+		
+		
+		
+		
 	</script>
 	
 </html>

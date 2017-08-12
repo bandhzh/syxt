@@ -1,7 +1,14 @@
 package com.haihao.model.news;
 
+import java.sql.SQLException;
+
+import com.haihao.constant.DataConstant;
 import com.haihao.model.BaseModel;
+import com.haihao.model.opinion.OpinionModel;
 import com.haihao.plugin.tablebind.TableBind;
+import com.haihao.tool.ToolSecurity;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 
 
 @TableBind(tableName="op_news")
@@ -10,6 +17,28 @@ public class NewsModel extends BaseModel<NewsModel> {
 	
 	private static final long serialVersionUID = 5191983641537571779L;
 	public static NewsModel dao = new NewsModel().dao();
+	
+	public void save(NewsModel model){
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					if(model.getInt("needVerify") == DataConstant.No){
+						model.set("isVerify", DataConstant.Yes);
+						model.set("status", DataConstant.NewsStatus.finishVerify);
+					}
+					model.set("createdBy", ToolSecurity.getUserId());
+					long currentTimeMillis = System.currentTimeMillis();
+					model.set("createdDate", currentTimeMillis);
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+	}
 	
 	
 

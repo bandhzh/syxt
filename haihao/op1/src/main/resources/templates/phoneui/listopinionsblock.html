@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>新闻中心-块级展示</title>
+<title>舆情中心-块级展示</title>
     
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -102,25 +102,25 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
        
         <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted" style="background: #242a34;">
 	         <li class="mui-table-view-cell mui-collapse">
-				<a class="" href="#offCanvasSide">公开新闻</a>
+				<a class="" href="#offCanvasSide">公开舆情</a>
 			</li>
 			
 			<li class="mui-table-view-cell mui-collapse">
-				<a class="heshilist" href="javascript:void(0)" >新闻核实</a>
+				<a class="heshilist" href="javascript:void(0)" >舆情核实</a>
 			</li>
 			
 			<li class="mui-table-view-cell mui-collapse">
-				<a class="zhuanban" href="javascript:void(0)">新闻转办</a>
+				<a class="zhuanban" href="javascript:void(0)">舆情转办</a>
 			</li>
 			
 			<li class="mui-table-view-cell mui-collapse">
-				<a class="pishi" href="javascript:void(0)">新闻批示</a>
+				<a class="pishi" href="javascript:void(0)">舆情批示</a>
 			</li>
 			
 			
-	        <li class="mui-table-view-cell mui-collapse">
-				<a class="" href="${ctxPath}/news/addnews">我要发布</a>
-			</li>
+	        <!-- <li class="mui-table-view-cell mui-collapse">
+				<a class="" href="${ctxPath}/news/toaddnews">我要发布</a>
+			</li> -->
 			<li class="mui-table-view-cell mui-collapse">
 				<a class="" href="${ctxPath}/phoneui/usercenter">返回个人中心</a>
 			</li>
@@ -142,8 +142,8 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
      
      <header class="mui-bar mui-bar-nav ">
 		<a class="mui-icon mui-icon mui-icon-bars" href="#offCanvasSide"></a>
-      	<h1 class="mui-title">新闻列表</h1>
-      	<a class="mui-icon mui-icon-settings right" href="${ctxPath}/phoneui/listnews"></a>
+      	<h1 class="mui-title">舆情列表</h1>
+      	<a class="mui-icon mui-icon-settings right" href="${ctxPath}/phoneui/listopinions"></a>
     </header>
     <div class="heihead"></div>
     
@@ -188,7 +188,7 @@ $(document).ready(function() {
 		for(var i = 0;i < _items.length;i++){
 			var j = _items[i];
 			
-				/* var starsval = listFormatter({id:"lists"},j["levelId"]);
+				var starsval = listFormatter({id:"lists"},j["levelId"]);
 				var stars ='<span class="mui-icon mui-icon-star"></span>';
 				if(starsval=="0"){
 					stars='<span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
@@ -208,11 +208,14 @@ $(document).ready(function() {
 				}
 				if(starsval=="5星"){
 					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span>';
-				} */
+				}
 				       
 				newcont +=String.format('<div class="swiper-slide">'
 							+'<h2>{0}</h2>'
  							+'<p class=" mui-text-center">{1}</p>'
+ 							+'<div class="star mui-text-center">'
+ 							+stars
+ 							+'</div>'
  							+'<P class="mui-clearfix hei"></P>'
  							+'<img src="{2}" alt="图片加载失败">'
  							+'<div class="pad grew">'
@@ -223,8 +226,8 @@ $(document).ready(function() {
  							+'<div class="mui-clearfix pad grew">'
  							+'	{5}</div>'
  							+'<P class="mui-clearfix hei"></P>'
- 							+'<a href="${ctxPath}/phoneui/newsinfo" class="mui-btn mui-btn-block mui-btn-green ">去看看</a>'
- 							+'</div>',j["title"],dateFormatter(j["createdDate"]),window.qiniuDomainHttp+j["mainImg"],listFormatter({id:"lists"},j["sourceid"]),j["createdBy"],j["memo"]);
+ 							+'<a href="${ctxPath}/phoneui/opinionsinfo?id={6}" class="mui-btn mui-btn-block mui-btn-green ">去看看</a>'
+ 							+'</div>',j["subject"],dateFormatter(j["createdDate"]),window.qiniuDomainHttp+j["mainImg"],listFormatter({id:"lists"},j["categoryId"]),j["createdBy"],j["memo"],j["id"]);
 	 			
 	 			
 		}
@@ -286,17 +289,18 @@ $(document).ready(function() {
     //核实列表
     mui('body').on('tap','.heshilist',function(){
     	mui('#offCanvasWrapper').offCanvas('close');
-    	datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
-    	_url = 'ajaxlistNewsByVerify';
+    	datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
+    	_url = 'ajaxlistOpinionByVerify';
     	$("#dianji").trigger("click");
     	swipernum=1;
     });
     
     //舆情转办
 	mui('body').on('tap','.zhuanban',function(){
+    	
     	mui('#offCanvasWrapper').offCanvas('close');
-    	datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
-    	_url = 'ajaxlistNewsByTodo';
+    	datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
+    	_url = 'ajaxlistOpinionByTodo';
     	$("#dianji").trigger("click");
     	swipernum=2;
     });
@@ -305,8 +309,8 @@ $(document).ready(function() {
 	//舆情批示
 	mui('body').on('tap','.pishi',function(){
 		mui('#offCanvasWrapper').offCanvas('close');
-		datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}]};
-		_url = 'ajaxlistNewsByInstruction';
+		datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}]}
+		_url = 'ajaxlistOpinionByInstruction';
 		$("#dianji").trigger("click");
 		swipernum=3;
 	});
@@ -320,13 +324,13 @@ $(document).ready(function() {
 			data :{data:JSON.stringify(datajson)},
 			dataType: "json",
 			success : function(data) {
-				if (data.hits>0) {//加载待核实舆情
+				if (data.success) {//加载待核实舆情
 					
 					$("#hhh").html("");
 					var newcont="";
 					
 					$.each(data.results,function(i,val){
-						/* var starsval = listFormatter({id:"lists"},val.levelId);
+						var starsval = listFormatter({id:"lists"},val.levelId);
 						var stars ='<span class="mui-icon mui-icon-star"></span>';
 						if(starsval=="0"){
 							stars='<span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
@@ -346,24 +350,27 @@ $(document).ready(function() {
 						}
 						if(starsval=="5星"){
 							stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span>';
-						} */
+						}
 						
 						
 						
 						newcont += '<div class="swiper-slide">'
-	 							+'<h2>'+val.title+'</h2>'
+	 							+'<h2>'+val.subject+'</h2>'
 	 							+'<p class=" mui-text-center">'+dateFormatter(val.createdDate)+'</p>'
+	 							+'<div class="star mui-text-center">'
+	 							+stars
+	 							+'</div>'
 	 							+'<P class="mui-clearfix hei"></P>'
 	 							+'<img src="'+window.qiniuDomainHttp+val.mainImg+'" alt="图片加载失败">'
 	 							+'<div class="pad grew">'
-	 							+'	<span class="mui-pull-left"> <i class="ico22"></i>'+listFormatter({id:"lists"},val.sourceid)+'</span>'
+	 							+'	<span class="mui-pull-left"> <i class="ico22"></i>'+listFormatter({id:"lists"},val.categoryId)+'</span>'
 	 							+'	<span class="mui-pull-right"> <i class="ico22"></i> '+val.createdBy+'</span>'
 	 							+'</div>'
 	 							+'<P class="mui-clearfix hei"></P>'
 	 							+'<div class="mui-clearfix pad grew">'
 	 							+val.memo+'</div>'
 	 							+'<P class="mui-clearfix hei"></P>'
-	 							+'<a href="${ctxPath}/phoneui/newsinfo" class="mui-btn mui-btn-block mui-btn-green ">去看看</a>'
+	 							+'<a href="${ctxPath}/phoneui/opinionsinfo?id='+val.id+'" class="mui-btn mui-btn-block mui-btn-green ">去看看</a>'
 	 							+'</div>';
 						
 					})
@@ -387,7 +394,7 @@ $(document).ready(function() {
 					    centeredSlides: true,  
 					    slidesPerView: 'auto',  
 						paginationType: 'fraction',
-					    coverflow: {
+					    coverflow: {  
 					        rotate: 0,// 旋转的角度  
 					        stretch: 100,// 拉伸   图片间左右的间距和密集度  
 					        depth: 120,// 深度   切换图片间上下的间距和密集度  
@@ -398,7 +405,9 @@ $(document).ready(function() {
 					
 					
 				} else {//提示暂无
-					$("#hhh").html('');
+					mui.alert("暂无相关舆情！", '提示', function() {
+						location.reload();
+					});
 				}
 			}
 		});

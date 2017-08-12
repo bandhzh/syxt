@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>新闻中心-列表展示</title>
+<title>舆情中心-列表展示</title>
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -66,9 +66,9 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				</div>
 			</li>
 		
-	        <li class="mui-table-view-cell mui-collapse">
-				<a class="" href="${ctxPath}/news/addnews">我要发布</a>
-			</li>
+	       <!--  <li class="mui-table-view-cell mui-collapse">
+				<a class="" href="${ctxPath}/news/toaddnews">我要发布</a>
+			</li> -->
 			
 			<li class="mui-table-view-cell mui-collapse">
 				<a class="" href="${ctxPath}/phoneui/usercenter">返回个人中心</a>
@@ -84,7 +84,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
   <div class="mui-inner-wrap">
     <header class="mui-bar mui-bar-nav bgh">
     	<a class="mui-icon mui-icon-bars" href="#offCanvasSide"></a>
-      	<h1 class="mui-title">新闻中心</h1>
+      	<h1 class="mui-title">舆情中心</h1>
       	<!-- <a class="mui-icon mui-icon-compose right"></a> -->
       	<a href="${ctxPath}/phoneui/listopinionsblock" class="mui-icon mui-icon-settings right"></a>
      </header>
@@ -97,10 +97,10 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
             <div id="header">
               <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
 	              	<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-	              		<div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>公开新闻</small></a></div>
-		                <div class="swiper-slide "><a class="mui-control-item" href="#item2mobile"><small>新闻核实</small></a></div>
-		                <div class="swiper-slide"><a class="mui-control-item " href="#item3mobile"><small>新闻转办</small></a></div>
-		                <div class="swiper-slide"><a class="mui-control-item " href="#item4mobile"><small>新闻批示</small></a></div>
+	              		<div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>公开舆情</small></a></div>
+		                <div class="swiper-slide "><a class="mui-control-item" href="#item2mobile"><small>舆情核实</small></a></div>
+		                <div class="swiper-slide"><a class="mui-control-item " href="#item3mobile"><small>舆情转办</small></a></div>
+		                <div class="swiper-slide"><a class="mui-control-item " href="#item4mobile"><small>舆情批示</small></a></div>
 	                </div>
               </div>
             </div>
@@ -267,7 +267,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 	 									+'	<p><font class="black">{3}</font> <font class="grew"></font>&nbsp; &nbsp;{5}&nbsp; &nbsp;{4}</p>'
 	 									+'</div>'
 	 									+'</a>'
-	 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["title"],j["memo"],listFormatter({id:"lists"},j["sourceid"]),dateFormatter(j["createdDate"]),status)
+	 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["subject"],j["memo"],listFormatter({id:"lists"},j["categoryId"]),dateFormatter(j["createdDate"]),status)
 	 							
 	 							
 	 			);
@@ -331,9 +331,9 @@ function listFormatter(columnDef, value){
   
   //舆情待核实
   
-  var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
-  $.ajax({
-  		url : "ajaxlistNewsByVerify",
+  var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
+  	$.ajax({
+  		url : "ajaxlistOpinionByVerify",
   		type : "post",
   		data :{data:JSON.stringify(datajson)},
   		dataType: "json",
@@ -363,11 +363,11 @@ function listFormatter(columnDef, value){
 								+'<a href="${ctxPath}/phoneui/newsinfo">'
 								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
 								+'<div class="mui-media-body">'
-								+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
+								+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
 								+'	<p class="hei"></p>'
 								+'	<p class="black ">'+val.memo+'</p>'
 								+'	<p class="hei"></p>'
-								+'	<p><font class="black">'+listFormatter({id:"lists"},val.sourceid)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+								+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
 								+'</div>'
 								+'</a>'
 								+'</li>');
@@ -375,7 +375,7 @@ function listFormatter(columnDef, value){
   				})
   				
   			} else {//提示暂无
-  				$(".wangbaonews").html("暂无相关新闻！");
+  				$(".wangbaonews").html("暂无相关舆情！");
   			}
   		}
   	});
@@ -383,9 +383,9 @@ function listFormatter(columnDef, value){
 
   	
   	//舆情转办
-  	var datazbjson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
+  	var datazbjson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
    	$.ajax({
-   		url : "ajaxlistNewsByTodo",
+   		url : "ajaxlistOpinionByTodo",
    		type : "post",
    		data :{data:JSON.stringify(datazbjson)},
    		dataType: "json",
@@ -411,33 +411,32 @@ function listFormatter(columnDef, value){
 							+'<a href="${ctxPath}/phoneui/newsinfo">'
 							+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
 							+'<div class="mui-media-body">'
-							+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
+							+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
 							+'	<p class="hei"></p>'
 							+'	<p class="black ">'+val.memo+'</p>'
 							+'	<p class="hei"></p>'
-							+'	<p><font class="black">'+listFormatter({id:"lists"},val.sourceid)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+							+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
 							+'</div>'
 							+'</a>'
 							+'</li>');
    					})
    				
    			} else {//提示暂无
-   				$(".zhuanbannews").html("暂无相关新闻！");
+   				$(".zhuanbannews").html("暂无相关舆情！");
    			}
    		}
    	});
     
    	
-   	//批示给我的新闻列表
-  	var datapsjson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}]};
-  	
+   	//批示给我的舆情列表
+  	var datapsjson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}]};
    	$.ajax({
-   		url : "ajaxlistNewsByInstruction",
+   		url : "ajaxlistOpinionByInstruction",
    		type : "post",
    		data :{data:JSON.stringify(datapsjson)},
    		dataType: "json",
    		success : function(data) {
-   			if (data.success) {//加载待核实新闻
+   			if (data.success) {//加载待核实舆情
    				$(".pishinews").html("");
    				$.each(data.results,function(i,val){
    					
@@ -458,18 +457,18 @@ function listFormatter(columnDef, value){
 							+'<a href="${ctxPath}/phoneui/newsinfo">'
 							+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
 							+'<div class="mui-media-body">'
-							+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
+							+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
 							+'	<p class="hei"></p>'
 							+'	<p class="black ">'+val.memo+'</p>'
 							+'	<p class="hei"></p>'
-							+'	<p><font class="black">'+listFormatter({id:"lists"},val.sourceid)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+							+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
 							+'</div>'
 							+'</a>'
 							+'</li>');
    					})
    				
    			} else {//提示暂无
-   				$(".pishinews").html("暂无相关新闻！");
+   				$(".pishinews").html("暂无相关舆情！");
    			}
    		}
    	});

@@ -93,5 +93,12 @@
 		]]>
 	</sql>
 	
+	<sql id="selectisPublic">
+		<![CDATA[ 
+			select * from op_news where isPublic = 1 and enabled = 1
+		]]>
+	</sql>
+	
+	
 
 </sql-statement>

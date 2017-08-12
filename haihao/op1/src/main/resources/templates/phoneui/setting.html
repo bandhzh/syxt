@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>Hello MUI</title>
+		<title>一把手助手</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -189,8 +189,9 @@
 								<a class="mui-navigate-right" href="#account">
 									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="">
 									<div class="mui-media-body">
-										区委宣传部
-										<p class='mui-ellipsis'>账号:helloquwei</p>
+										${authenticationFn().userDto.displayName}
+										
+										<p class='mui-ellipsis'>用户名:${authenticationFn().userDto.loginName}</p>
 									</div>
 								</a>
 							</li>
@@ -204,21 +205,21 @@
 							<li class="mui-table-view-cell">
 								<a href="#notifications" class="mui-navigate-right">新消息通知</a>
 							</li>
-							<li class="mui-table-view-cell">
+							<!-- <li class="mui-table-view-cell">
 								<a href="#privacy" class="mui-navigate-right">隐私</a>
-							</li>
+							</li> -->
 							<li class="mui-table-view-cell">
 								<a href="#general" class="mui-navigate-right">通用</a>
 							</li>
 						</ul>
 						<ul class="mui-table-view mui-table-view-chevron">
 							<li class="mui-table-view-cell">
-								<a href="#about" class="mui-navigate-right">关于MUI <i class="mui-pull-right update">V2.7.0</i></a>
+								<a href="#about" class="mui-navigate-right">关于助手 <i class="mui-pull-right update">V1.0.0</i></a>
 							</li>
 						</ul>
 						<ul class="mui-table-view">
 							<li class="mui-table-view-cell" style="text-align: center;">
-								<a>退出登录</a>
+								<a onclick="${ctxPath}/reguser/login">退出登录</a>
 							</li>
 						</ul>
 					</div>
@@ -246,22 +247,29 @@
 							</a>
 							</li>
 							<li class="mui-table-view-cell">
-								<a>姓名<span class="mui-pull-right">Hbuilder</span></a>
+								<a>昵称<span class="mui-pull-right">${authenticationFn().userDto.displayName}</span></a>
 							</li>
 							<li class="mui-table-view-cell">
-								<a>HBuilder账号<span class="mui-pull-right">hbuilder@dcloud.io</span></a>
+								<a>部门<span class="mui-pull-right">${authenticationFn().userDto.departmentId}</span></a>
 							</li>
 						</ul>
 						<ul class="mui-table-view">
+							<!-- <li class="mui-table-view-cell">
+								<a>微信号<span class="mui-pull-right">88888888</span></a>
+							</li> -->
 							<li class="mui-table-view-cell">
-								<a>QQ号<span class="mui-pull-right">88888888</span></a>
+								<a>手机号<span class="mui-pull-right">${authenticationFn().userDto.mobile}</span></a>
 							</li>
+							<!-- <li class="mui-table-view-cell">
+								<a>邮箱地址<span class="mui-pull-right">88888888@**.com</span></a>
+							</li> -->
+						</ul>
+						
+						<ul class="mui-table-view">
 							<li class="mui-table-view-cell">
-								<a>手机号<span class="mui-pull-right">18601234567</span></a>
+								<a onclick="location.href='${ctxPath}/phoneui/locker'">设置手势密码</a>
 							</li>
-							<li class="mui-table-view-cell">
-								<a>邮箱地址<span class="mui-pull-right">hbuilder@dcloud.io</span></a>
-							</li>
+							
 						</ul>
 					</div>
 				</div>
@@ -321,14 +329,16 @@
 								</div>
 							</li>
 						</ul>
-						<div class="mui-content-padded">
+						<!-- <div class="mui-content-padded">
 							<p>当HelloMUI在运行时，你可以设置是否需要声音或者震动</p>
-						</div>
+						</div> -->
 						<div></div>
 					</div>
 				</div>
 			</div>
 		</div>
+		
+		
 		<div id="notifications_disturb" class="mui-page">
 			<div class="mui-navbar-inner mui-bar mui-bar-nav">
 				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
@@ -354,7 +364,9 @@
 				</div>
 			</div>
 		</div>
-		<div id="privacy" class="mui-page">
+		
+		
+		<!-- <div id="privacy" class="mui-page">
 			<div class="mui-navbar-inner mui-bar mui-bar-nav">
 				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
 					<span class="mui-icon mui-icon-left-nav"></span>设置
@@ -415,7 +427,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<div id="general" class="mui-page">
 			<div class="mui-navbar-inner mui-bar mui-bar-nav">
 				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
@@ -455,7 +467,7 @@
 				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
 					<span class="mui-icon mui-icon-left-nav"></span>设置
 				</button>
-				<h1 class="mui-center mui-title">关于MUI</h1>
+				<h1 class="mui-center mui-title">关于助手</h1>
 			</div>
 			<div class="mui-page-content">
 				<div class="mui-scroll-wrapper">
@@ -473,7 +485,7 @@
 							<li class="mui-table-view-cell">
 								<a id="tel" class="mui-navigate-right">客服电话</a>
 							</li>
-							<li class="mui-table-view-cell">
+							<li class="mui-table-view-cell mui-plus-visible">
 								<a id="feedback-btn" href="#feedback" class="mui-navigate-right">问题反馈</a>
 							</li>
 							<li class="mui-table-view-cell mui-plus-visible">
@@ -485,7 +497,7 @@
 			</div>
 		</div>
 
-		<div id="feedback" class="mui-page feedback">
+		<!-- <div id="feedback" class="mui-page feedback">
 			<div class="mui-navbar-inner mui-bar mui-bar-nav">
 				<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
 					<span class="mui-icon mui-icon-left-nav"></span>关于MUI
@@ -507,7 +519,7 @@
 				<button id='submit' type="button" class="mui-btn mui-btn-green">提交</button>
 			</div>
 			<p>此示例基于环信 “WebIM SDK” + 环信 “移动客服” 实现，在环信 “移动客服面板” 能够查阅反馈信息。</p>
-		</div>
+		</div> -->
 
 	</body>
 	<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>

@@ -114,6 +114,13 @@ public class RegUserController extends BaseController{
 		
 	}
 	
+	
+	/**
+	 * app端用户注册
+	 * @param request
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("/ajaxReguser")
 	@ResponseBody
 	public ResultDto ajaxReguser(HttpServletRequest request,HttpSession session) {

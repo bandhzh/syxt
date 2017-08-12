@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 
-<title>手势密码</title>
+<title>设置手势密码</title>
 <link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
 <style>
 	html,
@@ -75,10 +75,27 @@
 			if (record.length >= 2) {
 				if (record[0] == record[1]) {
 					
-					mui.alert(record[0], '手势密码', function() {
-						
-						alert.innerText = '手势设定完成';
-					});
+					var gesture = record[0];
+					//将手势密码存入用户表中 
+					$.ajax({
+						url : "${ctxPath}/phoneui/ajaxaddgesture",
+						type : "post",
+						data : {gesture:gesture},
+						success : function(data) {
+							if (data.success) {
+								mui.alert("手势密码设置成功！", '提示', function() {
+									mui.back();
+								});
+							} else {
+								
+							}
+						}
+					}); 
+					
+					
+					
+					
+					
 					
 					
 				} else {

@@ -19,5 +19,11 @@ public class UserModel extends BaseModel<UserModel> {
 	}
 	
 	
+	public UserModel getBygesture(String gesture){
+		UserModel findFirst = UserModel.dao.findFirst(ToolSqlXml.getSql("com.user.getBygesture"),gesture);
+		return findFirst;
+	}
+	
+	
 
 }

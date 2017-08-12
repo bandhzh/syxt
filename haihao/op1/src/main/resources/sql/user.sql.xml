@@ -10,6 +10,13 @@
 	</sql>
 	
 	
+	<sql id="getBygesture">
+		<![CDATA[ 
+			select * from op_user where gesture = ? limit 0,1
+		]]>
+	</sql>
+	
+	
 	<sql id="selectAll">
 		<![CDATA[ 
 			select * from op_user;

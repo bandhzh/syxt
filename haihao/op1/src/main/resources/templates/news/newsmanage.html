@@ -103,7 +103,7 @@
 						<div class="modal-body">
 							<div class="portlet-body form">
 								<form action="#" class="horizontal-form" id="validationForm">
-									<input type="hidden" class="form-control columnName" columnName="opinionModel.id">
+									<input type="hidden" class="form-control columnName" columnName="newsModel.id">
 									<div class="form-body">
 										<h3 class="form-section batchHidden" style="margin-top: 0px;">基本信息</h3>
 										<div class="row">
@@ -369,7 +369,7 @@
 						};
 						if (ids.length > 0) {
 							$.ajax({
-								url : "${ctxPath}/opinion/removeOpinion",
+								url : "${ctxPath}/news/removeNews",
 								type : "post",
 								data : _data,
 								success : function(data) {
