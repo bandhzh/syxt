@@ -55,8 +55,20 @@
 <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
 <script src="${ctxPath}/static/assets/phoneui/js/mui.locker.js"></script>
 <script>
+
+
+
+
 	(function($, doc) {
+		
 		$.init();
+		
+		var imei ='';
+		$.plusReady(function(){//设备唯一标识
+			
+			imei = plus.device.imei;
+		});
+		
 		
 		var holder = doc.querySelector('#holder'),
 			alert = doc.querySelector('#alert'),
@@ -75,12 +87,13 @@
 			if (record.length >= 2) {
 				if (record[0] == record[1]) {
 					
-					var gesture = record[0];
-					//将手势密码存入用户表中 
+					var gesture = record[0];//将手势密码存入用户表中 
+					
+					
 					$.ajax({
 						url : "${ctxPath}/phoneui/ajaxaddgesture",
 						type : "post",
-						data : {gesture:gesture},
+						data : {gesture:gesture,imei:imei},
 						success : function(data) {
 							if (data.success) {
 								mui.alert("手势密码设置成功！", '提示', function() {
@@ -93,11 +106,6 @@
 					}); 
 					
 					
-					
-					
-					
-					
-					
 				} else {
 					alert.innerText = '两次手势设定不一致';
 				}
@@ -108,7 +116,18 @@
 				rs.sender.clear();
 			}
 		});
+		
+		
+		
+		
+		
 	}(mui, document));
+	
+	
+	
+	
+	
+	
 </script>
 </body>
 </html>

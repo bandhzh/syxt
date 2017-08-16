@@ -102,7 +102,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
        
         <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted" style="background: #242a34;">
 	         <li class="mui-table-view-cell mui-collapse">
-				<a class="" href="#offCanvasSide">公开舆情</a>
+				<a class="gongkai" href="javascript:void(0)">公开舆情</a>
 			</li>
 			
 			<li class="mui-table-view-cell mui-collapse">
@@ -222,7 +222,7 @@ $(document).ready(function() {
  							+'	<span class="mui-pull-left"> <i class="ico22"></i>{3}</span>' 
  							+'	<span class="mui-pull-right"> <i class="ico22"></i> {4}</span>'
  							+'</div>'
- 							+'<P class="mui-clearfix hei"></P>'
+ 							+'<p class="mui-clearfix hei"></p>'
  							+'<div class="mui-clearfix pad grew">'
  							+'	{5}</div>'
  							+'<P class="mui-clearfix hei"></P>'
@@ -259,8 +259,13 @@ $(document).ready(function() {
 			}); 
 		
 	}
-	
 	InitOpenNewsList("#hhh", "listopennews");
+	
+	mui('body').on('tap','.gongkai',function(){
+		mui('#offCanvasWrapper').offCanvas('close');
+		InitOpenNewsList("#hhh", "listopennews");
+	});
+	
 	
 	
 	 function listFormatter(columnDef, value){
@@ -286,6 +291,8 @@ $(document).ready(function() {
     var datajson;
     var ispost = false;
     var swipernum;
+    var opinionurl;
+    var wordremark;
     //核实列表
     mui('body').on('tap','.heshilist',function(){
     	mui('#offCanvasWrapper').offCanvas('close');
@@ -293,6 +300,8 @@ $(document).ready(function() {
     	_url = 'ajaxlistOpinionByVerify';
     	$("#dianji").trigger("click");
     	swipernum=1;
+    	opinionurl="opinionsheshiinfo?id=";
+    	wordremark="去核实";
     });
     
     //舆情转办
@@ -303,6 +312,8 @@ $(document).ready(function() {
     	_url = 'ajaxlistOpinionByTodo';
     	$("#dianji").trigger("click");
     	swipernum=2;
+    	opinionurl="opinionszhuanbaninfo?id=";
+    	wordremark="去反馈";
     });
     
 
@@ -313,6 +324,8 @@ $(document).ready(function() {
 		_url = 'ajaxlistOpinionByInstruction';
 		$("#dianji").trigger("click");
 		swipernum=3;
+		opinionurl="opinionspishiinfo?id=";
+		wordremark="去跟踪";
 	});
 	
 	
@@ -369,8 +382,8 @@ $(document).ready(function() {
 	 							+'<P class="mui-clearfix hei"></P>'
 	 							+'<div class="mui-clearfix pad grew">'
 	 							+val.memo+'</div>'
-	 							+'<P class="mui-clearfix hei"></P>'
-	 							+'<a href="${ctxPath}/phoneui/opinionsinfo?id='+val.id+'" class="mui-btn mui-btn-block mui-btn-green ">去看看</a>'
+	 							+'<p class="mui-clearfix hei"></p>'
+	 							+'<a href="${ctxPath}/phoneui/'+opinionurl+val.id+'" class="mui-btn mui-btn-block mui-btn-green ">'+wordremark+'</a>'
 	 							+'</div>';
 						
 					})

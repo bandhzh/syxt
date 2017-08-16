@@ -21,6 +21,7 @@
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
 
 <!-- 配置文件 -->
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/qiniuurl.js"></script>
 <script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
 
 
@@ -257,7 +258,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				
 	 			$(domId).append(
 	 							String.format('<li class="mui-table-view-cell mui-media">'
-	 									+'<a href="${ctxPath}/phoneui/newsinfo">'
+	 									+'<a href="${ctxPath}/phoneui/opinionsinfo?id={6}">'
 	 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
 	 									+'<div class="mui-media-body">'
 	 									+'	<p><small class="blue">{1}</small> &nbsp; <small class="grew"></small></p>'
@@ -267,7 +268,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 	 									+'	<p><font class="black">{3}</font> <font class="grew"></font>&nbsp; &nbsp;{5}&nbsp; &nbsp;{4}</p>'
 	 									+'</div>'
 	 									+'</a>'
-	 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["subject"],j["memo"],listFormatter({id:"lists"},j["categoryId"]),dateFormatter(j["createdDate"]),status)
+	 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["subject"],j["memo"],listFormatter({id:"lists"},j["categoryId"]),dateFormatter(j["createdDate"]),status,j["id"])
 	 							
 	 							
 	 			);
@@ -360,7 +361,7 @@ function listFormatter(columnDef, value){
   					
   					
   					$(".wangbaonews").append('<li class="mui-table-view-cell mui-media">'
-								+'<a href="${ctxPath}/phoneui/newsinfo">'
+								+'<a href="${ctxPath}/phoneui/opinionsheshiinfo?id='+val.id+'">'
 								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
 								+'<div class="mui-media-body">'
 								+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
@@ -408,7 +409,7 @@ function listFormatter(columnDef, value){
   					}
    					
    					$(".zhuanbannews").append('<li class="mui-table-view-cell mui-media">'
-							+'<a href="${ctxPath}/phoneui/newsinfo">'
+							+'<a href="${ctxPath}/phoneui/opinionszhuanbaninfo?id='+val.id+'">'
 							+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
 							+'<div class="mui-media-body">'
 							+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
@@ -454,7 +455,7 @@ function listFormatter(columnDef, value){
   					}
    					
    					$(".pishinews").append('<li class="mui-table-view-cell mui-media">'
-							+'<a href="${ctxPath}/phoneui/newsinfo">'
+							+'<a href="${ctxPath}/phoneui/opinionspishiinfo?id='+val.id+'">'
 							+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
 							+'<div class="mui-media-body">'
 							+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'

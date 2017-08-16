@@ -16,6 +16,28 @@
     <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js"></script>
     <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
     
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+      	//检测当前设备是否已经登录过了
+     	mui.plusReady(function(){//设备唯一标识
+     		
+     		if("${state}"!=1){//使用手势密码
+     			mui.ajax('${ctxPath}/phoneui/ajaxcheckimei',{
+      				data:{imei:plus.device.imei},
+      				dataType:'json',
+      				type:'post',
+      				success:function(data){
+      					if(data.success){//有标识则转到 手势解锁
+      						location.href='${ctxPath}/phoneui/unlock';	
+      					}
+      				}
+      			});
+     			
+     		}
+      	
+		}); 
+      	
+    </script>
    
     </head>
     <body class="login">
@@ -40,7 +62,7 @@
     </div>
 </body>
  <script type="text/javascript" charset="utf-8">
-      	mui.init();
+      	
       	document.getElementById("loginbtn").addEventListener('tap', function() {
       		if($("#loginName").val().length==0||$("#password").val().length==0){
       			mui.toast('用户名/密码不能为空！');
@@ -64,6 +86,8 @@
       			});
       		}
 		});
+      	
+      	
       	
     </script>
 </html>

@@ -30,7 +30,7 @@
 				<div class="mui-locker" data-locker-options='{"ringColor":"rgba(221,221,221,1)","fillColor":"#ffffff","pointColor":"rgba(0,136,204,1)","lineColor":"rgba(0,136,204,1)"}' data-locker-width='320' data-locker-height='320'>
 				</div>
 			</div>
-			<a id='forget'>忘记手势密码？</a>
+			<a id='forget'>使用账号密码登录</a>
 		</div>
 		<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
 		<script src="${ctxPath}/static/assets/phoneui/js/mui.locker.js"></script>
@@ -42,7 +42,7 @@
 				$.plusReady(function() {
 					var mainPage = $.preload({
 						"id": 'main',
-						"url": 'main.html'
+						"url": '${ctxPath}/phoneui/usercenter'//登录成功
 					});
 					var toMain = function() {
 						$.fire(mainPage, 'show', null);
@@ -69,7 +69,7 @@
 						state.token = '';
 						app.setState(state);
 						$.openWindow({
-							url: 'login.html',
+							url: '${ctxPath}/reguser/login?state=1',//返回登录页
 							id: 'login',
 							show: {
 								aniShow: 'pop-in'

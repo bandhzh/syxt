@@ -45,7 +45,17 @@ public class RegUserController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = { "/login"})
-	public String login(Map<String, Object> model) {
+	public String login(Map<String, Object> model,HttpServletRequest request) {
+		//标记使用账号密码登录
+		String state = request.getParameter("state");//状态
+		
+		model.put("state", state);
+		
+		
+		
+		
+		
+		
 		
 		return "phoneui/login";
 	}

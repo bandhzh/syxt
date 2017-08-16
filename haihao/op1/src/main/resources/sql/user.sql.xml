@@ -9,6 +9,12 @@
 		]]>
 	</sql>
 	
+	<sql id="getByimei">
+		<![CDATA[ 
+			select * from op_user where imei = ? limit 0,1
+		]]>
+	</sql>
+	
 	
 	<sql id="getBygesture">
 		<![CDATA[ 

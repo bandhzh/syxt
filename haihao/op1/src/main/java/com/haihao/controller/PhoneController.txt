@@ -64,6 +64,7 @@ public class PhoneController extends BaseController{
 	@ResponseBody
 	public ResultDto ajaxLoginCheck(Map<String, Object> map,HttpServletRequest request,HttpSession session){
 		ResultDto resultDto = new ResultDto();
+		
 		String loginName = request.getParameter("loginName");
 		String password = request.getParameter("password");
 		try{
@@ -142,12 +143,35 @@ public class PhoneController extends BaseController{
 		SecurityUser getSecurityUser = ToolSecurity.getSecurityUser();
 		UserModel model = UserModel.dao.findById(getSecurityUser.getUserDto().getUserId());
 		String gesture= request.getParameter("gesture");//手势密码
+		
+		String imei= request.getParameter("imei");//设备标识
+		model.set("imei", imei);
 		model.set("gesture", gesture);
 		model.update();
 	
 		return resultDto;
 	}
 	
+	
+	@RequestMapping("/ajaxcheckimei")
+	@ResponseBody
+	public ResultDto ajaxcheckimei(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		
+		String imei= request.getParameter("imei");//设备标识
+		UserModel model = UserModel.dao.findFirst(ToolSqlXml.getSql("com.user.getByimei"),imei);
+		
+		if(null==model){
+			resultDto.setSuccess(false);
+		}else{
+			resultDto.setSuccess(true);
+		}
+	
+	
+		return resultDto;
+	}
 	
 	
 	
@@ -484,7 +508,7 @@ public class PhoneController extends BaseController{
 	
 	
 	/**
-	 * 进入舆情详细列表
+	 * 进入舆情详细
 	 * @param model
 	 * @return
 	 */
@@ -497,6 +521,8 @@ public class PhoneController extends BaseController{
 		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
 		map.put("lists", ToolModel.recordListConvert(types));
 		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
 
 		int bid = Integer.parseInt(request.getParameter("id"));
 		OpinionModel opinionmodel = OpinionModel.dao.findById(bid);
@@ -508,6 +534,136 @@ public class PhoneController extends BaseController{
 		model.put("initData", JSON.toJSONString(map));
 		
 		return "phoneui/opinionsinfo";
+	}
+	
+	
+	/**
+	 * 进入舆情核实界面
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = { "/opinionsheshiinfo"})
+	public String opinionsheshiinfo(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		OpinionModel opinionmodel = OpinionModel.dao.findById(bid);
+		model.put("opinionmodel", ModelKit.toMap(opinionmodel));
+		
+		
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "opinionui/opinionsheshiinfo";
+	}
+	
+	
+	/**
+	 * 进入舆情转办处理界面
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = { "/opinionszhuanbaninfo"})
+	public String opinionszhuanbaninfo(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		OpinionModel opinionmodel = OpinionModel.dao.findById(bid);
+		model.put("opinionmodel", ModelKit.toMap(opinionmodel));
+		
+		
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "opinionui/opinionszhuanbaninfo";
+	}
+	
+	
+	/**
+	 * 进入舆情跟踪界面
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = { "/opinionspishiinfo"})
+	public String opinionspishiinfo(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		OpinionModel opinionmodel = OpinionModel.dao.findById(bid);
+		model.put("opinionmodel", ModelKit.toMap(opinionmodel));
+		
+		
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "opinionui/opinionspishiinfo";
+	}
+	
+	
+	
+	
+	/**
+	 * 进入转办操作界面
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = { "/opinionszhuanban"})
+	public String opinionszhuanban(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		OpinionModel opinionmodel = OpinionModel.dao.findById(bid);
+		model.put("opinionmodel", ModelKit.toMap(opinionmodel));
+		
+		
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "phoneui/opinionszhuanban";
 	}
 	
 	
