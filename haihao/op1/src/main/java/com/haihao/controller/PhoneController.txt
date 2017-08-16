@@ -32,6 +32,7 @@ import com.haihao.dto.UserDto;
 import com.haihao.jfinal.ModelKit;
 import com.haihao.jfinal.ToolModel;
 import com.haihao.model.baoliao.BaoliaoModel;
+import com.haihao.model.news.NewsModel;
 import com.haihao.model.opinion.OpinionModel;
 import com.haihao.model.security.PrivilegeModel;
 import com.haihao.model.security.RoleModel;
@@ -680,11 +681,146 @@ public class PhoneController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = { "/newsinfo"})
-	public String newsinfo(Map<String, Object> model) {
+	public String newsinfo(Map<String, Object> model,HttpServletRequest request) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		NewsModel newsmodel = NewsModel.dao.findById(bid);
+		model.put("newsmodel", ModelKit.toMap(newsmodel));
 		
 		
-		return "phoneui/newsinfo";
+		model.put("initData", JSON.toJSONString(map));
+		
+		
+		return "newsui/newsinfo";
 	}
+	
+	
+	/**
+	 * 进入转办操作界面
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = { "/newszhuanban"})
+	public String newszhuanban(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		NewsModel newsmodel = NewsModel.dao.findById(bid);
+		model.put("newsmodel", ModelKit.toMap(newsmodel));
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "newsui/newszhuanban";
+	}
+	
+	
+	
+	@RequestMapping(value = { "/newsheshiinfo"})
+	public String newsheshiinfo(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		NewsModel newsmodel = NewsModel.dao.findById(bid);
+		model.put("newsmodel", ModelKit.toMap(newsmodel));
+		
+		
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "newsui/newsheshiinfo";
+	}
+	
+	/**
+	 * 进入新闻处理界面
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = { "/newszhuanbaninfo"})
+	public String newszhuanbaninfo(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		NewsModel newsmodel = NewsModel.dao.findById(bid);
+		model.put("newsmodel", ModelKit.toMap(newsmodel));
+		
+		
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "newsui/newszhuanbaninfo";
+	}
+	
+	
+	/**
+	 * 进入 批示给我的新闻界面
+	 * @param model
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = { "/newspishiinfo"})
+	public String newspishiinfo(Map<String, Object> model,HttpServletRequest request,HttpSession session) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int bid = Integer.parseInt(request.getParameter("id"));
+		NewsModel newsmodel = NewsModel.dao.findById(bid);
+		model.put("newsmodel", ModelKit.toMap(newsmodel));
+		
+		
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		return "newsui/newspishiinfo";
+	}
+	
 	
 	
 	/**

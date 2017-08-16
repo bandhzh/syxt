@@ -73,6 +73,8 @@
 		}
 		
 		
+		
+		
 		document.getElementById("tijiaobtn").addEventListener('tap', function(e) {
 			//getVals();
 			
@@ -85,11 +87,10 @@
 		        mui.toast('请选择协办部门');
 		        return;
 		    }
-			
-			
+				
 			var params = {
 					data : {
-						"opinionToDoModelOpinionId" : "${opinionmodel.id}",
+						"newsToDoModelNewsId" : "${newsmodel.id}",
 						"mainTodo" : res,
 						"subTodo":resckbox.toString()
 					}
@@ -100,64 +101,25 @@
 			
 				
 				$.ajax({
-					url : "${ctxPath}/opinion/toDoOpinion",
+					url : "${ctxPath}/news/toDoNews",
 					type : "post",
 					data : _data,
 					success : function(data) {
-						
 						if (data.success) {
 							mui.toast("转办成功");
 							mui.back();
 						} else {
 							mui.toast(data.error);
 						}
-						
-						
 					}
 				});
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+				
+				
 			
 		});
 		
 		
-		//获取单选框的值
-		function getVals(){
-		    var res = getRadioRes('rds');
-		    if(res == null){mui.toast('请选择'); return;}
-		    mui.toast(res);
-		}
 		
-		
-		//获取复选框的值
-		function getcheckVals(){
-		    var res = getCheckBoxRes('cks');
-		    if(res.length < 1){
-		        mui.toast('请选择');
-		        return;
-		    }
-		    mui.toast(res);
-		}
 		
 		
 		function getRadioRes(className){
