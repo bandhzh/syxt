@@ -87,8 +87,8 @@ padding:.5rem .8rem
 
 <input type="hidden" id="initData" value='${initData!}'>
 <script type="text/javascript">
-var initData = {};
-if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+	var initData = {};
+	if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 </script>
 
 
@@ -320,7 +320,7 @@ $(document).ready(function() {
 	//舆情批示
 	mui('body').on('tap','.pishi',function(){
 		mui('#offCanvasWrapper').offCanvas('close');
-		datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}]}
+		datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}]};
 		_url = 'ajaxlistOpinionByInstruction';
 		$("#dianji").trigger("click");
 		swipernum=3;

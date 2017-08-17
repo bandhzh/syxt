@@ -52,11 +52,6 @@ public class RegUserController extends BaseController{
 		model.put("state", state);
 		
 		
-		
-		
-		
-		
-		
 		return "phoneui/login";
 	}
 	

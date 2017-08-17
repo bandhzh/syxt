@@ -28,7 +28,7 @@
       				type:'post',
       				success:function(data){
       					if(data.success){//有标识则转到 手势解锁
-      						location.href='${ctxPath}/phoneui/unlock';	
+      						location.href='${ctxPath}/phoneui/unlock?imei='+plus.device.imei;	
       					}
       				}
       			});
@@ -46,7 +46,7 @@
       <form action="#">
 		    <div class="log">
 		         <div class="form-input"> <input type="text" placeholder="用户名" id="loginName" name="username"  class="font-avenir"/></div>
-		         <div class="form-input"> <input type="password" placeholder="Password" id="password" name="password" class="font-avenir"/></div>
+		         <div class="form-input"> <input type="password" placeholder="密码" id="password" name="password" class="font-avenir"/></div>
 	        </div>
 	  
 	      <div class="hei"></div>

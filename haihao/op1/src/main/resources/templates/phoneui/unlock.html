@@ -25,6 +25,7 @@
 <header class="mui-bar mui-bar-nav">
 			<h1 class="mui-title">解锁</h1>
 		</header>
+		
 		<div class="mui-content">
 			<div class="mui-content-padded" style="margin: 10px 0px;">
 				<div class="mui-locker" data-locker-options='{"ringColor":"rgba(221,221,221,1)","fillColor":"#ffffff","pointColor":"rgba(0,136,204,1)","lineColor":"rgba(0,136,204,1)"}' data-locker-width='320' data-locker-height='320'>
@@ -40,52 +41,31 @@
 			(function($, doc) {
 				$.init();
 				$.plusReady(function() {
-					var mainPage = $.preload({
-						"id": 'main',
-						"url": '${ctxPath}/phoneui/usercenter'//登录成功
-					});
+					
 					var toMain = function() {
-						$.fire(mainPage, 'show', null);
-						setTimeout(function() {
-							$.openWindow({
-								id: 'main',
-								show: {
-									aniShow: 'pop-in'
-								},
-								waiting: {
-									autoShow: false
-								}
-							});
-						}, 0);
+						location.href="${ctxPath}/phoneui/usercenter";
 					};
-					var settings = app.getSettings();
+					
+					
 					var forgetButton = doc.getElementById("forget");
-					var locker = doc.querySelector('.mui-locker');
-					var clearStateAndToLogin = function() {
-						settings.gestures = '';
-						settings.autoLogin = false;
-						app.setSettings(settings);
-						var state = app.getState();
-						state.token = '';
-						app.setState(state);
-						$.openWindow({
-							url: '${ctxPath}/reguser/login?state=1',//返回登录页
-							id: 'login',
-							show: {
-								aniShow: 'pop-in'
-							},
-							waiting: {
-								autoShow: false
-							}
-						});
-					};
 					forgetButton.addEventListener('tap', function(event) {
 						clearStateAndToLogin();
 					});
+					
+					var locker = doc.querySelector('.mui-locker');
+					
+					var clearStateAndToLogin = function() {
+						location.href="${ctxPath}/reguser/login?state=1";
+					};
+					
+					
 					var tryNumber = 5;
 					locker.addEventListener('done', function(event) {
+						
 						var rs = event.detail;
-						if (settings.gestures == rs.points.join('')) {
+						if (rs.points.join('') == "${usermodel.gesture}") {
+							
+							plus.nativeUI.toast("解锁登录成功！");
 							toMain()
 							rs.sender.clear();
 						} else {
@@ -98,6 +78,8 @@
 							}
 						}
 					}, false);
+					
+					
 					var backButtonPress = 0;
 					$.back = function(event) {
 						backButtonPress++;

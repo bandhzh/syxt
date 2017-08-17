@@ -151,6 +151,9 @@ public class PhoneController extends BaseController{
 		model.update();
 	
 		return resultDto;
+		
+		
+		
 	}
 	
 	
@@ -163,6 +166,7 @@ public class PhoneController extends BaseController{
 		
 		String imei= request.getParameter("imei");//设备标识
 		UserModel model = UserModel.dao.findFirst(ToolSqlXml.getSql("com.user.getByimei"),imei);
+		
 		
 		if(null==model){
 			resultDto.setSuccess(false);
@@ -183,7 +187,11 @@ public class PhoneController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = { "/unlock"})
-	public String unlock(Map<String, Object> model) {
+	public String unlock(Map<String, Object> model,HttpServletRequest request) {
+		
+		String imei= request.getParameter("imei");//设备标识
+		UserModel usermodel = UserModel.dao.findFirst(ToolSqlXml.getSql("com.user.getByimei"),imei);
+		model.put("usermodel", ModelKit.toMap(usermodel));
 		
 		return "phoneui/unlock";
 	}
@@ -861,16 +869,6 @@ public class PhoneController extends BaseController{
 	}
 	
 	
-	/**
-	 * 通讯录
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = { "/book"})
-	public String book(Map<String, Object> model) {
-		
-		return "phoneui/book";
-	}
 	
 	
 	/**

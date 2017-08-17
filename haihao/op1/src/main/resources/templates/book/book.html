@@ -14,16 +14,12 @@
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
+
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
 <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-  	mui.init({
-  		swipeBack:true //启用右滑关闭功能
-  	});
-  
-</script>
+
 <style>
 .content .swiper-slide {
 	padding: 0 20px;
@@ -39,9 +35,18 @@
 </style>
 </head>
 <body class="chat mbsc-fr-lock">
+
+<input type="hidden" id="initData" value='${initData!}'>
+<script type="text/javascript">
+	var initData = {};
+	if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+</script>
+
+
+
 <header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-back"></a>
   <h1 class="mui-title">通讯录</h1>
-  <a class=" mui-btn mui-btn-blue mui-btn-link mui-pull-right" >保存</a>
+  <!-- <a class=" mui-btn mui-btn-blue mui-btn-link mui-pull-right" >保存</a> -->
 </header>
 <div class="heihead"></div>
 
@@ -50,7 +55,7 @@
     <div class="mui-content">
     <div class="mid">
     <div class="pad">
-    	<b>TO：</b><font class="blue">选择联系人进行创建讨论组</font><!--  and <font class="blue">1 ohter</font> -->
+    	<b>TO：</b><font class="blue">点击联系人查看详情</font><!--  and <font class="blue">1 ohter</font> -->
     </div>
     <div class="line"></div>
     </div>
@@ -313,4 +318,28 @@
 </body>
 <!-- 返回上一步操作 -->
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
+<script type="text/javascript">
+  	mui.init({
+  		swipeBack:true //启用右滑关闭功能
+  	});
+  	$(document).ready(function() {
+  		var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[]};
+  		$.ajax({
+			url : "${ctxPath}/book/ajaxlistUser",
+			type : "post",
+			data :{data:JSON.stringify(datajson)},
+			dataType: "json",
+			success : function(data) {
+				
+			}
+			
+  		});
+  		
+  		
+  		
+  	});
+</script>
+
+
+
 </html>
