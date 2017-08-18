@@ -21,7 +21,7 @@
       	//检测当前设备是否已经登录过了
      	mui.plusReady(function(){//设备唯一标识
      		
-     		if("${state}"!=1){//使用手势密码
+     		if("${state!}"!=1){//使用手势密码
      			mui.ajax('${ctxPath}/phoneui/ajaxcheckimei',{
       				data:{imei:plus.device.imei},
       				dataType:'json',
@@ -29,6 +29,8 @@
       				success:function(data){
       					if(data.success){//有标识则转到 手势解锁
       						location.href='${ctxPath}/phoneui/unlock?imei='+plus.device.imei;	
+      					}else{
+      						location.href="${ctxPath}/reguser/login?state=1";
       					}
       				}
       			});

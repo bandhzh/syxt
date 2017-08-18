@@ -9,6 +9,10 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 		<link href="${ctxPath}/static/assets/phoneui/css/mui.min.set.css" rel="stylesheet"/>
+		<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
+		<script src="${ctxPath}/static/assets/phoneui/js/mui.view.js "></script>
+		<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
+	
 		<style>
 			html,
 			body {
@@ -160,6 +164,14 @@
 	</head>
 
 	<body class="mui-fullscreen">
+	
+		<input type="hidden" id="initData" value='${initData!}'>
+		<script type="text/javascript">
+			var initData = {};
+			if(jQuery("#initData").val())initData = jQuery.parseJSON(jQuery("#initData").val());
+		</script>
+		
+		
 		<!--页面主结构开始-->
 		<div id="app" class="mui-views">
 			<div class="mui-view">
@@ -219,7 +231,7 @@
 						</ul>
 						<ul class="mui-table-view">
 							<li class="mui-table-view-cell" style="text-align: center;">
-								<a onclick="${ctxPath}/reguser/login">退出登录</a>
+								<a id="outbtn">退出登录</a>
 							</li>
 						</ul>
 					</div>
@@ -250,7 +262,7 @@
 								<a>昵称<span class="mui-pull-right">${authenticationFn().userDto.displayName}</span></a>
 							</li>
 							<li class="mui-table-view-cell">
-								<a>部门<span class="mui-pull-right">${authenticationFn().userDto.departmentId}</span></a>
+								<a>部门<span class="mui-pull-right departmentname"></span></a>
 							</li>
 						</ul>
 						<ul class="mui-table-view">
@@ -419,10 +431,7 @@
 
 		
 	</body>
-	<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
-	<script src="${ctxPath}/static/assets/phoneui/js/mui.view.js "></script>
-	
-	<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
+
 	<script>
 		mui.init();
 		//初始化单页view
@@ -447,6 +456,12 @@
 			}
 			
 		});
+		
+		document.getElementById("outbtn").addEventListener('tap', function() {
+			location.href="${ctxPath}/login?logout";
+		});
+		
+		
 		
 	
 		var view = viewApi.view;
@@ -501,6 +516,19 @@
 			e.stopPropagation();
 		});
 		
+
+		 function listFormatter(columnDef, value){
+		     	var _items = initData[columnDef.id];
+		     	 for(var i = 0;i < _items.length;i++){
+		     		 var j = _items[i];
+		   				 if(j["id"] == value){
+		   					 return j["label"];
+		   				 }
+		     	 }
+		     }
+		 jQuery(document).ready(function() {
+			 jQuery(".departmentname").html(listFormatter({id:"departments"},"${authenticationFn().userDto.departmentId}"));
+		 });
 		
 	
 	</script>
