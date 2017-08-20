@@ -44,17 +44,6 @@ import com.jfinal.plugin.activerecord.Record;
 @RequestMapping(value = "/news")
 public class NewsController extends BaseController{
 	
-	@RequestMapping(value = { "", "/", "/index" })
-	public String index(Map<String, Object> model) {
-		
-		
-		
-		return "news/addnews";
-	}
-	
-	
-	
-	
 	
 	/**
 	 * pc后台 新闻管理列表
@@ -506,29 +495,6 @@ public class NewsController extends BaseController{
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * app 用户新增新闻
 	 * @param model
@@ -575,15 +541,22 @@ public class NewsController extends BaseController{
 			}
 		});
 		
-		resultDto.setSuccess(true);
-			
-		
-	
 		return resultDto;
-		
-	
 	}
 	
+	
+	
+	
+	@RequestMapping("/removeNews")
+	@ResponseBody
+	public ResultDto removeNews(HttpServletRequest request) {
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		for (String id : requestDTO.getData().get("ids").toString().split(",")) {
+			Db.update("update op_news set enabled = -1 where id = ?", id);
+		}
+		return resultDto;
+	}
 	
 	
 

@@ -29,6 +29,8 @@ import com.haihao.dto.SecurityUser;
 import com.haihao.jfinal.ModelKit;
 import com.haihao.jfinal.SqlXmlPlugin;
 import com.haihao.jfinal.ToolModel;
+import com.haihao.model.baoliao.BaoliaoModel;
+import com.haihao.model.reguser.RegUserModel;
 import com.haihao.model.security.DepartmentManagerModel;
 import com.haihao.model.security.DepartmentModel;
 import com.haihao.model.security.ListModel;
@@ -51,6 +53,7 @@ public class SecurityController extends BaseController {
 	@RequestMapping(value = { "", "/", "/index" })
 	public String index(Map<String, Object> model) {
 		model.put("htmlContent", "/templates/security/user.html");
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		SecurityUser principal = (SecurityUser) authentication.getPrincipal();
 		model.put("userDto", principal.getUserDto());
@@ -365,7 +368,7 @@ public class SecurityController extends BaseController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("loginName", model.getStr("loginName"));
 		map.put("id", model.get("id"));
-		Long queryInt = Db.queryLong(ToolSqlXml.getSql("com.department.exist", map), model.getStr("loginName"));
+		Long queryInt = Db.queryLong(ToolSqlXml.getSql("com.user.exist", map), model.getStr("loginName"));//department
 		if(queryInt > 0)throw new ServiceException("登录名称已经存在");
 		Db.tx(new IAtom() {
 
@@ -384,6 +387,87 @@ public class SecurityController extends BaseController {
 		});
 		return resultDto;
 	}
+	
+	
+	
+	/**
+	 * 将app端申请的用户 新增到正式表中
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/ajaxregsaveUser")
+	@ResponseBody
+	public ResultDto ajaxregsaveUser(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		
+		UserModel model = getModel(request, UserModel.class);
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		
+		String loginName= request.getParameter("loginName");
+		String id= request.getParameter("reguserid");
+		
+		RegUserModel regusermodel = RegUserModel.dao.findById(Integer.parseInt(id));
+		
+		
+		map.put("loginName", loginName);
+		map.put("id", id);
+		Long queryInt = Db.queryLong(ToolSqlXml.getSql("com.user.exist", map), loginName);
+		if(queryInt > 0)throw new ServiceException("登录名称已经存在");
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("loginName", loginName);
+					model.set("displayName", request.getParameter("displayName"));
+					model.set("roleId", Integer.parseInt(request.getParameter("roleIds2")));
+					model.set("departmentId", Integer.parseInt(request.getParameter("departmentId2")));
+					model.set("mobile", request.getParameter("mobile"));
+					model.set("gender", Integer.parseInt(request.getParameter("gender")));
+					model.set("supervised", Integer.parseInt(request.getParameter("supervised")));
+					model.set("thinkTank", Integer.parseInt(request.getParameter("thinkTank")));
+					model.set("password", request.getParameter("password"));
+					model.set("enable", 1);
+					model.save();
+				}else{
+					model.update();
+				}
+				
+				
+				regusermodel.set("loginName", loginName);
+				regusermodel.set("displayName", request.getParameter("displayName"));
+				regusermodel.set("roleId", Integer.parseInt(request.getParameter("roleIds2")));
+				regusermodel.set("departmentId", Integer.parseInt(request.getParameter("departmentId2")));
+				regusermodel.set("mobile", request.getParameter("mobile"));
+				regusermodel.set("gender", Integer.parseInt(request.getParameter("gender")));
+				regusermodel.set("supervised", Integer.parseInt(request.getParameter("supervised")));
+				regusermodel.set("thinkTank", Integer.parseInt(request.getParameter("thinkTank")));
+				regusermodel.set("password", request.getParameter("password"));
+				regusermodel.set("enable", 1);
+				regusermodel.update();
+				
+				
+				
+				
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping("/removeUser")
 	@ResponseBody

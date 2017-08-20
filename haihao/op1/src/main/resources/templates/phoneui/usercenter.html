@@ -4,88 +4,227 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>个人中心</title>
-    
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-	<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-	
     <link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
     <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
     <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
     <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
     <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-      	mui.init();
-    </script>
+   
+	
+	<style>
+		/*跨webview需要手动指定位置*/
+		
+		.mui-plus .mui-bar-nav~.mui-content {
+			padding: 0!important;
+		}
+		
+		.mui-plus .plus{
+			display: inline;
+		}
+		
+		
+		.mui-plus.mui-android .mui-bar-nav~.mui-content{
+			padding: 0;
+		}
+			
+		#topPopover {
+			position: fixed;
+			top: 16px;
+			right: 6px;
+		}
+		#topPopover .mui-popover-arrow {
+			left: auto;
+			right: 6px;
+		}
+		
+		span.mui-icon {
+			font-size: 14px;
+			color: #007aff;
+			margin-left: -15px;
+			padding-right: 10px;
+		}
+		
+		@media (min-width:320px){
+
+		   .mui-popover {
+				 height: 240px;
+			}
+		
+		}
+		
+		@media (min-width:360px){
+
+		   .mui-popover {
+				 height: 260px;
+			}
+		
+		}
+		
+		
+		@media (min-width:375px){
+			.mui-popover {
+					 height: 300px;
+				}
+		}
+		
+		@media (min-width:414px){
+			.mui-popover {
+					 height: 310px;
+				}
+		}
+		
+		@media (min-width:640px){
+			.mui-popover {
+					 height: 640px;
+				}
+		}
+		
+		@media (min-width:960px){
+			.mui-popover {
+					 height: 920px;
+				}
+		}
+		
+		body{
+			background: -webkit-gradient(linear, 0 0, 0 bottom, from(#f6f9f9), to(#d3d3d4));
+		}
+		
+	</style>
 </head>
 <body class="home">
+
+	<input type="hidden" id="initData" value='${initData!}'>
+	<script type="text/javascript">
+		var initData = {};
+		if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+	</script>
+
+
 	<header class="mui-bar mui-bar-nav">
 		<a  href="${ctxPath}/phoneui/setting" class="mui-icon mui-icon-gear-filled"></a>
 		<h1 class="mui-title">个人中心</h1>
-		<a href="${ctxPath}/phoneui/userinfo" class="mui-icon mui-icon-person right"></a>
+		<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#topPopover"></a>
 	</header>
 	<div class="heihead"></div>
 	<div class="mui-content">
 		<div class="banner">
-			<img src="${ctxPath}/static/assets/phoneui/img/user_06.jpg" width="100%" />
+			<img src="${ctxPath}/static/assets/phoneui/img/user_06.png" width="100%" style="box-shadow:7px 1px 39px #c3bdbd;" />
 		</div>
 		<div class="mui-text-center u-text pad">
-			<h1 class="font-avenir" style="color: #536a78; padding: .4rem 0">区委宣传部</h1>
-			<!-- <p class="grew">
-				San fanctisd,co<br> 26years
-			</p> -->
+			<h1 class="font-avenir departmentname" style="color: #536a78; padding: .4rem 0">区委宣传部</h1>
 		</div>
 		<ul class="mui-table-view mui-grid-view mui-grid-9">
+			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u1.jpg" width="90%"></P>
-					<div class="mui-media-body">安全</div>
-				</a>
-			</li>
-			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u2.jpg" width="90%"></P>
+				<a href="javscript:void(0);" class="daikaifang">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u2.png" width="90%"></P>
 					<div class="mui-media-body">马上办</div>
 				</a>
 			</li>
+			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u3.jpg" width="90%"></P>
-					<div class="mui-media-body">信访</div>
+				<a href="javscript:void(0);" class="daikaifang">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u1.png" width="90%"></P>
+					<div class="mui-media-body">安全</div>
 				</a>
 			</li>
+			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 				<a href="${ctxPath}/phoneui/listnewsblock">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u5.jpg" width="90%"></P>
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u5.png" width="90%"></P>
 					<div class="mui-media-body">新闻</div>
 				</a>
 			</li>
+			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/message">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u4.jpg" width="90%"></P>
-					<div class="mui-media-body">消息中心</div>
+				<a href="javscript:void(0);" class="daikaifang">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u3.png" width="90%"></P>
+					<div class="mui-media-body">信访</div>
+				</a>
+			</li>
+			
+			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<a href="${ctxPath}/phoneui/listopinionsblock">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u6.png" width="90%"></P>
+					<div class="mui-media-body">舆情</div>
 				</a>
 			</li>
 			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/todolist">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u6.jpg" width="90%"></P>
-					<div class="mui-media-body">待办事项</div>
-				</a>
-			</li>
-			
-		
-			
-			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/listgroups">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u6.jpg" width="90%"></P>
-					<div class="mui-media-body">讨论组</div>
+				<a href="${ctxPath}/phoneui/setting">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u7.png" width="90%"></P>
+					<div class="mui-media-body">设置</div>
 				</a>
 			</li>
 			
 			
 		</ul>
 	</div>
+	
+	
+	<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						
+						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/message">消息中心<span class="mui-badge mui-badge-primary">11</span></a></li>
+						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/todolist">待办事项<span class="mui-badge mui-badge-danger">44</span></a></li>
+						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/listgroups">讨论组</a></li>
+						<li class="mui-table-view-cell"><a href="${ctxPath}/book/book">通讯录</a></li>
+						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/setting">设置</a></li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	
 </body>
+
+ <script>
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+		mui('.mui-scroll-wrapper').scroll();
+		mui('body').on('shown', '.mui-popover', function(e) {
+			//console.log('shown', e.detail.id);//detail为当前popover元素
+		});
+		mui('body').on('hidden', '.mui-popover', function(e) {
+			//console.log('hidden', e.detail.id);//detail为当前popover元素
+		});
+		
+		mui('body').on('tap','a',function(){document.location.href=this.href;});
+		
+		mui('body').on('tap','.daikaifang',function(){
+			
+			mui.alert("攻城狮正在血战……", '助手', function() {
+				
+			});
+		});
+		
+		
+		
+		
+		
+		 function listFormatter(columnDef, value){
+		     	var _items = initData[columnDef.id];
+		     	 for(var i = 0;i < _items.length;i++){
+		     		 var j = _items[i];
+		   				 if(j["id"] == value){
+		   					 return j["label"];
+		   				 }
+		     	 }
+		     }
+		 $(document).ready(function() {
+			 $(".departmentname").html(listFormatter({id:"departments"},"${authenticationFn().userDto.departmentId}"));
+		 });
+		 
+		
+		
+		
+	</script>
+	
 </html>

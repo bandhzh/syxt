@@ -25,11 +25,14 @@ import com.haihao.dto.SQLCallback;
 import com.haihao.dto.SendmsDTO;
 import com.haihao.jfinal.ModelKit;
 import com.haihao.jfinal.ToolModel;
+import com.haihao.model.baoliao.AccessTokenCustom;
+import com.haihao.model.baoliao.AccessUserInfo;
 import com.haihao.model.baoliao.BaoliaoModel;
 import com.haihao.model.opinion.OpinionModel;
 import com.haihao.service.ServiceException;
 import com.haihao.tool.ToolSecurity;
 import com.haihao.tool.ToolString;
+import com.haihao.utils.AccessTokenUtil;
 import com.haihao.utils.SMSUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
@@ -66,18 +69,18 @@ public class BaoliaoController extends BaseController{
 		
 		
 		//获取微信端用户授权信息
-//		String code=request.getParameter("code");
-//	    String oppenId="";
-//	    AccessUserInfo accessUserInfo=(AccessUserInfo)session.getAttribute("accessUserInfo");
-//	    if(null==accessUserInfo){
-//	    	 AccessTokenCustom accessTokenCustom=AccessTokenUtil.getAccessToken(code);
-//	    	 String  accessToken= accessTokenCustom.getAccessToken();
-//	    	 oppenId =accessTokenCustom.getOpenId();
-//		 	 accessUserInfo = AccessTokenUtil.geAccesstUserInfo(accessToken, oppenId);
-//		 	 session.setAttribute("accessUserInfo", accessUserInfo);
-//	    }
-//	    
-//	    request.setAttribute("accessUserInfo",accessUserInfo);
+		String code=request.getParameter("code");
+	    String oppenId="";
+	    AccessUserInfo accessUserInfo=(AccessUserInfo)session.getAttribute("accessUserInfo");
+	    if(null==accessUserInfo){
+	    	 AccessTokenCustom accessTokenCustom=AccessTokenUtil.getAccessToken(code);
+	    	 String  accessToken= accessTokenCustom.getAccessToken();
+	    	 oppenId =accessTokenCustom.getOpenId();
+		 	 accessUserInfo = AccessTokenUtil.geAccesstUserInfo(accessToken, oppenId);
+		 	 session.setAttribute("accessUserInfo", accessUserInfo);
+	    }
+	    
+	    request.setAttribute("accessUserInfo",accessUserInfo);
 		
 		
 		
@@ -137,21 +140,20 @@ public class BaoliaoController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = { "/getschedule"})
-	public String getschedule(Map<String, Object> model) {
+	public String getschedule(Map<String, Object> model,HttpSession session) {
 		
 		
 		//获取授权信息
-//		AccessUserInfo accessUserInfo=(AccessUserInfo)session.getAttribute("accessUserInfo");
-		String openid="ss";
-//		
-//	    if(null==accessUserInfo){//从其他路径进入
-//	    	
-//	    }else{
+		AccessUserInfo accessUserInfo=(AccessUserInfo)session.getAttribute("accessUserInfo");
+		
+	    if(null==accessUserInfo){//从其他路径进入
+	    	
+	    }else{
 	    	//检测当前用户发布的报料
 	    	
 			Map<String, Object> map = new HashMap<String, Object>();
 			
-			map.put("openid", openid);//accessUserInfo.getOpenId()
+			map.put("openid", accessUserInfo.getOpenId());//accessUserInfo.getOpenId()
 			
 			List<Record> listbaoliaoings = Db.find(ToolSqlXml.getSql("com.baoliao.selectbaoliaobyopeniding",map));//处理中
 			map.put("listbaoliaoings", ToolModel.recordListConvert(listbaoliaoings));
@@ -162,7 +164,7 @@ public class BaoliaoController extends BaseController{
 			
 			
 			model.put("initData", JSON.toJSONString(map));
-//	    }
+	    }
 			
 		
 		return "baoliao/getschedule";
@@ -249,7 +251,7 @@ public class BaoliaoController extends BaseController{
 		int code =1 + (int)(Math.random() * ((999999 - 1) + 1));
 		
 		
-		System.out.println(code+"验证码");
+		logger.info(code+"验证码");
 		session.setAttribute("code", code);
 		
 		try {
@@ -259,7 +261,7 @@ public class BaoliaoController extends BaseController{
 	            @Override
 	            public void run() {
 	            	session.removeAttribute("code");
-	                System.out.println("code清除成功");
+	                logger.info("code清除成功");
 	                timer.cancel();
 	            }
 	        },3*60*1000);
@@ -466,7 +468,7 @@ public class BaoliaoController extends BaseController{
 						
 						model.save();
 						
-						System.out.println(model.get("id"));
+						logger.info(model.get("id"));
 						baoliaomodel.set("opinionid", model.get("id"));
 						
 						

@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>处理中心</title>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-	<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
 	
 <link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
@@ -46,27 +46,28 @@
 <div class="content ">
   <div id="header">
 
-    <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">  <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-      <div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>今日</small></a></div>
-      <div class="swiper-slide"><a class="mui-control-item"  href="#item2mobile"><small>昨日</small></a></div>
-      <div class="swiper-slide"><a class="mui-control-item" href="#item3mobile"><small>本周</small></a></div>
-      <div class="swiper-slide"><a class="mui-control-item" href="#item4mobile"><small>本月</small></a></div>
-    </div>
+    <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
+	    <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+	      <div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>今日</small></a></div>
+	      <div class="swiper-slide"><a class="mui-control-item"  href="#item2mobile"><small>昨日</small></a></div>
+	      <div class="swiper-slide"><a class="mui-control-item" href="#item3mobile"><small>本周</small></a></div>
+	      <div class="swiper-slide"><a class="mui-control-item" href="#item4mobile"><small>本月</small></a></div>
+	    </div>
     </div>  
   </div>
 
 
   <script type="text/javascript">
-window.onload = function() {
-  var mySwiper1 = new Swiper('#header',{
-	  freeMode : true,
-	  slidesPerView : 'auto',
-	  freeModeSticky : true ,
-  });
-  
-  
-}
-</script>
+	window.onload = function() {
+	  var mySwiper1 = new Swiper('#header',{
+		  freeMode : true,
+		  slidesPerView : 'auto',
+		  freeModeSticky : true ,
+	  });
+	  
+	  
+	}
+	</script>
   <div class="mui-content">
   <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
     <div class="event pad">
@@ -84,6 +85,7 @@ window.onload = function() {
           <p class="black">深南中路，交通事故造成3人受伤，现场发生塌陷<span class="mui-icon mui-icon-location-filled grew2  right"></span></p>
         </div>
       </div>
+      
       <div class="ev">
         <div class="mui-text-center">某某路发生特大交通事故</div>
         <div> <span class="mui-col-xs-6 mui-col-sm-6 mui-pull-left bodr"><img class="mui-media-object mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
@@ -94,7 +96,7 @@ window.onload = function() {
           <p class="black">6:00 AM<span class="ico20"></span></p>
           </span> </div>
         <p class="mui-clearfix"></p>
-        <div> <small class="grew font-sm">备注</small>
+        <div> <small class="grew">备注</small>
           <p class="black">深南中路，交通事故造成3人受伤，现场发生塌陷<span class="mui-icon mui-icon-location-filled grew2  right"></span></p>
         </div>
       </div>

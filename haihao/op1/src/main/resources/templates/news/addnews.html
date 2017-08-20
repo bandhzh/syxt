@@ -92,7 +92,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				<i class="icon-arrow-left"></i>
 			</a>
 			<span class="js-header-name header-name l"> 添加新闻 </span> 
-			<a href="mycenter" class="right-box r js-header-avator">
+			<a href="${ctxPath}/phoneui/usercenter" class="right-box r js-header-avator">
 				<img src="http://img.mukewang.com/user/54584cc500019c5b02200220-40-40.jpg" width="40" height="40">
 			</a>
 			<a class="header-share r js-share" href="javascript:void(0);">
@@ -179,7 +179,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         	<h3 class="chapter-title">上传图片</h3>
 			<ul class="course-sections">
 				<li>
-					<input type="hidden" class="form-control columnName" id="mainImg" name="mainImg"> 
+					<input type="hidden" class="form-control columnName" id="mainImg" name="mainImg" columnName="newsModel.mainImg"> 
 					<input type="file" style="display: none;" id="upimgs">
                     <a class="btn btn-default btn-lg " id="pickfiles" href="#" > <i class="glyphicon glyphicon-plus"></i> <span>✚选择文件</span></a>
 				</li>
@@ -228,11 +228,14 @@ $(document).ready(function() {
           },
           'UploadComplete': function(up, file, info) {
           	
-        	  $(".icon-close").click(function(){
+        	  $(".icon-close").click(function(){//删除图片
         		  	var dimg = $(this).parent().parent().find("img").attr("alt");
         		  	$(this).parent().parent().remove();
        		  	  	var mainimg = $("#mainImg").val();
-        		  	$("#mainImg").val(mainimg.replace(dimg+",", ''));
+        		  	
+       		  	  	$("#mainImg").val(mainimg.replace(dimg+",", ''));
+        		  	
+        		  	
         		});
         	  
           },
@@ -240,7 +243,8 @@ $(document).ready(function() {
           	var _key = $.parseJSON(info).key;
           	var mainimg = $("#mainImg").val();
           	 
-          	$("#mainImg").val(_key+","+mainimg);
+          	$("#mainImg").val(_key+","+mainimg);/**+","+mainimg**/
+          	
 			
           	$("#imglistli").show();
 			$("#imglist").append("<div style='padding-left:10px;'><img src='"+window.qiniuDomainHttp + _key+"' style='max-width:30%;' alt='"+_key+"'/><span style='position:absolute;margin-left:5px;'><i class='icon-close'></i></span></div>");
@@ -269,7 +273,25 @@ $(document).ready(function() {
 	 $(".btn-course-green").click(function() {
 			if (newsform.valid()) {
 				var jsonData = {};
-
+				var mainimg = $("#mainImg").val();
+				var cont =$("#cont").val();
+				
+				var contimg = mainimg.split(",");
+				
+				var allcont="";
+				
+				for(var i=0 ;i<contimg.length-1;i++){
+					allcont += '<img src="'+window.qiniuDomainHttp+contimg[i]+'"/>';
+				}
+				
+				$("#cont").val(allcont+cont);
+	          	
+				
+				
+				$("#mainImg").val(mainimg.split(",")[0]);
+				
+				
+				
 				$("#newsform .columnName").each(function() {
 					if ($(this).val() != "") {
 						jsonData[$(this).attr("columnName")] = $(this).val();

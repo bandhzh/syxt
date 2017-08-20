@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>舆情中心-列表展示</title>
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+	
+	
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/mui.min.css">
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
+<link rel="stylesheet" type="text/css" href="${ctxPath}/static/assets/phoneui/css/icons-extra.css" />
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+
+<!-- 配置文件 -->
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/qiniuurl.js"></script>
+<script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
+
+
+<style>
+.content .swiper-slide {
+	padding: 0 5%;
+	width: auto;
+}
+.swiper-slide {
+	color: #999
+}
+#header {
+	width: 100%;
+	overflow: hidden
+}
+</style>
+</head>
+
+<body>
+
+<input type="hidden" id="initData" value='${initData!}'>
+<script type="text/javascript">
+var initData = {};
+if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+</script>
+
+
+<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable"> 
+  <!--侧滑菜单部分-->
+  <aside id="offCanvasSide" class="mui-off-canvas-left">
+    <div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+      <div class="mui-scroll">
+        <div class="title font-avenir" style="padding:30px 15px; color:#fff; font-size:1rem; letter-spacing:5px">区委宣传部</div>
+        <div class="content">
+          <button type="hidden" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px; display:none"></button>
+        </div>
+        <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
+	       
+			<li class="mui-table-view-cell mui-collapse">
+				<a class="mui-navigate-right" href="#">类别</a>
+				<div class="mui-collapse-content" id="typeid">
+					
+				</div>
+			</li>
+		
+	       <!--  <li class="mui-table-view-cell mui-collapse">
+				<a class="" href="${ctxPath}/news/toaddnews">我要发布</a>
+			</li> -->
+			
+			<li class="mui-table-view-cell mui-collapse">
+				<a class="" href="${ctxPath}/phoneui/usercenter">返回个人中心</a>
+			</li>
+	        <li class="mui-table-view-cell mui-collapse">
+				<a class="green" id="offCanvasHide"  href="#">关闭</a>
+			</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+  <!--主界面部分-->
+  <div class="mui-inner-wrap">
+    <header class="mui-bar mui-bar-nav bgh">
+    	<a class="mui-icon mui-icon-bars" href="#offCanvasSide"></a>
+      	<h1 class="mui-title">舆情中心</h1>
+      	<!-- <a class="mui-icon mui-icon-compose right"></a> -->
+      	<a href="${ctxPath}/phoneui/listopinionsblock" class="mui-icon mui-icon-settings right"></a>
+     </header>
+    <div class="heihead"></div>
+    <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+      <div class="mui-scroll">
+        <div class="">
+          <div class="content ">
+          <div class="heihead"></div>
+            <div id="header">
+              <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
+	              	<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+	              		<div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>公开舆情</small></a></div>
+		                <div class="swiper-slide "><a class="mui-control-item" href="#item2mobile"><small>舆情核实</small></a></div>
+		                <div class="swiper-slide"><a class="mui-control-item " href="#item3mobile"><small>舆情转办</small></a></div>
+		                <div class="swiper-slide"><a class="mui-control-item " href="#item4mobile"><small>舆情批示</small></a></div>
+	                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+				window.onload = function() {
+				  var mySwiper1 = new Swiper('#header',{
+					  freeMode : true,
+					  slidesPerView : 'auto',
+					  freeModeSticky : true ,
+				  });
+				  
+				  
+				}
+				</script>
+            <div class="mui-content">
+
+
+				<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+					<ul class="mui-table-view news wangluonews">
+					<!-- 网络舆情 -->
+						
+					
+						
+
+					</ul>
+				</div>
+				
+				<div id="item2mobile" class="mui-slider-item mui-control-content">
+					<ul class="mui-table-view news wangbaonews">
+					<!-- 舆情核实 -->
+					
+					
+						
+						
+
+					</ul>
+				</div>
+				
+				<div id="item3mobile" class="mui-slider-item mui-control-content">
+					<ul class="mui-table-view zhuanbannews">
+					<!-- 舆情转办 -->
+						
+
+					</ul>
+				</div>
+				
+				
+				<div id="item4mobile" class="mui-slider-item mui-control-content">
+					<ul class="mui-table-view pishinews">
+						<!-- 舆情批示 -->
+
+					</ul>
+				</div>
+				
+              
+            </div>
+          </div>
+          <div class="heihead"></div>
+          
+          <button id="offCanvasShow"  type="hidden" class="mui-btn mui-btn-primary mui-btn-block" style="padding: 10px; display:none"> </button>
+        </div>
+        <form class="mui-input-group" style="margin-bottom: 15px;display:none">
+          <div class="mui-input-row mui-radio mui-hidden" id="move-togger">
+            <label></label>
+            <input name="style" type="radio" value="all-move">
+          </div>
+        </form>
+        
+      </div>
+		<nav class="mui-bar mui-bar-tab foot">
+			<a class="mui-tab-item mui-active" href="#"> 
+				
+				<span class="mui-icon mui-icon-home"></span>
+				<p>首页</p>
+			</a>
+			<a class="mui-tab-item" href="#offCanvasSide">
+				<span class="mui-icon mui-icon-bars"></span>
+				<p>分类</p>
+			</a>
+			<a class="mui-tab-item " href="#">
+				<span class="mui-icon mui-icon-search"></span>
+				<p>搜索</p>
+			</a>
+			<a class="mui-tab-item" href="${ctxPath}/phoneui/usercenter">
+				<span class="mui-icon mui-icon-person"></span>
+				<p>个人中心</p>
+			</a>
+		</nav>
+	</div>
+    <!-- off-canvas backdrop -->
+    <div class="mui-off-canvas-backdrop"></div>
+  </div>
+</div>
+<script>
+          
+  $(".mui-table-view-cell a").click(function(){
+	  if($(this).parent().find("ul").hasClass("on")){
+		  
+		$(this).parent().find("ul").removeClass("on");
+		
+	  }else{
+		  
+		 $(this).parent().find("ul").addClass("on"); 
+		 
+	  }
+});
+  
+  
+  
+  
+  
+  function InitOpenNewsList(domId,initDataId){
+		$(".wangluonews").html("");
+		var _items = initData[initDataId];
+		for(var i = 0;i < _items.length;i++){
+			var j = _items[i];
+			
+				var starsval = listFormatter({id:"lists"},j["levelId"]);
+				var stars ='<span class="mui-icon mui-icon-star"></span>';
+				if(starsval=="0"){
+					stars='<span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
+				}
+				
+				if(starsval=="1星"){
+					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
+				}
+				if(starsval=="2星"){
+					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
+				}
+				if(starsval=="3星"){
+					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
+				}
+				if(starsval=="4星"){
+					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span>';
+				}
+				if(starsval=="5星"){
+					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span>';
+				}
+				
+				var status="";
+				if (j["status"] == "1") {
+					status= "核实中";
+				} else if (j["status"] == "2") {
+					status = "已核实";
+				} else if (j["status"] == "3") {
+					status = "已转办";
+				} else if (j["status"] == "10") {
+					status = "归档";
+				} else {
+					status = "待核实";
+				}
+
+				
+				
+	 			$(domId).append(
+	 							String.format('<li class="mui-table-view-cell mui-media">'
+	 									+'<a href="${ctxPath}/phoneui/opinionsinfo?id={6}">'
+	 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
+	 									+'<div class="mui-media-body">'
+	 									+'	<p><small class="blue">{1}</small> &nbsp; <small class="grew"></small></p>'
+	 									+'	<p class="hei"></p>'
+	 									+'	<p class="black ">{2}</p>'
+	 									+'	<p class="hei"></p>'
+	 									+'	<p><font class="black">{3}</font> <font class="grew"></font>&nbsp; &nbsp;{5}&nbsp; &nbsp;{4}</p>'
+	 									+'</div>'
+	 									+'</a>'
+	 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["subject"],j["memo"],listFormatter({id:"lists"},j["categoryId"]),dateFormatter(j["createdDate"]),status,j["id"])
+	 							
+	 							
+	 			);
+	 			
+	 			var swiper = new Swiper('.swiper-container', {
+	 			    pagination: '.swiper-pagination',  
+	 			    effect: 'coverflow',  
+	 			    grabCursor: true,  
+	 			    centeredSlides: true,  
+	 			    slidesPerView: 'auto',  
+	 				paginationType: 'fraction',
+	 			    coverflow: {  
+	 			        rotate: 0,// 旋转的角度  
+	 			        stretch: 100,// 拉伸   图片间左右的间距和密集度  
+	 			        depth: 120,// 深度   切换图片间上下的间距和密集度  
+	 			        modifier: 5,// 修正值 该值越大前面的效果越明显  
+	 			        slideShadows : true// 页面阴影效果  
+	 			    }  
+	 			}); 
+	 			
+		}
+	}
+	
+	InitOpenNewsList(".wangluonews", "listopennews");
+	
+	
+function listFormatter(columnDef, value){
+  	var _items = initData[columnDef.id];
+  	 for(var i = 0;i < _items.length;i++){
+  		 var j = _items[i];
+				 if(j["id"] == value){
+					 return j["label"];
+				 }
+  	 }
+  }
+  
+  function dateFormatter(value){
+			  var d = new Date();
+			  d.setTime(value);
+			  return d.pattern("MM-dd HH:mm");
+  }
+
+  function selectInitList(domId,initDataId,listId){
+  	var _items = initData[initDataId];
+  	$(domId).append(String.format('<p value="{0}">{1}</p>',"","全部"));
+  	for(var i = 0;i < _items.length;i++){
+  		var j = _items[i];
+  		if(j.listId == listId){
+   			$(domId).append(String.format('<p value="{0}">{1}</p>',j["id"],j["label"]));
+  		}
+  	}
+  }
+  
+  
+  selectInitList("#typeid", "lists", 1);
+  
+  
+  
+  
+  
+  
+  //舆情待核实
+  
+  var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
+  	$.ajax({
+  		url : "ajaxlistOpinionByVerify",
+  		type : "post",
+  		data :{data:JSON.stringify(datajson)},
+  		dataType: "json",
+  		success : function(data) {
+  			if (data.success) {//加载待核实舆情
+  				
+  				$(".wangbaonews").html("");
+  				
+  				
+  				$.each(data.results,function(i,val){
+  					
+  					var status="";
+  					if (val.status == "1") {
+  						status= "核实中";
+  					} else if (val.status == "2") {
+  						status = "已核实";
+  					} else if (val.status == "3") {
+  						status = "已转办";
+  					} else if (val.status == "10") {
+  						status = "归档";
+  					} else {
+  						status = "待核实";
+  					}
+  					
+  					
+  					$(".wangbaonews").append('<li class="mui-table-view-cell mui-media">'
+								+'<a href="${ctxPath}/phoneui/opinionsheshiinfo?id='+val.id+'">'
+								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
+								+'<div class="mui-media-body">'
+								+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
+								+'	<p class="hei"></p>'
+								+'	<p class="black ">'+val.memo+'</p>'
+								+'	<p class="hei"></p>'
+								+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+								+'</div>'
+								+'</a>'
+								+'</li>');
+  					
+  				})
+  				
+  			} else {//提示暂无
+  				$(".wangbaonews").html("暂无相关舆情！");
+  			}
+  		}
+  	});
+    	
+
+  	
+  	//舆情转办
+  	var datazbjson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
+   	$.ajax({
+   		url : "ajaxlistOpinionByTodo",
+   		type : "post",
+   		data :{data:JSON.stringify(datazbjson)},
+   		dataType: "json",
+   		success : function(data) {
+   			if (data.success) {//加载待核实舆情
+   				$(".zhuanbannews").html("");
+   				$.each(data.results,function(i,val){
+   					
+   					var status="";
+  					if (val.status == "1") {
+  						status= "核实中";
+  					} else if (val.status == "2") {
+  						status = "已核实";
+  					} else if (val.status == "3") {
+  						status = "已转办";
+  					} else if (val.status == "10") {
+  						status = "归档";
+  					} else {
+  						status = "待核实";
+  					}
+   					
+   					$(".zhuanbannews").append('<li class="mui-table-view-cell mui-media">'
+							+'<a href="${ctxPath}/phoneui/opinionszhuanbaninfo?id='+val.id+'">'
+							+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
+							+'<div class="mui-media-body">'
+							+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
+							+'	<p class="hei"></p>'
+							+'	<p class="black ">'+val.memo+'</p>'
+							+'	<p class="hei"></p>'
+							+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+							+'</div>'
+							+'</a>'
+							+'</li>');
+   					})
+   				
+   			} else {//提示暂无
+   				$(".zhuanbannews").html("暂无相关舆情！");
+   			}
+   		}
+   	});
+    
+   	
+   	//批示给我的舆情列表
+  	var datapsjson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"opinionModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"opinionModel.id","order":"desc"}]};
+   	$.ajax({
+   		url : "ajaxlistOpinionByInstruction",
+   		type : "post",
+   		data :{data:JSON.stringify(datapsjson)},
+   		dataType: "json",
+   		success : function(data) {
+   			if (data.success) {//加载待核实舆情
+   				$(".pishinews").html("");
+   				$.each(data.results,function(i,val){
+   					
+   					var status="";
+  					if (val.status == "1") {
+  						status= "核实中";
+  					} else if (val.status == "2") {
+  						status = "已核实";
+  					} else if (val.status == "3") {
+  						status = "已转办";
+  					} else if (val.status == "10") {
+  						status = "归档";
+  					} else {
+  						status = "待核实";
+  					}
+   					
+   					$(".pishinews").append('<li class="mui-table-view-cell mui-media">'
+							+'<a href="${ctxPath}/phoneui/opinionspishiinfo?id='+val.id+'">'
+							+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
+							+'<div class="mui-media-body">'
+							+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
+							+'	<p class="hei"></p>'
+							+'	<p class="black ">'+val.memo+'</p>'
+							+'	<p class="hei"></p>'
+							+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+							+'</div>'
+							+'</a>'
+							+'</li>');
+   					})
+   				
+   			} else {//提示暂无
+   				$(".pishinews").html("暂无相关舆情！");
+   			}
+   		}
+   	});
+   	
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</script>
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
+<script>
+	mui.init({
+		//swipeBack:true //启用右滑关闭功能
+	});
+	
+	//解决a标签失效的问题
+	mui('body').on('tap','a',function(){document.location.href=this.href;});
+	
+	
+	 //侧滑容器父节点
+	var offCanvasWrapper = mui('#offCanvasWrapper');
+	 //主界面容器
+	var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
+	 //菜单容器
+	var offCanvasSide = document.getElementById("offCanvasSide");
+	if (!mui.os.android) {
+		document.getElementById("move-togger").classList.remove('mui-hidden');
+		var spans = document.querySelectorAll('.android-only');
+		for (var i = 0, len = spans.length; i < len; i++) {
+			spans[i].style.display = "none";
+		}
+	}
+	 //移动效果是否为整体移动
+	var moveTogether = false;
+	 //侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果；
+	var classList = offCanvasWrapper[0].classList;
+	 //变换侧滑动画移动效果；
+	mui('.mui-input-group').on('change', 'input', function() {
+		if (this.checked) {
+			offCanvasSide.classList.remove('mui-transitioning');
+			offCanvasSide.setAttribute('style', '');
+			classList.remove('mui-slide-in');
+			classList.remove('mui-scalable');
+			switch (this.value) {
+				case 'main-move':
+					if (moveTogether) {
+						//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+						offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+					}
+					break;
+				case 'main-move-scalable':
+					if (moveTogether) {
+						//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+						offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+					}
+					classList.add('mui-scalable');
+					break;
+				case 'menu-move':
+					classList.add('mui-slide-in');
+					break;
+				case 'all-move':
+					moveTogether = true;
+					//整体滑动时，侧滑菜单在inner-wrap内
+					offCanvasInner.insertBefore(offCanvasSide, offCanvasInner.firstElementChild);
+					break;
+			}
+			offCanvasWrapper.offCanvas().refresh();
+		}
+	});
+	 //主界面‘显示侧滑菜单’按钮的点击事件
+	document.getElementById('offCanvasShow').addEventListener('tap', function() {
+		offCanvasWrapper.offCanvas('show');
+	});
+	 //菜单界面，‘关闭侧滑菜单’按钮的点击事件
+	document.getElementById('offCanvasHide').addEventListener('tap', function() {
+		offCanvasWrapper.offCanvas('close');
+	});
+	 //主界面和侧滑菜单界面均支持区域滚动；
+	mui('#offCanvasSideScroll').scroll();
+	mui('#offCanvasContentScroll').scroll();
+	 //实现ios平台原生侧滑关闭页面；
+	if (mui.os.plus && mui.os.ios) {
+		mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
+			plus.webview.currentWebview().setStyle({
+				'popGesture': 'none'
+			});
+		});
+	}
+</script>
+     
+</body>
+</html>

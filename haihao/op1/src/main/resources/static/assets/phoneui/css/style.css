@@ -512,9 +512,12 @@ div.message.right .corner{
 .news2 .mui-bar{background:#242a34}
 
 .mywidth::after{ clear:both; content:""; display:block}
+input[type=button].ok{ background:#01bad4; padding-left:0 !important; width:100%; border:none; color:#fff !important; font-size:.6rem !important;}
 input[type=submit].ok{ background:#01bad4; padding-left:0 !important; width:100%; border:none; color:#fff !important; font-size:.6rem !important;}
-.content input#num{ text-indent:1.2rem; background:none; background:url(../img/ico2.png) no-repeat  left; background-position:5px 5px; background-size: auto 70%}
-.content input#psd{ text-indent:1.2rem; background:none; background:url(../img/ico1.png) no-repeat  left;  background-position:5px 5px;background-size: auto 70%}
+.content input#mobile{ text-indent:1.2rem; background:none; background:url(../img/ico2.png) no-repeat  left; background-position:5px 5px; background-size: auto 70%}
+.content input#password{ text-indent:1.2rem; background:none; background:url(../img/ico1.png) no-repeat  left;  background-position:5px 5px;background-size: auto 70%}
+.content input#dpassword{ text-indent:1.2rem; background:none; background:url(../img/ico1.png) no-repeat  left;  background-position:5px 5px;background-size: auto 70%}
+.content input#yzm{ text-indent:1.2rem; background:none; background:url(../img/icoyz.png) no-repeat  left;  background-position:5px 5px;background-size: auto 70%}
 .content input#affirm{ text-indent:1.2rem; }
 .ico5{display:inline-block; width:0.6rem; height:.6rem; position:relative; top:0.1rem; margin-right:5px; background:url(../img/ico5.png) no-repeat  left; background-size: 95% }
 .ico6{display:inline-block; width:0.6rem; height:.6rem; position:relative; top:0.1rem; margin-right:5px; background:url(../img/ico6.png) no-repeat  left; background-size: 95% }
@@ -551,6 +554,7 @@ input[type=submit].ok{ background:#01bad4; padding-left:0 !important; width:100%
 .top2 a{ border-radius:2rem; display:inline-block; width:1rem; height:1rem; margin:0.4rem 0.4rem}
 .top2 a.mui-active{ background:rgba(0,0,0,.2);}
 .content input#Username{ text-indent:1.2rem; background:none; background:url(../img/ico3.png) no-repeat  left; background-position:5px 5px; background-size: auto 70%}
+.content input#loginName{ text-indent:1.2rem; background:none; background:url(../img/ico3.png) no-repeat  left; background-position:5px 5px; background-size: auto 70%}
 .ok2{ width:100%; background:#16559f !important; border:none; padding:0.35rem 0; font-size:.6rem !important;}
 .ok3{ width:100%; background:#009fe8 !important; border:none; color:#fff !important; padding:0.35rem 0; font-size:.6rem !important; border-radius:0 !important}
 .login_btn{ text-align: center;}
@@ -1697,7 +1701,7 @@ body.examine .mui-content #main div canvas{height: auto!important;}
 
 .abcd{ position:fixed; right:0; width:1rem; top:0; height:100%; text-align:center; vertical-align:middle}
 .abcd a{ width:100%; display:inline-block; color:#009cea !important; font-weight:bold}
-.news  .mui-media-object{ width:5rem; height:5rem; max-width:none}
+.news  .mui-media-object{ width:5rem; max-height:5rem; max-width:none}
 .mmm {
  width: 100%;
  height: 100%;

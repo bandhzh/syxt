@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>${opinionmodel.subject}</title>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="${ctxPath}/static/assets/phoneui/css/icons-extra.css" />
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
+
+<!-- 配置文件 -->
+<!-- <script src="${ctxPath}/static/assets/phoneui/js/demo.js" type="text/javascript"></script> -->
+            
+<style>
+#header {
+	width: 100%;
+	overflow: hidden;
+	background: #000 !important;
+}
+.mui-media-body .mui-icon-navigate{
+	font-size: 16px;
+}
+</style>
+</head>
+<body class="info mbsc-fr-lock">
+
+<input type="hidden" id="initData" value='${initData!}'>
+<script type="text/javascript">
+	var initData = {};
+	if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+	Date.prototype.pattern = function(fmt) {      
+		    var o = {         
+		    "M+" : this.getMonth()+1, //月份         
+		    "d+" : this.getDate(), //日         
+		    "h+" : this.getHours()%12 == 0 ? 12 : this.getHours()%12, //小时         
+		    "H+" : this.getHours(), //小时         
+		    "m+" : this.getMinutes(), //分         
+		    "s+" : this.getSeconds(), //秒         
+		    "q+" : Math.floor((this.getMonth()+3)/3), //季度         
+		    "S" : this.getMilliseconds() //毫秒         
+		    };         
+		    var week = {         
+		    "0" : "\u65e5",         
+		    "1" : "\u4e00",         
+		    "2" : "\u4e8c",         
+		    "3" : "\u4e09",         
+		    "4" : "\u56db",         
+		    "5" : "\u4e94",         
+		    "6" : "\u516d"        
+		    };         
+		    if(/(y+)/.test(fmt)){         
+		        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));         
+		    }         
+		    if(/(E+)/.test(fmt)){         
+		        fmt=fmt.replace(RegExp.$1, ((RegExp.$1.length>1) ? (RegExp.$1.length>2 ? "\u661f\u671f" : "\u5468") : "")+week[this.getDay()+""]);         
+		    }         
+		    for(var k in o){         
+		        if(new RegExp("("+ k +")").test(fmt)){         
+		            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));         
+		        }         
+		    }         
+		    return fmt;         
+		};
+	
+</script>
+
+
+
+<header class="mui-bar mui-bar-nav " style="background: #000;">
+	<a class="mui-icon mui-icon-back"></a>
+   	<h1 class="mui-title">${opinionmodel.subject}</h1>
+    <a href="${ctxPath}/phoneui/usercenter" class="mui-icon mui-icon-person right"></a>
+</header>
+
+<div class="heihead"></div>
+<div class="content "> 
+
+  <div class="mui-content">
+  
+  
+  
+  <!-- 舆情基本信息 -->
+ 	<div class="mui-card">
+		<div class="mui-card-header mui-card-media">
+			<img src="${ctxPath}/static/assets/phoneui/img/headc.png" />
+			<div class="mui-media-body">
+				${opinionmodel.createdBy}
+				<p><span class="mui-icon mui-icon-navigate"></span>&nbsp;&nbsp;<small class="typeid"></small>&nbsp;&nbsp;<span class="mui-icon mui-icon-navigate"></span> <small class="time"></small></p>
+			</div>
+			
+		</div>
+		<div class="mui-card-content" >
+			<div class="mui-card-content-inner">
+				<p style="color: #333;">${opinionmodel.content}</p>
+			</div>
+		</div>
+	</div>
+		
+		
+		
+		
+	<% if(opinionmodel.hasInstruction > 0){ %>
+	<div class="mui-card">
+		<div class="mui-card-header">批示详情</div>
+		<div class="mui-card-content pishilist">
+			
+			
+		</div>
+	</div>
+	<% }%>
+	
+	
+	
+	
+	<% if(opinionmodel.status > 0){ %>
+	<div class="mui-card">
+		<div class="mui-card-header">核实状态</div>
+		<div class="mui-card-content heshilist" >
+			<div class="mui-card-content-inner"><p>
+				
+				  	<% if(opinionmodel.status == 1){ %>
+						核实中
+					<% }%>
+					
+					<% if(opinionmodel.status == 2){ %>
+						已核实
+					<% }%>
+					
+					<% if(opinionmodel.status == 3){ %>
+						已转办
+					<% }%>
+					
+					<% if(opinionmodel.status == 10){ %>
+						归档;
+					<% }%>
+					
+					
+			
+			</p></div>
+			
+		</div>
+	</div>
+	<% }%>
+	
+	
+	
+	
+	
+	<% if(opinionmodel.toDoStatus >= 5){ %>
+	<div class="mui-card">
+		<div class="mui-card-header">处理详情</div>
+		<div class="mui-card-content zhuanbanlist">
+			
+			
+		</div>
+		<div class="mui-card-footer">
+			状态：
+			<% if(opinionmodel.toDoStatus == 5){ %>
+				处理中
+			<% }%>
+			
+			<% if(opinionmodel.toDoStatus == 6){ %>
+				处理完成
+			<% }%>
+			
+			<% if(opinionmodel.toDoStatus == 7){ %>
+				无法处理
+			<% }%>
+			
+			
+										
+		
+		</div>
+	</div>
+	
+	
+	<% }%>
+	
+	
+	
+  </div>
+</div>
+<div class="heihead"></div>
+
+
+<!-- 
+ if(status < 6){
+	  _content.push(String.format("<a href='javascript:todo({0});'>{1}</a>&nbsp;&nbsp;",row,"反馈"));
+  }
+  _content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"查看"))
+ 
+  <% if(aclFn("opinion_finish_zb")){ %>
+  if(status < 6){
+	  _content.push(String.format("<a href='javascript:finishFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"处理完成"));
+	  _content.push(String.format("<a href='javascript:untTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"无法处理"));
+  }
+  <% }%>
+
+
+ -->
+
+
+
+<nav class="mui-bar mui-bar-tab foot">
+
+	<% fankui = "no"; %>
+	
+	<% if(opinionmodel.status < 6 ){ %>
+	    <a class="mui-tab-item" id="fankui">
+	  		<span class="mui-icon mui-icon-compose"></span>
+	  		<p>处理反馈</p>
+	  	</a>
+	  	<% fankui = "yes"; %>
+	  	
+	  <% }%>
+	  
+	  <% chuli = "no"; %>
+	  
+	  <% if(aclFn("opinion_finish_zb")){ %>
+	  
+		  <%if(opinionmodel.status < 6){ %>
+		  
+		   <a class="mui-tab-item" id="finishFoller">
+		  		<span class="mui-icon mui-icon-compose"></span>
+		  		<p>处理完成</p>
+		  	</a>
+		  	
+		  	<a class="mui-tab-item" id="untTodoFoller">
+		  		<span class="mui-icon mui-icon-compose"></span>
+		  		<p>无法处理</p>
+		  	</a>
+		   <% }%>
+		   
+		  <% chuli = "yes"; %>
+		  
+	  <% }%>
+	  	
+		 
+	  	
+	
+  
+  
+ </nav>
+</body>
+
+<!-- 返回上一步操作 -->
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
+
+<script type="text/javascript">
+
+
+	//渲染核实状态
+	listVerifyFollerOpinion();
+	//渲染批示详情
+	listInstructionOpinion();
+	//渲染转办详情
+	listTodoFollerOpinion();
+
+	
+ 	(function($, doc) {
+ 		$.init({
+ 	 		swipeBack:true //启用右滑关闭功能
+ 	 	});
+		$.ready(function() {
+			
+			
+			if("${fankui}"=="yes"){
+				//提交处理反馈
+				document.getElementById("fankui").addEventListener('tap', function(e) {
+					e.detail.gesture.preventDefault();
+					var btnArray = ['确定', '取消'];
+					mui.prompt('反馈舆情处理情况：', '', '助手', btnArray, function(e) {
+						if (e.index == 0) {//确定
+							
+							if(jQuery.trim(e.value).length==0){
+								$.toast('反馈内容不能为空！');
+							}else{
+						    	var _item = {
+						    			"opinionToDoFollowModel.opinionId":"${opinionmodel.id}",
+						    			"opinionToDoFollowModel.departmentId":"${authenticationFn().userDto.departmentId}",
+						    			"opinionToDoFollowModel.userId":"${authenticationFn().userDto.userId}",
+						    			"opinionToDoFollowModel.memo":e.value,
+						    	
+						    	};
+						    	$.ajax({
+					                url: "${ctxPath}/opinion/saveToDoFoller",
+					                type: "post",
+					                data: _item,
+					                success: function (data) {
+					                	if (data.success) {
+											$.toast('反馈成功！');
+											location.reload();
+										} else {
+											$.toast(data.error);
+										}
+					                }
+					              }); 
+						    	
+							}
+							
+						} else {//取消
+							$.toast('你已取消反馈！');
+						}
+					})
+				
+				});
+				
+			}
+			
+			
+			if("${chuli}"=="yes"){
+				//处理完成
+				document.getElementById("finishFoller").addEventListener('tap', function(e) {
+					
+					$.ajax({
+			            url: "${ctxPath}/opinion/finishTodoFoller/${opinionmodel.id}",
+			            type: "post",
+			            success: function (data) {
+			            	if(data.success){
+			            		location.reload();
+			            	}
+			            }
+			          }); 
+					
+					
+				});
+				
+				//无法处理
+				document.getElementById("untTodoFoller").addEventListener('tap', function(e) {
+					
+					$.ajax({
+			            url: "${ctxPath}/opinion/untTodoFollerOpinion/${opinionmodel.id}",
+			            type: "post",
+			            success: function (data) {
+			            	if(data.success){
+			            		location.reload();
+			            	}
+			            }
+			          });  
+					
+					
+				});
+			}
+			
+			
+			
+			
+		});
+	})(mui, document);
+ 	
+ 	
+ 	
+
+
+	$(".time").html(dateFormatter("${opinionmodel.createdDate}"));
+	$(".typeid").html(listFormatter({id:"lists"},"${opinionmodel.categoryId}"));
+
+	function listFormatter(columnDef, value){
+		var _items = initData[columnDef.id];
+		 for(var i = 0;i < _items.length;i++){
+			 var j = _items[i];
+			 if(j["id"] == value){
+				 return j["label"];
+			 }
+		 }
+	}
+	
+	function dateFormatter(value){
+		  var d = new Date();
+		  d.setTime(value);
+		  return d.pattern("MM-dd HH:mm");
+	}
+
+	
+	function initVerify() {
+		var _items = initData["departments"];
+		
+		for (var i = 0; i < _items.length; i++) {
+			var j = _items[i];
+			inputOptions.push({
+				text : j.label,
+				value : j.id
+			});
+		}
+
+	}
+	
+	
+	//舆情核实状态
+	function listVerifyFollerOpinion() {
+		var params = {
+			data : {
+				"opinionId" : "${opinionmodel.id}"
+			}
+		};
+
+		var _item = {
+			data : JSON.stringify(params)
+		};
+
+		$.ajax({
+			url : "${ctxPath}/opinion/listVerifyFollerOpinion",
+			type : "post",
+			data : _item,
+			success : function(data) {
+				if (data.success) {
+					if(data.data==""){
+						//$(".heshilist").append('<div class="mui-card-content-inner"><p>等待反馈！</p></div>')
+					}else{
+						//将内容加载到核实信中
+						$.each(data.data,function(i,val){
+							$(".heshilist").append('<div class="mui-card-content-inner"><p>'+val.departmentName+' '+dateFormatter(val.createdDate)+'</p><p style="color: #333;">'+val.memo+'</p></div>')
+						});
+					}
+					
+					
+				}
+				
+			}
+		});
+
+	}
+	
+	
+	
+	
+	
+	//舆情批示详情
+	function listInstructionOpinion() {
+
+		var params = {
+			data : {
+				"opinionId" :"${opinionmodel.id}"
+			}
+		};
+
+		var _item = {
+			data : JSON.stringify(params)
+		};
+
+		$.ajax({
+			url : "${ctxPath}/opinion/listInstructionOpinion",
+			type : "post",
+			data : _item,
+			success : function(data) {
+				if (data.success) {
+					if(data.data==""){
+						$(".pishilist").append('<div class="mui-card-content-inner"><p>暂无相关批示！</p></div>');
+					}else{
+						$.each(data.data,function(i,val){
+							$(".pishilist").append('<div class="mui-card-content-inner"><p>'+val.departmentName+' '+dateFormatter(val.createdDate)+'</p><p style="color: #333;">'+val.memo+'</p></div>');
+						});
+					}
+					
+				}
+			}
+		});
+	}
+	
+	//舆情转办详情
+	function listTodoFollerOpinion() {
+
+		var params = {
+			data : {
+				"opinionId" :"${opinionmodel.id}"
+			}
+		};
+
+		var _item = {
+			data : JSON.stringify(params)
+		};
+
+		$.ajax({
+			url : "${ctxPath}/opinion/listToDoFoller",
+			type : "post",
+			data : _item,
+			success : function(data) {
+				if (data.success) {
+					if(data.data==""){
+						$(".zhuanbanlist").append('<div class="mui-card-content-inner"><p>暂无相关处理！</p></div>');
+					}else{
+						$.each(data.data,function(i,val){
+							$(".zhuanbanlist").append('<div class="mui-card-content-inner"><p>'+val.departmentName+' '+dateFormatter(val.createdDate)+'</p><p style="color: #333;">'+val.memo+'</p></div>')
+						});
+					}
+					
+				}
+			}
+		});
+
+	}
+	
+	
+	
+	
+
+	$(".mui-card-content").find("img").css("max-width","100%");
+
+
+</script>
+
+
+
+
+</html>

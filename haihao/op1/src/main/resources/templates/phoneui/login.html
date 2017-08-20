@@ -12,33 +12,84 @@
     <link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
     <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
-    <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
-    <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
+    <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js"></script>
+    <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js"></script>
     <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
     
     <script type="text/javascript" charset="utf-8">
       	mui.init();
+      	//检测当前设备是否已经登录过了
+     	mui.plusReady(function(){//设备唯一标识
+     		
+     		if("${state!}"!=1){//使用手势密码
+     			mui.ajax('${ctxPath}/phoneui/ajaxcheckimei',{
+      				data:{imei:plus.device.imei},
+      				dataType:'json',
+      				type:'post',
+      				success:function(data){
+      					if(data.success){//有标识则转到 手势解锁
+      						location.href='${ctxPath}/phoneui/unlock?imei='+plus.device.imei;	
+      					}else{
+      						location.href="${ctxPath}/reguser/login?state=1";
+      					}
+      				}
+      			});
+     			
+     		}
+      	
+		}); 
+      	
     </script>
+   
     </head>
     <body class="login">
 	<div class="banner"> <img src="${ctxPath}/static/assets/phoneui/img/login.jpg" width="100%" /> </div>
 	<div class="content mid">
-      <form action="${ctxPath}/phoneui/usercenter">
+      <form action="#">
 		    <div class="log">
-		         <div class="form-input"> <input type="text" placeholder="E-mail" id="num"  class="font-avenir"/></div>
-		         <div class="form-input"> <input type="password" placeholder="Password" id="psd" class="font-avenir"/></div>
+		         <div class="form-input"> <input type="text" placeholder="用户名" id="loginName" name="username"  class="font-avenir"/></div>
+		         <div class="form-input"> <input type="password" placeholder="密码" id="password" name="password" class="font-avenir"/></div>
 	        </div>
 	  
 	      <div class="hei"></div>
 	      <div class="login_btn">
-		    <input type="submit" value="登 录" class="ok font-avenir">
+		     <input type="button" value="登 录" class="ok font-avenir" id="loginbtn" >
 		  </div>
 	  
 	  </form>
 	  <div class="hei"></div>
-      <div class="mywidth mui-text-center font-avenir" onclick="location.href='${ctxPath}/phoneui/reg'">
+      <div class="mywidth mui-text-center font-avenir" onclick="location.href='${ctxPath}/reguser/reg'">
 	    <p>还没有注册？ 请先去注册>>></p>
 	  </div>
     </div>
 </body>
+ <script type="text/javascript" charset="utf-8">
+      	
+      	document.getElementById("loginbtn").addEventListener('tap', function() {
+      		if($("#loginName").val().length==0||$("#password").val().length==0){
+      			mui.toast('用户名/密码不能为空！');
+      		}else{
+      			
+      			mui.ajax('${ctxPath}/phoneui/ajaxLoginCheck',{
+      				data:{
+      					loginName:$("#loginName").val(),
+      					password:$("#password").val()
+      				},
+      				dataType:'json',//服务器返回json格式数据
+      				type:'post',//HTTP请求类型
+      				success:function(data){
+      					if(data.success){
+      						location.href='${ctxPath}/phoneui/usercenter';	
+      					}else{
+      						mui.toast(data.data);
+      					}
+      					
+      				}
+      			});
+      		}
+		});
+      	
+      	
+      	
+    </script>
 </html>

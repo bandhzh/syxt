@@ -97,5 +97,18 @@
 	
 	
 	
+	<sql id="selectisPublic">
+		<![CDATA[ 
+			select * from op_opinion where isPublic = 1 and enabled =1
+		]]>
+	</sql>
+	
+	<!-- 根据来源进行检索 -->
+	<sql id="selectbysourceId">
+		<![CDATA[ 
+			select * from op_opinion where sourceId = '${sourceId}'
+		]]>
+	</sql>
+	
 
 </sql-statement>
