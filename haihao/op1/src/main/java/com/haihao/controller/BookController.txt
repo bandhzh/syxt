@@ -36,8 +36,7 @@ public class BookController extends BaseController{
 	 */
 	@PreAuthorize("hasRole('user_setting')")
 	@RequestMapping(value = {"/book" })
-	public String index(Map<String, Object> model) {
-		//model.put("htmlContent", "/templates/security/user.html");
+	public String book(Map<String, Object> model) {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		SecurityUser principal = (SecurityUser) authentication.getPrincipal();
@@ -63,7 +62,7 @@ public class BookController extends BaseController{
 	public PageResultDto ajaxlistUser(HttpServletRequest request) {
 		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
 		pageSqlCommond.setRequest(request);
-		pageSqlCommond.setBodySql("com.user.selectBody");
+		pageSqlCommond.setBodySql("com.user.selectBodybyindexzimu");//根据首字母进行查询
 		pageSqlCommond.setHeadSql("com.user.selectHearder");
 		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
 			@Override
@@ -75,6 +74,8 @@ public class BookController extends BaseController{
 	
 	
 	
+	
+	
 	/**
 	 * 创建讨论组
 	 * @param model
@@ -82,6 +83,23 @@ public class BookController extends BaseController{
 	 */
 	@RequestMapping(value = { "/creategroup"})
 	public String creategroup(Map<String, Object> model) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		SecurityUser principal = (SecurityUser) authentication.getPrincipal();
+		model.put("userDto", principal.getUserDto());
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.label.role"));
+		map.put("roles", ToolModel.recordListConvert(find));
+
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		
+		//reload sql
+		SqlXmlPlugin.init(false);
+		
 		
 		return "book/creategroup";
 	}

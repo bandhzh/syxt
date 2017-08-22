@@ -5,12 +5,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>通讯录</title>
-
-<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-
-
 <link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
@@ -18,8 +12,11 @@
 
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
-<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+
 <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.charfirst.pinyin.js"></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/sort.js"></script>
+
 
 <style>
 .content .swiper-slide {
@@ -33,10 +30,32 @@
 	width: 100%;
 	overflow: hidden
 }
+.mid{
+	padding-top: 45px;
+}
+.initials{
+    position: fixed;
+    top: 47px;
+    right: 0px;
+    height: 100%;
+    width: 15px;
+    padding-right: 10px;
+    text-align: center;
+    z-index: 99;
+    background: rgba(145,145,145,0);
+}
+.initials li img{
+    width: 14px;
+}
+.mui-media .mui-icon{
+	font-size: 13px;
+}
+.num_name{
+	font-size: 14px;
+}
 </style>
 </head>
 <body class="chat mbsc-fr-lock">
-
 <input type="hidden" id="initData" value='${initData!}'>
 <script type="text/javascript">
 	var initData = {};
@@ -45,302 +64,85 @@
 
 
 
-<header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-back"></a>
-  <h1 class="mui-title">通讯录</h1>
-  <!-- <a class=" mui-btn mui-btn-blue mui-btn-link mui-pull-right" >保存</a> -->
+<header class="mui-bar mui-bar-nav bgh">
+	<a class="mui-icon mui-icon-back"></a>
+  	<h1 class="mui-title">通讯录</h1>
 </header>
-<div class="heihead"></div>
-
+	
 <div class="content ">
   <div class="mui-content">
-    <div class="mui-content">
     <div class="mid">
-    <div class="pad">
-    	<b>TO：</b><font class="blue">点击联系人查看详情</font><!--  and <font class="blue">1 ohter</font> -->
-    </div>
-    <div class="line"></div>
+    	<div class="pad"><b>TO：</b><font class="blue">点击联系人查看详情</font></div>
+    	<div class="line"></div>
     </div>
     <div class="hei"></div>
-      <div class="pad bghui num" id="a"><b><big>A</big></b></div>
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-      </ul>
       
-      
-      
-      
-      
-      
-      <div class="pad bghui num" id="b"><b><big>B</big></b></div>
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-      </ul>
-      
-      
-      
-      
-      
-      <div class="pad bghui num" id="c"><b><big>C</big></b></div>
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-      </ul>
-      
-      
-       <div class="pad bghui num" id="d"><b><big>D</big></b></div>
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-      </ul>
-      
-       <div class="pad bghui num" id="e"><b><big>E</big></b></div>
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-        <li class="mui-table-view-cell mui-media">
-          <div class="mui-input-row mui-checkbox mui-left">
-            <label>
-            <a href="javascript:;"> <img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-            <div class="mui-media-body pad2">
-              <p class="black">CAROLINE ROSS</p>
-              <p class="mui-ellipsis">Yes, I got! Thank you dear!</p>
-            </div>
-            </a>
-            </label>
-            <input name="checkbox" value="Item 1" type="checkbox">
-          </div>
-        </li>
-      </ul>
-    </div>
+    <ul class="mui-table-view"></ul>
   </div>
 </div>
-<div class="abcd"><div class="mmm">
- <a href="#a">A</a>
- <a href="#b">B</a>
- <a href="#c">C</a>
- <a href="#d">D</a>
- <a href="#e">E</a>
- <a href="#f">F</a>
- <a href="#g">G</a>
- <a href="#h">H</a>
- <a href="#i">I</a>
- <a href="#j">J</a>
- <a href="#k">K</a>
- <a href="#l">L</a>
- <a href="#m">M</a>
- <a href="#n">N</a>
- <a href="#o">O</a>
- <a href="#p">P</a>
- <a href="#q">Q</a>
- <a href="#r">R</a>
- <a href="#s">S</a>
- <a href="#t">T</a>
- <a href="#u">U</a>
- <a href="#v">V</a>
- <a href="#w">W</a>
- <a href="#x">X</a>
- <a href="#y">Y</a>
- <a href="#z">Z</a></div>
+	
+<div class="initials">
+	<ul>
+		<li><img src="${ctxPath}/static/assets/phoneui/img/068.png"></li>
+	</ul>
 </div>
+
 </body>
-<!-- 返回上一步操作 -->
+
+
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
 <script type="text/javascript">
   	mui.init({
   		swipeBack:true //启用右滑关闭功能
   	});
   	$(document).ready(function() {
-  		var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[]};
+  		 var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[]};
+  		var usercont="";
+  		var indecont="";
   		$.ajax({
 			url : "${ctxPath}/book/ajaxlistUser",
 			type : "post",
 			data :{data:JSON.stringify(datajson)},
 			dataType: "json",
 			success : function(data) {
+				$.each(data.results,function(i,val){
+					
+					usercont += '<li class="mui-table-view-cell mui-media">'
+				          +'<div class="mui-input-row mui-checkbox mui-left">'
+				          +'<label>'
+				          +'<a href="javascript:;">'
+				          +'<img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">'
+				          +'<div class="mui-media-body pad2">'
+				          +' <p class="black num_name">'+val.displayName+'</p>'
+				          +' <p class="mui-ellipsis"><span class="mui-icon mui-icon-location"></span>&nbsp;'+listFormatter({id:"departments"},val.departmentId)+'&nbsp;&nbsp;<span class="mui-icon mui-icon-phone"></span>&nbsp;'+val.mobile+'</p>'
+				          +'</div>'
+				          +'</a>'
+				          +'</label>'
+				          +'<input name="checkbox" value="Item 1" type="checkbox">'
+				          +'</div>'
+				          +'</li>';
+					
+				});
 				
+				$(".mui-table-view").append(usercont);
+				 initials();
 			}
 			
-  		});
-  		
+  		}); 
   		
   		
   	});
+  	
+  	 function listFormatter(columnDef, value){
+     	var _items = initData[columnDef.id];
+     	 for(var i = 0;i < _items.length;i++){
+     		 var j = _items[i];
+   				 if(j["id"] == value){
+   					 return j["label"];
+   				 }
+     	 }
+     }
+    
 </script>
-
-
 
 </html>

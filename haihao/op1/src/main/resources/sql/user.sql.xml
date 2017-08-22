@@ -44,6 +44,17 @@
 		]]>
 	</sql>
 	
+	
+	<sql id="selectBodybyindexzimu">
+		<![CDATA[ 
+			from op_user userModel where 1 = 1 and enable = 1 order by convert(displayName using utf8) 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
 	<sql id="exist">
 		<![CDATA[ 
 			select count(1) from op_user where loginName = ? and enable = 1 
