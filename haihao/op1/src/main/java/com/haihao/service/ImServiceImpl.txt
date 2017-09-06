@@ -1,0 +1,66 @@
+package com.haihao.service;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.haihao.constant.ImConstant;
+import com.haihao.dto.Authorization;
+import com.haihao.model.im.ImAccount;
+import com.haihao.model.im.ImService;
+import com.haihao.utils.HttpClient;
+import com.haihao.utils.UUIDBuider;
+import com.jfinal.plugin.activerecord.Db;
+
+@Service
+public class ImServiceImpl implements ImService {
+	
+	private final static Logger logger = LoggerFactory.getLogger(ImServiceImpl.class);
+	
+	@Value("${netease.im.appKey}")
+	private String IM_APP_KEY;
+	
+	
+	@Value("${netease.im.appSecret}")
+	private String IM_APP_SECRET;
+
+	@Override
+	public ImAccount createAccount(Long userId) {
+		logger.info("------- 创建一个IM账号： userId={} -------", userId);
+		ImAccount account = null;
+		
+		Authorization authorization = new Authorization();
+		authorization.setAppKey(IM_APP_KEY);
+		authorization.setAppSecret(IM_APP_SECRET);
+		authorization.setAccountID(UUIDBuider.getID());
+		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_CREATE_USER, null);
+		
+		if(!StringUtils.isEmpty(responseContent)){
+			JSONObject result = JSON.parseObject(responseContent);
+			String code = result.getString("code");
+			if("200".equals(code)){
+				account = result.getObject("info", ImAccount.class);
+			}else{
+				logger.error("--------- 创建IM账号失败: ---------" + responseContent);
+			}
+		}
+		
+		if(null != account){
+			logger.info("------ 成功创建IM账号 userId={} --------", userId);
+			Db.update("update op_user set imAccountId = ?,imToken = ? where id = ?",account.getAccid(),account.getToken(),userId);
+		}
+		
+		
+		return account;
+	}
+
+	@Override
+	public void deleteAccount(String accountId) {
+
+	}
+
+}

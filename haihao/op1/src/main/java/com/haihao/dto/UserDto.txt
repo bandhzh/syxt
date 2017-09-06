@@ -14,6 +14,8 @@ public class UserDto extends BaseDTO{
 	private Long roleId;
 	private Long departmentId;
 	private int gender;
+	private String imAccountId;
+	private String imToken;
 	private SimpleGrantedAuthority[] listSimpleGrantedAuthority;
 	
 	
@@ -71,5 +73,17 @@ public class UserDto extends BaseDTO{
 	}
 	public void setGender(int gender) {
 		this.gender = gender;
+	}
+	public String getImAccountId() {
+		return imAccountId;
+	}
+	public void setImAccountId(String imAccountId) {
+		this.imAccountId = imAccountId;
+	}
+	public String getImToken() {
+		return imToken;
+	}
+	public void setImToken(String imToken) {
+		this.imToken = imToken;
 	}
 }

@@ -1,0 +1,52 @@
+
+package com.haihao.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class SystemDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	public static final String QUEUE_NAME = "queue.nim.system.notification";
+	
+	
+	/**
+	 * 消息内容
+	 */
+	private String content;
+	
+	/**
+	 * 消息类型（ADD_USER, DEL_USER）
+	 */
+	private String messageType;
+	
+	/**
+	 * 消息接收者
+	 */
+	private List<String> toAccountIds;
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getMessageType() {
+		return messageType;
+	}
+
+	public void setMessageType(String messageType) {
+		this.messageType = messageType;
+	}
+
+	public List<String> getToAccountIds() {
+		return toAccountIds;
+	}
+
+	public void setToAccountIds(List<String> toAccountIds) {
+		this.toAccountIds = toAccountIds;
+	}
+}

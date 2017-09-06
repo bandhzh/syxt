@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>WEB DEMO</title>
+    <link rel="stylesheet" href="${ctxPath}/dist/css/theme.css">
+    
+    <script type="text/javascript">
+	var exp = new Date();
+	var days = 1;
+	exp.setTime(exp.getTime() + days*24*60*60*1000);
+	document.cookie = 'uid=' + escape ("${authenticationFn().userDto.imAccountId}") + ';expires=' + exp.toGMTString();
+	document.cookie = 'sdktoken=' + escape ("${authenticationFn().userDto.imToken}") + ';expires=' + exp.toGMTString();
+    
+    </script>
+  </head>
+  
+  
+  <body>
+    <div id="app" class="g-body"></div>
+    <script src="${ctxPath}/dist/js/main.js"></script>
+   <script src="${ctxPath}/dist/debug/vconsole.min.js"></script>
+  </body>
+</html>

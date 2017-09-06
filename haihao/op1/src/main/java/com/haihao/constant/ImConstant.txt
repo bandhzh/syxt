@@ -1,0 +1,9 @@
+package com.haihao.constant;
+
+public class ImConstant {
+	
+	public static String IM_URL_CREATE_USER = "https://api.netease.im/nimserver/user/create.action";
+	
+	
+
+}

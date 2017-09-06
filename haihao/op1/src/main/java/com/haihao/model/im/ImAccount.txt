@@ -1,0 +1,44 @@
+
+package com.haihao.model.im;
+
+import java.io.Serializable;
+
+public class ImAccount implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private String accid;
+	
+	private String name;
+	
+	private String token;
+
+	public String getAccid() {
+		return accid;
+	}
+
+	public void setAccid(String accid) {
+		this.accid = accid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
+	public String toString() {
+		return "IMAccount [accid=" + accid + ", name=" + name + ", token=" + token + "]";
+	}
+}

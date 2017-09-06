@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +31,7 @@ import com.haihao.jfinal.ModelKit;
 import com.haihao.jfinal.SqlXmlPlugin;
 import com.haihao.jfinal.ToolModel;
 import com.haihao.model.baoliao.BaoliaoModel;
+import com.haihao.model.im.ImService;
 import com.haihao.model.reguser.RegUserModel;
 import com.haihao.model.security.DepartmentManagerModel;
 import com.haihao.model.security.DepartmentModel;
@@ -48,6 +50,10 @@ import com.jfinal.plugin.activerecord.Record;
 @Controller
 @RequestMapping(value = "/security")
 public class SecurityController extends BaseController {
+	
+	
+	@Autowired
+	private ImService imServiceImpl;
 
 	@PreAuthorize("hasRole('user_setting')")
 	@RequestMapping(value = { "", "/", "/index" })
@@ -546,6 +552,18 @@ public class SecurityController extends BaseController {
 				return true;
 			}
 		});
+		return resultDto;
+	}
+	
+	
+	@RequestMapping("/initIm")
+	@ResponseBody
+	public ResultDto initIm(){
+		ResultDto resultDto = new ResultDto();
+		List<Record> find = Db.find("select * from op_user where imAccountId is null");
+		for(Record r : find){
+ 			imServiceImpl.createAccount(r.getLong("id"));
+		}
 		return resultDto;
 	}
 	

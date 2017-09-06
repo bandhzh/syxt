@@ -1,0 +1,29 @@
+
+package com.haihao.dto;
+
+import java.io.Serializable;
+
+public class MessageDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	private String md5Value;
+
+	private String data;
+	
+	public String getMd5Value() {
+		return md5Value;
+	}
+
+	public void setMd5Value(String md5Value) {
+		this.md5Value = md5Value;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+}

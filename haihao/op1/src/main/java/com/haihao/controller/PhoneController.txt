@@ -102,6 +102,8 @@ public class PhoneController extends BaseController{
 			userDto.setDisplayName(byLoginName.getStr("displayName"));
 			userDto.setRoleId(byLoginName.getLong("roleId"));
 			userDto.setUserId(byLoginName.getLong("id"));
+			userDto.setImAccountId(byLoginName.getStr("imAccountId"));
+			userDto.setImToken(byLoginName.getStr("imToken"));
 			securityUser.setUserDto(userDto);
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(securityUser, password, authorities);
 			ToolSecurity.addSecurityUser(usernamePasswordAuthenticationToken);

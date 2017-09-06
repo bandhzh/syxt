@@ -1,0 +1,59 @@
+
+package com.haihao.utils;
+
+import java.security.SecureRandom;
+
+public class NonceGenerator {
+
+	private static final char[] DEFAULT_CODEC = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
+
+	private SecureRandom random = new SecureRandom();
+
+	private int length;
+
+	/**
+	 * Create a generator with the default length (32).
+	 */
+	public NonceGenerator() {
+		this(32);
+	}
+
+	/**
+	 * Create a generator of random strings of the length provided
+	 * Convert these random bytes to a verifier string. The length of the byte array can be
+	 * {@link #setLength(int) configured}. The default implementation mods the bytes to fit into the
+	 * ASCII letters 1-9, A-Z, a-z .
+	 * 
+	 * @return The string.
+	 */
+	public NonceGenerator(int length) {
+		this.length = length;
+	}
+
+	public String generate() {
+		byte[] verifierBytes = new byte[length];
+		random.nextBytes(verifierBytes);
+		char[] chars = new char[verifierBytes.length];
+		for (int i = 0; i < verifierBytes.length; i++) {
+			chars[i] = DEFAULT_CODEC[((verifierBytes[i] & 0xFF) % DEFAULT_CODEC.length)];
+		}
+		return new String(chars);
+	}
+
+	/**
+	 * The length of string to generate.
+	 * 
+	 * @param length the length to set
+	 */
+	public void setLength(int length) {
+		this.length = length;
+	}
+	
+	public static void main(String[] args) {
+		NonceGenerator generator = new NonceGenerator();
+    	for(int i = 0; i < 100; i++){
+    		System.out.println(generator.generate());
+    	}
+	}
+
+}

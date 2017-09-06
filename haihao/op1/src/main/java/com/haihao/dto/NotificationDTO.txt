@@ -1,0 +1,65 @@
+
+package com.haihao.dto;
+
+import java.io.Serializable;
+import java.util.List;
+
+public class NotificationDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	public static final String QUEUE_NAME = "queue.nim.biz.notification";
+	
+	/**
+	 * 推送给iOS的文案
+	 */
+	private String pushContent;
+	
+	/**
+	 * 消息内容
+	 */
+	private String content;
+	
+	/**
+	 * 消息类型（TASK、EMAIL、ALERT、APPROVAL）
+	 */
+	private String messageType;
+	
+	/**
+	 * 消息接收者
+	 */
+	private List<String> toAccountIds;
+	
+	public String getPushContent() {
+		return pushContent;
+	}
+
+	public void setPushContent(String pushContent) {
+		this.pushContent = pushContent;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getMessageType() {
+		return messageType;
+	}
+
+	public void setMessageType(String messageType) {
+		this.messageType = messageType;
+	}
+
+	public List<String> getToAccountIds() {
+		return toAccountIds;
+	}
+
+	public void setToAccountIds(List<String> toAccountIds) {
+		this.toAccountIds = toAccountIds;
+	}
+
+}

@@ -17,3 +17,4 @@ hs_err_pid*
 *.zip
 haihao/op1/warn-log.2017-07-27.zip
 *.zip
+haihao/op1/src/main/resources/templates/book/book.html

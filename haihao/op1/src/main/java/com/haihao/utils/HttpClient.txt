@@ -1,0 +1,262 @@
+package com.haihao.utils;
+
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.NoHttpResponseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.ConnectionPoolTimeoutException;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContextBuilder;
+import org.apache.http.conn.ssl.TrustStrategy;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.haihao.dto.Authorization;
+
+
+public abstract class HttpClient {
+
+	private final static Logger logger = LoggerFactory.getLogger(HttpClient.class);
+
+	private final static int TIME_OUT = 10 * 1000;
+	
+	public static final Pattern SEPARATOR_AND = Pattern.compile("&");
+	
+	public static final Pattern SEPARATOR_EQUAL = Pattern.compile("=");
+	
+	private static NonceGenerator nonceGenerator = new NonceGenerator();
+	
+	/**
+	 * 支持http和https方式的请求
+	 * @return
+	 */
+	private static CloseableHttpClient createHttpClient() {
+		try {
+			// 自动恢复机制---->HttpRequestRetryHandler
+			HttpRequestRetryHandler retryHandler = new HttpRequestRetryHandler() {
+				@Override
+				public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
+					if (executionCount >= 3) {
+						// Do not retry if over max retry count
+						return false;
+					}
+					if (exception instanceof NoHttpResponseException) {
+						// Retry if the server dropped connection on us
+						return true;
+					}
+					if (exception instanceof InterruptedIOException) {
+						// Timeout
+						return false;
+					}
+					if (exception instanceof UnknownHostException) {
+						// Unknown host
+						return false;
+					}
+					if (exception instanceof ConnectTimeoutException) {
+						// Connection refused
+						return true;
+					}
+					if (exception instanceof SSLException) {
+						// Do not retry on SSL handshake exception
+						return false;
+					}
+					return false;
+				}
+			};
+			
+			SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
+				// 信任所有
+				public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+					return true;
+				}
+			}).build();
+			
+			X509HostnameVerifier hostNameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+			SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, hostNameVerifier);
+			Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()  
+			           .register("http", PlainConnectionSocketFactory.getSocketFactory())  
+			           .register("https", sslConnectionSocketFactory)  
+			           .build();
+			//初始化连接管理器  
+			PoolingHttpClientConnectionManager pcm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);  
+			// Increase max total connection to 200  
+			pcm.setMaxTotal(200);
+			// Increase default max connection per route to 20  
+			pcm.setDefaultMaxPerRoute(20);
+			// Increase max connections for localhost:80 to 50
+			//HttpHost localhost = new HttpHost("locahost", 80);
+			//pcm.setMaxPerRoute(new HttpRoute(localhost), 50);
+			return HttpClients.custom().setConnectionManager(pcm).setRetryHandler(retryHandler).build();
+			//return HttpClients.custom().setSSLSocketFactory(sslConnectionSocketFactory).build();
+		} catch (KeyManagementException ex) {
+			logger.error("获取HttpClient出错了", ex);
+		} catch (NoSuchAlgorithmException ex) {
+			logger.error("获取HttpClient出错了", ex);
+		} catch (KeyStoreException ex) {
+			logger.error("获取HttpClient出错了", ex);
+		}
+		
+		return HttpClients.createDefault();
+	}
+
+	public static String get(Authorization authorization, String url, List<NameValuePair> nameValuePairs) {
+		CloseableHttpClient closeableHttpClient = null;
+		CloseableHttpResponse closeableHttpResponse = null;
+		try {
+			closeableHttpClient = createHttpClient();
+			HttpGet httpGet = new HttpGet();
+	        String nonce =  nonceGenerator.generate();
+	        String curTime = String.valueOf((new Date()).getTime() / 1000L);
+	        String checkSum = CheckSumUtils.getCheckSum(authorization.getAppSecret(), nonce, curTime);
+	        // 设置请求的header
+	        httpGet.addHeader("AppKey", authorization.getAppKey());
+	        httpGet.addHeader("Nonce", nonce);
+	        httpGet.addHeader("CurTime", curTime);
+	        httpGet.addHeader("CheckSum", checkSum);
+			httpGet.setHeader("charset", "UTF-8");
+			URIBuilder uriBuilder = new URIBuilder();
+			uriBuilder.setPath(url);
+			if(null == nameValuePairs){
+				nameValuePairs = new ArrayList<NameValuePair>();
+			}
+			nameValuePairs.add(new BasicNameValuePair("accid", authorization.getAccountID()));
+			uriBuilder.addParameters(nameValuePairs);
+			httpGet.setURI(uriBuilder.build());
+			RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(TIME_OUT).setConnectTimeout(TIME_OUT).setSocketTimeout(TIME_OUT).build();
+			httpGet.setConfig(requestConfig);
+			closeableHttpResponse = closeableHttpClient.execute(httpGet);
+			int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+			if (statusCode >= 200 && statusCode < 300) {
+				if (closeableHttpResponse.getEntity() != null) {
+					return EntityUtils.toString(closeableHttpResponse.getEntity(), "UTF-8");
+				}
+			}else {  
+                throw new ClientProtocolException("Unexpected response status: " + statusCode);  
+            }
+		} catch (ConnectionPoolTimeoutException ex) {
+			logger.error("网络连接失败", ex);
+		} catch (ConnectTimeoutException ex) {
+			logger.error("网络连接超时", ex);
+		} catch (SocketTimeoutException ex) {
+			logger.error("读取数据连接超时", ex);
+		} catch (ClientProtocolException ex) {
+			logger.error("网络协议错误", ex);
+		} catch (IOException ex) {
+			logger.error("IO时发生错误", ex);
+		} catch (Exception ex) {
+			logger.error("未知错误", ex);
+		} finally {
+			if (null != closeableHttpResponse) {
+				try {
+					closeableHttpResponse.close();
+					closeableHttpResponse = null;
+				} catch (IOException ex) {
+				}
+			}
+			if (null != closeableHttpClient) {
+				try {
+					closeableHttpClient.close();
+					closeableHttpClient = null;
+				} catch (IOException ex) {
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public static String post(Authorization authorization, String url, List<NameValuePair> nameValuePairs){
+		CloseableHttpClient closeableHttpClient = null;
+		CloseableHttpResponse closeableHttpResponse = null;
+		try {
+			closeableHttpClient = createHttpClient();
+			HttpPost httpPost = new HttpPost(url);
+			String nonce = nonceGenerator.generate();
+	        String curTime = String.valueOf((new Date()).getTime() / 1000L);
+	        String checkSum = CheckSumUtils.getCheckSum(authorization.getAppSecret(), nonce, curTime);
+	        // 设置请求的header
+	        httpPost.addHeader("AppKey", authorization.getAppKey());
+	        httpPost.addHeader("Nonce", nonce);
+	        httpPost.addHeader("CurTime", curTime);
+	        httpPost.addHeader("CheckSum", checkSum);
+			RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(TIME_OUT).setConnectTimeout(TIME_OUT).setSocketTimeout(TIME_OUT).build();
+			httpPost.setConfig(requestConfig);
+			if(null == nameValuePairs){
+				nameValuePairs = new ArrayList<NameValuePair>();
+			}
+			nameValuePairs.add(new BasicNameValuePair("accid", authorization.getAccountID()));
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+			closeableHttpResponse = closeableHttpClient.execute(httpPost);
+			int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
+			if (statusCode >= 200 && statusCode < 300) {
+				if (closeableHttpResponse.getEntity() != null) {
+					return EntityUtils.toString(closeableHttpResponse.getEntity(), "UTF-8");
+				}
+			}
+		} catch (ConnectionPoolTimeoutException ex) {
+			logger.error("网络连接失败", ex);
+		} catch (ConnectTimeoutException ex) {
+			 logger.error("网络连接超时", ex);
+		} catch (SocketTimeoutException ex) {
+			 logger.error("读取数据连接超时", ex);
+		} catch (ClientProtocolException ex) {
+			 logger.error("网络协议错误", ex);
+		} catch (IOException ex) {
+			 logger.error("IO时发生错误", ex);
+		} catch (Exception ex) {
+			 logger.error("未知错误", ex);
+		} finally {
+			if (null != closeableHttpResponse) {
+				try {
+					closeableHttpResponse.close();
+					closeableHttpResponse = null;
+				} catch (IOException ex) {
+				}
+			}
+			if (null != closeableHttpClient) {
+				try {
+					closeableHttpClient.close();
+					closeableHttpClient = null;
+				} catch (IOException ex) {
+				}
+			}
+		}
+		
+		return null;
+	}
+}

@@ -1,0 +1,10 @@
+package com.haihao.model.im;
+
+
+public interface ImService {
+	
+	ImAccount createAccount(Long userId);
+	
+	void deleteAccount(String accountId);
+
+}
