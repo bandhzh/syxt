@@ -1,5 +1,6 @@
 package com.haihao.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,8 +55,14 @@ public class ImController {
 		ImTeamDto imTeamDto = new ImTeamDto();
 		imTeamDto.setTname("新的群名称+" + new Random().nextInt(99));
 		imTeamDto.setUserId(String.valueOf(ToolSecurity.getUserId()));
-		List<String> find = Db.query("select imAccountId from op_user where enable = 1 and imAccountId is not null and id in ");
-		imTeamDto.setMembers(find.toArray(new String[0]));//qun chengyuan 
+		List<Long> find = Db.query("select id from op_user where enable = 1 and imAccountId is not null ");
+		List<String> ids = new ArrayList<String>();
+		for(Long id : find){
+		  if(RandomUtils.nextInt(0, 10) < 5){
+		    ids.add(id.toString());
+		  }
+		}
+		imTeamDto.setMembers(ids.toArray(new String[0]));//qun chengyuan 
 		String createTeam = imServiceImpl.createTeam(imTeamDto);
 		return createTeam;
 	}
