@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="${ctxPath}/dist/debug/vconsole.min.js"></script>
+<script src="${ctxPath}/static/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/nim/sdk/NIM_Web_SDK_v4.2.0.js"></script>
+<script type="text/javascript">
+var data = {};
+var nim = SDK.NIM.getInstance({
+    // 初始化SDK
+    //debug: true,
+    appKey: '34f41709d172b5227e8e7984d49a5cc4',
+    account: '${authenticationFn().userDto.imAccountId}',
+    token: '${authenticationFn().userDto.imToken}',
+    onconnect: onConnect,
+    onerror: onError,
+    onwillreconnect: onWillReconnect,
+    ondisconnect: onDisconnect,
+    // 多端
+    onloginportschange: onLoginPortsChange,
+    // 用户关系
+    onblacklist: onBlacklist,
+    onsyncmarkinblacklist: onMarkInBlacklist,
+    onmutelist: onMutelist,
+    onsyncmarkinmutelist: onMarkInMutelist,
+    // 好友关系
+    onfriends: onFriends,
+    onsyncfriendaction: onSyncFriendAction,
+    // 用户名片
+    onmyinfo: onMyInfo,
+    onupdatemyinfo: onUpdateMyInfo,
+    onusers: onUsers,
+    onupdateuser: onUpdateUser,
+    // 群组
+    onteams: onTeams,
+    onsynccreateteam: onCreateTeam,
+    onteammembers: onTeamMembers,
+    onsyncteammembersdone: onSyncTeamMembersDone,
+    onupdateteammember: onUpdateTeamMember,
+    // 会话
+    onsessions: onSessions,
+    onupdatesession: onUpdateSession,
+    // 消息
+    onroamingmsgs: onRoamingMsgs,
+    onofflinemsgs: onOfflineMsgs,
+    onmsg: onMsg,
+    // 系统通知
+    onofflinesysmsgs: onOfflineSysMsgs,
+    onsysmsg: onSysMsg,
+    onupdatesysmsg: onUpdateSysMsg,
+    onsysmsgunread: onSysMsgUnread,
+    onupdatesysmsgunread: onUpdateSysMsgUnread,
+    onofflinecustomsysmsgs: onOfflineCustomSysMsgs,
+    oncustomsysmsg: onCustomSysMsg,
+    // 同步完成
+    onsyncdone: onSyncDone
+});
+function onConnect() {
+    console.log('连接成功');
+}
+function onWillReconnect(obj) {
+    // 此时说明 SDK 已经断开连接, 请开发者在界面上提示用户连接已断开, 而且正在重新建立连接
+    console.log('即将重连', obj);
+}
+function onDisconnect(error) {
+    // 此时说明 SDK 处于断开状态, 开发者此时应该根据错误码提示相应的错误信息, 并且跳转到登录页面
+    console.log('连接断开', error);
+    if (error) {
+        switch (error.code) {
+        // 账号或者密码错误, 请跳转到登录页面并提示错误
+        case 302:
+            break;
+        // 重复登录, 已经在其它端登录了, 请跳转到登录页面并提示错误
+        case 417:
+            break;
+        // 被踢, 请提示错误后跳转到登录页面
+        case 'kicked':
+            break;
+        default:
+            break;
+        }
+    }
+}
+function onError(error, obj) {
+    console.log('发生错误', error, obj);
+}
+function onLoginPortsChange(loginPorts) {
+    console.log('当前登录帐号在其它端的状态发生改变了', loginPorts);
+}
+function onBlacklist(blacklist) {
+    console.log('收到黑名单', blacklist);
+    data.blacklist = nim.mergeRelations(data.blacklist, blacklist);
+    data.blacklist = nim.cutRelations(data.blacklist, blacklist.invalid);
+    refreshBlacklistUI();
+}
+function onMarkInBlacklist(obj) {
+    console.log(obj.account + '被你' + (obj.isAdd ? '加入' : '移除') + '黑名单', obj);
+    if (obj.isAdd) {
+        addToBlacklist(obj);
+    } else {
+        removeFromBlacklist(obj);
+    }
+}
+function addToBlacklist(obj) {
+    data.blacklist = nim.mergeRelations(data.blacklist, obj.record);
+    refreshBlacklistUI();
+}
+function removeFromBlacklist(obj) {
+    data.blacklist = nim.cutRelations(data.blacklist, obj.record);
+    refreshBlacklistUI();
+}
+function refreshBlacklistUI() {
+    // 刷新界面
+}
+function onMutelist(mutelist) {
+    console.log('收到静音列表', mutelist);
+    data.mutelist = nim.mergeRelations(data.mutelist, mutelist);
+    data.mutelist = nim.cutRelations(data.mutelist, mutelist.invalid);
+    refreshMutelistUI();
+}
+function onMarkInMutelist(obj) {
+    console.log(obj.account + '被你' + (obj.isAdd ? '加入' : '移除') + '静音列表', obj);
+    if (obj.isAdd) {
+        addToMutelist(obj);
+    } else {
+        removeFromMutelist(obj);
+    }
+}
+function addToMutelist(obj) {
+    data.mutelist = nim.mergeRelations(data.mutelist, obj.record);
+    refreshMutelistUI();
+}
+function removeFromMutelist(obj) {
+    data.mutelist = nim.cutRelations(data.mutelist, obj.record);
+    refreshMutelistUI();
+}
+function refreshMutelistUI() {
+    // 刷新界面
+}
+function onFriends(friends) {
+    console.log('收到好友列表', friends);
+    data.friends = nim.mergeFriends(data.friends, friends);
+    data.friends = nim.cutFriends(data.friends, friends.invalid);
+    refreshFriendsUI();
+}
+function onSyncFriendAction(obj) {
+    console.log('收到好友操作', obj);
+    switch (obj.type) {
+    case 'addFriend':
+        console.log('你在其它端直接加了一个好友' + obj);
+        onAddFriend(obj.friend);
+        break;
+    case 'applyFriend':
+        console.log('你在其它端申请加了一个好友' + obj);
+        break;
+    case 'passFriendApply':
+        console.log('你在其它端通过了一个好友申请' + obj);
+        onAddFriend(obj.friend);
+        break;
+    case 'rejectFriendApply':
+        console.log('你在其它端拒绝了一个好友申请' + obj);
+        break;
+    case 'deleteFriend':
+        console.log('你在其它端删了一个好友' + obj);
+        onDeleteFriend(obj.account);
+        break;
+    case 'updateFriend':
+        console.log('你在其它端更新了一个好友', obj);
+        onUpdateFriend(obj.friend);
+        break;
+    }
+}
+function onAddFriend(friend) {
+    data.friends = nim.mergeFriends(data.friends, friend);
+    refreshFriendsUI();
+}
+function onDeleteFriend(account) {
+    data.friends = nim.cutFriendsByAccounts(data.friends, account);
+    refreshFriendsUI();
+}
+function onUpdateFriend(friend) {
+    data.friends = nim.mergeFriends(data.friends, friend);
+    refreshFriendsUI();
+}
+function refreshFriendsUI() {
+    // 刷新界面
+}
+function onMyInfo(user) {
+    console.log('收到我的名片', user);
+    data.myInfo = user;
+    updateMyInfoUI();
+}
+function onUpdateMyInfo(user) {
+    console.log('我的名片更新了', user);
+    data.myInfo = NIM.util.merge(data.myInfo, user);
+    updateMyInfoUI();
+}
+function updateMyInfoUI() {
+    // 刷新界面
+}
+function onUsers(users) {
+    console.log('收到用户名片列表', users);
+    data.users = nim.mergeUsers(data.users, users);
+}
+function onUpdateUser(user) {
+    console.log('用户名片更新了', user);
+    data.users = nim.mergeUsers(data.users, user);
+}
+function onTeams(teams) {
+    console.log('群列表', teams);
+    data.teams = nim.mergeTeams(data.teams, teams);
+    onInvalidTeams(teams.invalid);
+}
+function onInvalidTeams(teams) {
+    data.teams = nim.cutTeams(data.teams, teams);
+    data.invalidTeams = nim.mergeTeams(data.invalidTeams, teams);
+    refreshTeamsUI();
+}
+function onCreateTeam(team) {
+    console.log('你创建了一个群', team);
+    data.teams = nim.mergeTeams(data.teams, team);
+    refreshTeamsUI();
+    onTeamMembers({
+        teamId: team.teamId,
+        members: owner
+    });
+}
+function refreshTeamsUI() {
+    // 刷新界面
+}
+function onTeamMembers(obj) {
+    console.log('收到群成员', obj);
+    var teamId = obj.teamId;
+    var members = obj.members;
+    data.teamMembers = data.teamMembers || {};
+    data.teamMembers[teamId] = nim.mergeTeamMembers(data.teamMembers[teamId], members);
+    data.teamMembers[teamId] = nim.cutTeamMembers(data.teamMembers[teamId], members.invalid);
+    refreshTeamMembersUI();
+}
+function onSyncTeamMembersDone() {
+    console.log('同步群列表完成');
+}
+function onUpdateTeamMember(teamMember) {
+    console.log('群成员信息更新了', teamMember);
+    onTeamMembers({
+        teamId: teamMember.teamId,
+        members: teamMember
+    });
+}
+function refreshTeamMembersUI() {
+    // 刷新界面
+}
+function onSessions(sessions) {
+    console.log('收到会话列表', sessions);
+    data.sessions = nim.mergeSessions(data.sessions, sessions);
+    updateSessionsUI();
+}
+function onUpdateSession(session) {
+    console.log('会话更新了', session);
+    data.sessions = nim.mergeSessions(data.sessions, session);
+    updateSessionsUI();
+}
+function updateSessionsUI() {
+    // 刷新界面
+}
+function onRoamingMsgs(obj) {
+    console.log('漫游消息', obj);
+    pushMsg(obj.msgs);
+}
+function onOfflineMsgs(obj) {
+    console.log('离线消息', obj);
+    pushMsg(obj.msgs);
+}
+function onMsg(msg) {
+    console.log('收到消息', msg.scene, msg.type, msg);
+    for(var i = 0,j;j = initData.users[i++];){
+		if(j.imAccountId == msg.from){
+			var _data = new Date();
+			$("#result").append(String.format("<div>from:{0},time:{1}<br/>{2}</div>",j.displayName,_data.pattern("yyyy-MM-dd HH:mm:ss"),msg.text));
+		}
+	}
+    pushMsg(msg);
+}
+function pushMsg(msgs) {
+    if (!Array.isArray(msgs)) { msgs = [msgs]; }
+    var sessionId = msgs[0].sessionId;
+    data.msgs = data.msgs || {};
+    data.msgs[sessionId] = nim.mergeMsgs(data.msgs[sessionId], msgs);
+}
+function onOfflineSysMsgs(sysMsgs) {
+    console.log('收到离线系统通知', sysMsgs);
+    pushSysMsgs(sysMsgs);
+}
+function onSysMsg(sysMsg) {
+    console.log('收到系统通知', sysMsg)
+    pushSysMsgs(sysMsg);
+}
+function onUpdateSysMsg(sysMsg) {
+    pushSysMsgs(sysMsg);
+}
+function pushSysMsgs(sysMsgs) {
+    data.sysMsgs = nim.mergeSysMsgs(data.sysMsgs, sysMsgs);
+    refreshSysMsgsUI();
+}
+function onSysMsgUnread(obj) {
+    console.log('收到系统通知未读数', obj);
+    data.sysMsgUnread = obj;
+    refreshSysMsgsUI();
+}
+function onUpdateSysMsgUnread(obj) {
+    console.log('系统通知未读数更新了', obj);
+    data.sysMsgUnread = obj;
+    refreshSysMsgsUI();
+}
+function refreshSysMsgsUI() {
+    // 刷新界面
+}
+function onOfflineCustomSysMsgs(sysMsgs) {
+    console.log('收到离线自定义系统通知', sysMsgs);
+}
+function onCustomSysMsg(sysMsg) {
+    console.log('收到自定义系统通知', sysMsg);
+    var _data = new Date();
+    var msg = {text:sysMsg.content  };
+    $("#sysAlert").append(String.format("<div>from:{0},time:{1}<br/>{2}</div>","系统通知",_data.pattern("yyyy-MM-dd HH:mm:ss"),msg.text));
+    
+}
+function onSyncDone() {
+    console.log('同步完成');
+}
+</script>
+</head>
+<body>
+<input type="hidden" id="initData" value='${initData}' />
+选择用户<select  id="userSelect"></select>
+要说的话<input id="sendText" style="width: 160px" />
+<input type="button" id="ok" value="发送" />
+<input type="button" id="his" value="查看历史消息" />
+<input type="button" id="randomSysMsg" value="发送随机历史消息" />    
+群聊发送<input id="sendText" style="width: 160px" />
+
+<br/>
+聊天消息
+<div id="result">
+
+</div>
+历史消息
+<div id="hisMsg">
+
+</div>
+<br/>
+系统通知
+<div id="sysAlert">
+
+</div>
+
+<script type="text/javascript">
+Date.prototype.pattern = function(fmt) {      
+	    var o = {         
+	    "M+" : this.getMonth()+1, //月份         
+	    "d+" : this.getDate(), //日         
+	    "h+" : this.getHours()%12 == 0 ? 12 : this.getHours()%12, //小时         
+	    "H+" : this.getHours(), //小时         
+	    "m+" : this.getMinutes(), //分         
+	    "s+" : this.getSeconds(), //秒         
+	    "q+" : Math.floor((this.getMonth()+3)/3), //季度         
+	    "S" : this.getMilliseconds() //毫秒         
+	    };         
+	    var week = {         
+	    "0" : "\u65e5",         
+	    "1" : "\u4e00",         
+	    "2" : "\u4e8c",         
+	    "3" : "\u4e09",         
+	    "4" : "\u56db",         
+	    "5" : "\u4e94",         
+	    "6" : "\u516d"        
+	    };         
+	    if(/(y+)/.test(fmt)){         
+	        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));         
+	    }         
+	    if(/(E+)/.test(fmt)){         
+	        fmt=fmt.replace(RegExp.$1, ((RegExp.$1.length>1) ? (RegExp.$1.length>2 ? "\u661f\u671f" : "\u5468") : "")+week[this.getDay()+""]);         
+	    }         
+	    for(var k in o){         
+	        if(new RegExp("("+ k +")").test(fmt)){         
+	            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));         
+	        }         
+	    }         
+	    return fmt;         
+	};
+	
+
+/**
+	 * Sample usage.
+	 * String.format("i am {0}, {1}", "strong", "haha");
+	 * @param join
+	 * @return
+	 */
+	String.format = function(fmt) {
+		var params = arguments;
+		var pattern = /{{|{[1-9][0-9]*}|\x7B0\x7D/g;
+		return fmt.replace(pattern, function(p) {
+			if (p == "{{")
+				return "{";
+			return params[parseInt(p.substr(1, p.length - 2), 10) + 1];
+		});   
+	};
+	// 衍生源JS对象
+	// String.prototype.trim
+	String.prototype.trim = function(){
+		return this.replace(/^\s+|\s+$/, "");
+	};
+	
+	// String.prototype.htmlEncode
+	String.prototype.htmlEncode = function(){
+		var div = document.createElement("DIV");
+		return function(){
+			var text;
+			div.appendChild(document.createTextNode(this));
+			text = div.innerHTML;
+			div.innerHTML = "";
+			return text;
+		};
+	}();
+	/**
+	 * 截取字符串，兼容中文的情况
+	 */
+	String.prototype.sub = function(n){
+		var r = /[^\x00-\xff]/g;
+		if(this.replace(r, "mm").length <= n){
+			return this;
+		}
+		var m = Math.floor(n/2);
+		for(var i=m; i<this.length; i++){
+			if(this.substr(0, i).replace(r, "mm").length >= n){
+				return this.substr(0, i) + "...";
+			}
+		}
+		return this;
+	};
+	
+	/**  
+   * 扩展基础类  
+   * 得到字符串的长度，包括中文和英文  
+   **/  
+  String.prototype.byteLength = function() {
+  	var arr = this.match(/[^\x00-\xff]/ig);   
+      return this.length + (arr? arr.length : 0);
+  };
+  
+  String.prototype.replaceAll = function(s1,s2) {
+      return this.replace(new RegExp(s1,"gm"),s2);
+  }
+  
+  //一个应该常用的javascript string函数，不知为何没有直接提供
+  String.prototype.escapeHTML = function () {                                       
+      return this.replace(/&/g,'&amp;').replace(/>/g,'&gt;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  };
+	
+  String.prototype.unescapeHTML = function () {                                       
+      return this.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'\"').replace(/&nbsp;/g,' ');
+  };
+  var initData = {};
+$(document).ready(function(){
+	
+	if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+	for(var i = 0,j;j = initData.users[i++];){
+		if(j.id == "${authenticationFn().userDto.userId}"){
+			continue;
+		}
+		$("#userSelect").append(String.format("<option value='{0}'>{1}</option>",j.imAccountId,j.displayName));
+	}
+	
+	$("#ok").bind("click",function(){
+		nim.sendText({
+		    scene: 'p2p',
+		    to: $("#userSelect").val(),
+		    text: $("#sendText").val(),
+		    done: function sendMsgDone (error, msg) {
+		    	//console.info(error);
+		    	//console.info(msg);
+		    }
+		  });		
+	});
+	
+	$("#his").bind("click",function(){
+		nim.getHistoryMsgs({
+		    scene: 'p2p',
+		    to: $("#userSelect").val(),
+		    done: function(error, obj){
+		    	if (!error) {
+		    		for(var i = 0;i < obj.msgs.length;i++){
+		    			var j = obj.msgs[i];
+		    			var msg = j;
+		    			var _data = new Date();
+		    			_data.setTime(j.time);
+		    			j.displayName = $("#userSelect").find("option:selected").text();
+		    			$("#hisMsg").append(String.format("<div>from:{0},time:{1}<br/>{2}</div>",j.displayName,_data.pattern("yyyy-MM-dd HH:mm:ss"),msg.text));
+		    		}
+		    	console.log(obj.msgs);
+		    	}
+		    }
+		});
+	});
+	
+	
+	$("#randomSysMsg").bind("click",function(){
+		var value = Math.ceil(Math.random()*99);
+		var content = value;
+		
+		
+		for(var i = 0,j;j = initData.users[i++];){
+			var msg = nim.sendCustomSysMsg({
+			    scene: 'p2p',
+			    to: j.imAccountId,
+			    content: JSON.stringify(content)
+			});
+		}
+
+	});
+	
+	
+});
+</script>
+</body>
+</html>

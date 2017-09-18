@@ -1,7 +1,16 @@
 package com.haihao.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.alibaba.fastjson.JSON;
+import com.haihao.jfinal.ToolModel;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 
 @Controller
@@ -14,6 +23,16 @@ public class ImController {
 		
 		
 		return "im/index";
+	}
+	
+	
+	@RequestMapping(value = "/test")
+	public String test(Map<String, Object> model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find = Db.find("select * from op_user where enable = 1");
+		map.put("users", ToolModel.recordListConvert(find));
+		model.put("initData", JSON.toJSONString(map));
+		return "im/test";
 	}
 
 }
