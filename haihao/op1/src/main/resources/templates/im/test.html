@@ -239,6 +239,21 @@ function onTeamMembers(obj) {
     console.log('收到群成员', obj);
     var teamId = obj.teamId;
     var members = obj.members;
+    
+    for(var i = 0;i< data.teams.length;i++){
+    	var j = data.teams[i];
+    	if(j.teamId == teamId){
+    		 $("#GroupresultMember").append(String.format("<div>群名称:{0}<br/></div>",j.name));
+    		for(var a = 0;a < members.length;a++){
+    			var b = members[a];
+    			for(var ii = 0,jj;jj = initData.users[ii++];){
+    				if(b.account == jj.imAccountId){
+    					 $("#GroupresultMember").append(String.format("<span>{0}&nbsp;&nbsp;</span>",jj.displayName));
+    				}
+    			}
+    		}
+    	}
+    }
     data.teamMembers = data.teamMembers || {};
     data.teamMembers[teamId] = nim.mergeTeamMembers(data.teamMembers[teamId], members);
     data.teamMembers[teamId] = nim.cutTeamMembers(data.teamMembers[teamId], members.invalid);
@@ -384,6 +399,12 @@ function onSyncDone() {
 <br/>
 群消息
 <div id="Groupresult">
+
+</div>
+
+<br/>
+群成初始化返回
+<div id="GroupresultMember">
 
 </div>
 

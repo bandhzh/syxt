@@ -18,6 +18,7 @@ import com.haihao.dto.Authorization;
 import com.haihao.dto.ImTeamDto;
 import com.haihao.model.im.ImAccount;
 import com.haihao.model.im.ImService;
+import com.haihao.tool.ToolString;
 import com.haihao.utils.HttpClient;
 import com.haihao.utils.UUIDBuider;
 import com.jfinal.plugin.activerecord.Db;
@@ -78,7 +79,7 @@ public class ImServiceImpl implements ImService {
 		nameValuePairs.add(new BasicNameValuePair("owner", str));
 
 		List<String> userList = new ArrayList<String>();
-		List<Record> find = Db.find("select * from op_user where id in (" + StringUtils.join(imTeamDto.getMembers(), ",") + ")");
+		List<Record> find = Db.find("select * from op_user where id in (" + ToolString.joinForSQL(imTeamDto.getMembers(), ",") + ")");
 		for (Record r : find) {
 			userList.add(r.getStr("imAccountId"));
 		}
@@ -89,7 +90,7 @@ public class ImServiceImpl implements ImService {
 		nameValuePairs.add(new BasicNameValuePair("beinvitemode", "1"));
 		nameValuePairs.add(new BasicNameValuePair("invitemode", "1"));
 		nameValuePairs.add(new BasicNameValuePair("tname", imTeamDto.getTname()));
-		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_CREATE_TEAM, null);
+		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_CREATE_TEAM, nameValuePairs);
 		if (!StringUtils.isEmpty(responseContent)) {
 			JSONObject result = JSON.parseObject(responseContent);
 			String code = result.getString("code");
@@ -157,7 +158,7 @@ public class ImServiceImpl implements ImService {
 		for (Record r : find) {
 			userList.add(r.getStr("imAccountId"));
 		}
-		nameValuePairs.add(new BasicNameValuePair("members", JSON.toJSONString(userList)));
+		nameValuePairs.add(new BasicNameValuePair("member", userList.get(0)));
 		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_REMOVE_TEAM_USER, nameValuePairs);
 		if (!StringUtils.isEmpty(responseContent)) {
 			JSONObject result = JSON.parseObject(responseContent);
