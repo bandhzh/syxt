@@ -360,6 +360,7 @@ function onSyncDone() {
 <input type="button" id="okGroup" value="发送群消息" />
 
 <input type="button" id="his" value="查看历史消息" />
+<input type="button" id="hisGroup" value="查看群历史消息" />
 <input type="button" id="randomSysMsg" value="发送随机历史消息" />    
 
 
@@ -543,6 +544,33 @@ $(document).ready(function(){
 		    }
 		});
 	});
+	
+	$("#hisGroup").bind("click",function(){
+		nim.getHistoryMsgs({
+		    scene: 'team',
+		    to: $("#groupSelect").val(),
+		    done: function(error, obj){
+		    	if (!error) {
+		    		for(var i = 0;i < obj.msgs.length;i++){
+		    			var j = obj.msgs[i];
+		    			var msg = j;
+		    			var _data = new Date();
+		    			_data.setTime(j.time);
+		    			for(var ii = 0,jj;jj = initData.users[ii++];){
+		    				if(jj.imAccountId == j.from){
+		    					j.displayName = jj.displayName;
+				         		$("#Groupresult").append(String.format("<div>from:{0},time:{1}<br/>{2}</div>",j.displayName,_data.pattern("yyyy-MM-dd HH:mm:ss"),msg.text));
+				         		break;
+		    				}
+		    			}
+		    			
+		    		}
+		    	}
+		    }
+		});
+	});
+	
+	
 	
 	
 	$("#randomSysMsg").bind("click",function(){
