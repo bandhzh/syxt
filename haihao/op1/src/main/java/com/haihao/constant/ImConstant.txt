@@ -5,5 +5,14 @@ public class ImConstant {
 	public static String IM_URL_CREATE_USER = "https://api.netease.im/nimserver/user/create.action";
 	
 	
+	public static String IM_URL_CREATE_TEAM = "https://api.netease.im/nimserver/team/create.action";
+	
+	
+	public static String IM_URL_ADD_TEAM_USER = "https://api.netease.im/nimserver/team/add.action";
+	
+	
+	public static String IM_URL_REMOVE_TEAM_USER = "https://api.netease.im/nimserver/team/kick.action";
+	
+	public static String IM_URL_REMOVE_TEAM = "https://api.netease.im/nimserver/team/remove.action";
 
 }

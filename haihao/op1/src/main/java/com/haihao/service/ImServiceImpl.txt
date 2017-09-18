@@ -1,6 +1,11 @@
 package com.haihao.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,21 +15,22 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.haihao.constant.ImConstant;
 import com.haihao.dto.Authorization;
+import com.haihao.dto.ImTeamDto;
 import com.haihao.model.im.ImAccount;
 import com.haihao.model.im.ImService;
 import com.haihao.utils.HttpClient;
 import com.haihao.utils.UUIDBuider;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 @Service
 public class ImServiceImpl implements ImService {
-	
+
 	private final static Logger logger = LoggerFactory.getLogger(ImServiceImpl.class);
-	
+
 	@Value("${netease.im.appKey}")
 	private String IM_APP_KEY;
-	
-	
+
 	@Value("${netease.im.appSecret}")
 	private String IM_APP_SECRET;
 
@@ -32,35 +38,161 @@ public class ImServiceImpl implements ImService {
 	public ImAccount createAccount(Long userId) {
 		logger.info("------- 创建一个IM账号： userId={} -------", userId);
 		ImAccount account = null;
-		
+
 		Authorization authorization = new Authorization();
 		authorization.setAppKey(IM_APP_KEY);
 		authorization.setAppSecret(IM_APP_SECRET);
 		authorization.setAccountID(UUIDBuider.getID());
 		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_CREATE_USER, null);
-		
-		if(!StringUtils.isEmpty(responseContent)){
+
+		if (!StringUtils.isEmpty(responseContent)) {
 			JSONObject result = JSON.parseObject(responseContent);
 			String code = result.getString("code");
-			if("200".equals(code)){
+			if ("200".equals(code)) {
 				account = result.getObject("info", ImAccount.class);
-			}else{
+			} else {
 				logger.error("--------- 创建IM账号失败: ---------" + responseContent);
 			}
 		}
-		
-		if(null != account){
+
+		if (null != account) {
 			logger.info("------ 成功创建IM账号 userId={} --------", userId);
-			Db.update("update op_user set imAccountId = ?,imToken = ? where id = ?",account.getAccid(),account.getToken(),userId);
+			Db.update("update op_user set imAccountId = ?,imToken = ? where id = ?", account.getAccid(), account.getToken(), userId);
 		}
-		
-		
+
 		return account;
 	}
 
 	@Override
-	public void deleteAccount(String accountId) {
+	public String createTeam(ImTeamDto imTeamDto) {
+		logger.info("------- 创建一个team");
+		Record findFirst = Db.findFirst("select * from op_user where id = ?", imTeamDto.getUserId());
+		String str = findFirst.getStr("imAccountId");
+		Authorization authorization = new Authorization();
+		authorization.setAppKey(IM_APP_KEY);
+		authorization.setAppSecret(IM_APP_SECRET);
+		authorization.setAccountID(str);
 
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("tname", imTeamDto.getTname()));
+		nameValuePairs.add(new BasicNameValuePair("owner", str));
+
+		List<String> userList = new ArrayList<String>();
+		List<Record> find = Db.find("select * from op_user where id in (" + StringUtils.join(imTeamDto.getMembers(), ",") + ")");
+		for (Record r : find) {
+			userList.add(r.getStr("imAccountId"));
+		}
+		nameValuePairs.add(new BasicNameValuePair("members", JSON.toJSONString(userList)));
+		nameValuePairs.add(new BasicNameValuePair("msg", "创建一个群"));
+		nameValuePairs.add(new BasicNameValuePair("magree", "0"));
+		nameValuePairs.add(new BasicNameValuePair("joinmode", "0"));
+		nameValuePairs.add(new BasicNameValuePair("beinvitemode", "1"));
+		nameValuePairs.add(new BasicNameValuePair("invitemode", "1"));
+		nameValuePairs.add(new BasicNameValuePair("tname", imTeamDto.getTname()));
+		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_CREATE_TEAM, null);
+		if (!StringUtils.isEmpty(responseContent)) {
+			JSONObject result = JSON.parseObject(responseContent);
+			String code = result.getString("code");
+			if ("200".equals(code)) {
+				String string = result.getString("tid");
+				return string;
+			} else {
+				logger.error("--------- 失败: ---------" + responseContent);
+			}
+		}
+		return "";
+	}
+
+	@Override
+	public void addUserFromTeam(ImTeamDto imTeamDto) {
+		Record findFirst = Db.findFirst("select * from op_user where id = ?", imTeamDto.getUserId());
+		String str = findFirst.getStr("imAccountId");
+		Authorization authorization = new Authorization();
+		authorization.setAppKey(IM_APP_KEY);
+		authorization.setAppSecret(IM_APP_SECRET);
+		authorization.setAccountID(str);
+
+		String teamId = imTeamDto.getTeamId();
+
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("tid", teamId));
+		nameValuePairs.add(new BasicNameValuePair("owner", str));
+
+		List<String> userList = new ArrayList<String>();
+		List<Record> find = Db.find("select * from op_user where id in (" + StringUtils.join(imTeamDto.getMembers(), ",") + ")");
+		for (Record r : find) {
+			userList.add(r.getStr("imAccountId"));
+		}
+		nameValuePairs.add(new BasicNameValuePair("members", JSON.toJSONString(userList)));
+		nameValuePairs.add(new BasicNameValuePair("magree", "0"));
+		nameValuePairs.add(new BasicNameValuePair("msg", "加入"));
+		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_ADD_TEAM_USER, nameValuePairs);
+		if (!StringUtils.isEmpty(responseContent)) {
+			JSONObject result = JSON.parseObject(responseContent);
+			String code = result.getString("code");
+			if ("200".equals(code)) {
+			} else {
+				logger.error("--------- 失败: ---------" + responseContent);
+			}
+		}
+	}
+
+	@Override
+	public void kickUserFromTeam(ImTeamDto imTeamDto) {
+		Record findFirst = Db.findFirst("select * from op_user where id = ?", imTeamDto.getUserId());
+		String str = findFirst.getStr("imAccountId");
+		Authorization authorization = new Authorization();
+		authorization.setAppKey(IM_APP_KEY);
+		authorization.setAppSecret(IM_APP_SECRET);
+		authorization.setAccountID(str);
+		
+		String teamId = imTeamDto.getTeamId();
+		
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		
+		nameValuePairs.add(new BasicNameValuePair("tid", teamId));
+		nameValuePairs.add(new BasicNameValuePair("owner", str));
+		List<String> userList = new ArrayList<String>();
+		List<Record> find = Db.find("select * from op_user where id in (" + StringUtils.join(imTeamDto.getMembers(), ",") + ")");
+		for (Record r : find) {
+			userList.add(r.getStr("imAccountId"));
+		}
+		nameValuePairs.add(new BasicNameValuePair("members", JSON.toJSONString(userList)));
+		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_REMOVE_TEAM_USER, nameValuePairs);
+		if (!StringUtils.isEmpty(responseContent)) {
+			JSONObject result = JSON.parseObject(responseContent);
+			String code = result.getString("code");
+			if ("200".equals(code)) {
+			} else {
+				logger.error("--------- 失败: ---------" + responseContent);
+			}
+		}
+	}
+
+	@Override
+	public void removeTeam(ImTeamDto imTeamDto) {
+		Record findFirst = Db.findFirst("select * from op_user where id = ?", imTeamDto.getUserId());
+		String str = findFirst.getStr("imAccountId");
+		Authorization authorization = new Authorization();
+		authorization.setAppKey(IM_APP_KEY);
+		authorization.setAppSecret(IM_APP_SECRET);
+		authorization.setAccountID(str);
+		
+		String teamId = imTeamDto.getTeamId();
+		
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		
+		nameValuePairs.add(new BasicNameValuePair("tid", teamId));
+		nameValuePairs.add(new BasicNameValuePair("owner", str));
+		String responseContent = HttpClient.post(authorization, ImConstant.IM_URL_REMOVE_TEAM, nameValuePairs);
+		if (!StringUtils.isEmpty(responseContent)) {
+			JSONObject result = JSON.parseObject(responseContent);
+			String code = result.getString("code");
+			if ("200".equals(code)) {
+			} else {
+				logger.error("--------- 失败: ---------" + responseContent);
+			}
+		}
 	}
 
 }

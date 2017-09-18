@@ -1,10 +1,19 @@
 package com.haihao.model.im;
 
+import com.haihao.dto.ImTeamDto;
+
 
 public interface ImService {
 	
 	ImAccount createAccount(Long userId);
 	
-	void deleteAccount(String accountId);
+	String createTeam(ImTeamDto imTeamDto);
+	
+	void addUserFromTeam(ImTeamDto imTeamDto);
+	
+	void kickUserFromTeam(ImTeamDto imTeamDto);
+	
+	void removeTeam(ImTeamDto imTeamDto);
+	
 
 }

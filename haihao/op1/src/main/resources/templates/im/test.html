@@ -210,6 +210,11 @@ function onUpdateUser(user) {
 }
 function onTeams(teams) {
     console.log('群列表', teams);
+    for(var i = 0;i < teams.length;i++){
+    	var j = teams[i];
+    	$("#groupSelect").append(String.format("<option value='{0}'>{1}</option>",j.teamId,j.name));
+    }
+    
     data.teams = nim.mergeTeams(data.teams, teams);
     onInvalidTeams(teams.invalid);
 }
@@ -275,12 +280,22 @@ function onOfflineMsgs(obj) {
 }
 function onMsg(msg) {
     console.log('收到消息', msg.scene, msg.type, msg);
-    for(var i = 0,j;j = initData.users[i++];){
-		if(j.imAccountId == msg.from){
-			var _data = new Date();
-			$("#result").append(String.format("<div>from:{0},time:{1}<br/>{2}</div>",j.displayName,_data.pattern("yyyy-MM-dd HH:mm:ss"),msg.text));
-		}
-	}
+    if(msg.scene == "p2p"){//单聊
+        for(var i = 0,j;j = initData.users[i++];){
+    		if(j.imAccountId == msg.from){
+    			var _data = new Date();
+    			$("#result").append(String.format("<div>from:{0},time:{1}<br/>{2}</div>",j.displayName,_data.pattern("yyyy-MM-dd HH:mm:ss"),msg.text));
+    		}
+    	}
+    }else if(msg.scene == "team"){//群聊
+    	 for(var i = 0,j;j = initData.users[i++];){
+     		if(j.imAccountId == msg.from){
+     			var _data = new Date();
+     			$("#Groupresult").append(String.format("<div>from:{0},time:{1}<br/>{2}</div>",j.displayName,_data.pattern("yyyy-MM-dd HH:mm:ss"),msg.text));
+     		}
+     	}
+    }
+
     pushMsg(msg);
 }
 function pushMsg(msgs) {
@@ -329,6 +344,9 @@ function onCustomSysMsg(sysMsg) {
 }
 function onSyncDone() {
     console.log('同步完成');
+    
+    
+    
 }
 </script>
 </head>
@@ -337,9 +355,13 @@ function onSyncDone() {
 选择用户<select  id="userSelect"></select>
 要说的话<input id="sendText" style="width: 160px" />
 <input type="button" id="ok" value="发送" />
+选择选择一个群<select  id="groupSelect"></select>
+群聊发送<input id="sendTextGroup" style="width: 160px" />
+<input type="button" id="okGroup" value="发送群消息" />
+
 <input type="button" id="his" value="查看历史消息" />
 <input type="button" id="randomSysMsg" value="发送随机历史消息" />    
-群聊发送<input id="sendText" style="width: 160px" />
+
 
 <br/>
 聊天消息
@@ -353,6 +375,11 @@ function onSyncDone() {
 <br/>
 系统通知
 <div id="sysAlert">
+
+</div>
+<br/>
+群消息
+<div id="Groupresult">
 
 </div>
 
@@ -485,6 +512,18 @@ $(document).ready(function(){
 		  });		
 	});
 	
+	$("#okGroup").bind("click",function(){
+		nim.sendText({
+		    scene: 'team',
+		    to: $("#groupSelect").val(),
+		    text: $("#sendTextGroup").val(),
+		    done: function sendMsgDone (error, msg) {
+		    	//console.info(error);
+		    	//console.info(msg);
+		    }
+		  });		
+	});
+	
 	$("#his").bind("click",function(){
 		nim.getHistoryMsgs({
 		    scene: 'p2p',
@@ -521,6 +560,14 @@ $(document).ready(function(){
 
 	});
 	
+	
+	function createTeamDone(error, obj) {
+	    console.log('创建' + obj.team.type + '群' + (!error?'成功':'失败'), error, obj);
+	    if (!error) {
+	        onCreateTeam(obj.team, obj.owner);
+	    }
+	}
+	 
 	
 });
 </script>

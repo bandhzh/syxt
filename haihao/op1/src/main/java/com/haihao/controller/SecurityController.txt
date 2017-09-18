@@ -385,6 +385,8 @@ public class SecurityController extends BaseController {
 					model.set("password", encode);
 					model.set("enable", 1);
 					model.save();
+					
+					imServiceImpl.createAccount(model.getLong("id"));
 				}else{
 					model.update();
 				}
