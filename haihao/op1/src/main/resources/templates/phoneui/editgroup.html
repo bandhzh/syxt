@@ -14,11 +14,27 @@
     <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
     <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
     <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
-
+	<!-- 配置文件 -->
+	<script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	   var userInfo ;
+	</script>
     
     </head>
    
 <body class="chat mbsc-fr-lock">
+
+<input type="hidden" id="initData" value='${initData!}'>
+<script type="text/javascript">
+var initData = {};
+if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+</script>
+
+
+
+
+
+
 <header class="mui-bar mui-bar-nav bgh">
 	<a class="mui-icon mui-icon-back"></a>
    	<h1 class="mui-title">群组成员管理</h1>
@@ -29,120 +45,274 @@
 		<div class="mui-content">
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
-					<span><p><small>Chat room title</small></p><big>FIRST TATTOO</big></span>
+					<span>
+						<p><small>讨论组名称</small></p>
+						<big>
+							<input type="text" name="tlzname" id="tlzname" value='${taolunzu.name}'>
+							<input type="hidden" name="tlzid" id="tlzid" value='${taolunzuid}'>
+						</big>
+					</span>
 				</li>
 				<li class="mui-table-view-cell">
-					<span><p><small>Notifications</small></p><big>Send push notifications</big></span>
-					<div class="mui-switch mui-switch-blue mui-switch-mini">
+					<span><p><small>讨论组类型</small></p><big>公共</big></span>
+					<div class="mui-switch mui-switch-blue mui-switch-mini mui-active">
 						<div class="mui-switch-handle"></div>
 					</div>
 				</li>
 				<li class="mui-table-view-cell">
-					<span><p><small>Room type</small></p><big>Privat</big></span>
-					<div class="mui-switch mui-switch-blue mui-switch-mini">
-						<div class="mui-switch-handle"></div>
-					</div>
-				</li>
-				<li class="mui-table-view-cell">
-					<span><p><small>Participants</small></p><big>&nbsp;</big></span>
+					<span><p><small>讨论组成员</small></p></span>
 				</li>
 			</ul>
 		</div>
-		<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
-		<script>
-			mui.init({
-				swipeBack : true
-			//启用右滑关闭功能
-			});
-		</script>
+		
 		<div class="tx">
-			<ul class="mui-table-view mui-grid-view mui-grid-9">
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+			<ul class="mui-table-view mui-grid-view mui-grid-9" id="userul">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3 addrenyuan">
 					<a href="${ctxPath}/book/creategroup">
 						<p>
 							<img src="${ctxPath}/static/assets/phoneui/img/add.png" width="70%">
 						</p>
 						<div class="mui-media-body">
-							<small>ADD USER</small>
+							<small>添加成员</small>
 						</div>
-				</a>
+					</a>
 				</li>
 				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#">
+					<a href="#">
 						<p>
 							<img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%">
 						</p>
 						<div class="mui-media-body">
-							<small>BILLY WOOD</small>
+							<small>${authenticationFn().userDto.displayName}</small>
 							<p>
-								<small>COACH</small>
+								<small>群主</small>
 							</p>
 						</div>
-				</a>
+					</a>
 				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#">
-						<p>
-							<img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%">
-						</p>
-						<div class="mui-media-body">
-							<small>BILLY</small>
-							<p>
-								<small>COACH</small>
-							</p>
-						</div>
-				</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#">
-						<p>
-							<img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%">
-						</p>
-						<div class="mui-media-body">
-							<small>BILLY</small>
-							<p>
-								<small>COACH</small>
-							</p>
-						</div>
-				</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#">
-						<p>
-							<img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%">
-						</p>
-						<div class="mui-media-body">
-							<small>BILLY</small>
-							<p>
-								<small>COACH</small>
-							</p>
-						</div>
-				</a>
-				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="#">
-						<p>
-							<img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%">
-						</p>
-						<div class="mui-media-body">
-							<small>BILLY</small>
-							<p>
-								<small>COACH</small>
-							</p>
-						</div>
-				</a>
-				</li>
+				
+				
+				
 			</ul>
 		</div>
 		<div class="hei"></div>
 		<div class="hei"></div>
 		<div class="hei"></div>
 		<div class="login_btn  fixbot">
-			<input type="submit" value="保 存" class="ok3 font-avenir" style="line-height: 2rem !important; font-weight: bold; height: 2rem !important">
+			<input type="submit" id="savebtn" value="保 存" class="ok3 font-avenir" style="line-height: 2rem !important; font-weight: bold; height: 2rem !important">
 		</div>
 	</div>
 </body>
 
 <!-- 返回上一步操作 -->
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
+
+<script type="text/javascript">
+
+mui.init({
+	swipeBack: true //启用右滑关闭功能
+});
+
+function plusReady(){
+       mui(".addrenyuan").on("tap","a",function(){   
+          mui.openWindow({
+              url:"http://192.168.1.53:8084/book/toeditgroup",
+              id:"b"
+          })   
+       })   
+  }   
+  if(window.plus){   
+      plusReady();   
+  }else{   
+      document.addEventListener("plusready",plusReady,false);   
+  }   
+  //返回回来要执行的方法   
+  function fun1(e){
+      var val=e.detail.inputVal;//昵称数组
+      //将返回的值展示到当前界面
+    	for(var i=0;i<val.length;i++){
+	      	var uinfo = val[i].split("-");
+     		var uinfoli ='<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3 newuserclass" alt="'+uinfo[0].split("/")[0]+'" id="nowli'+uinfo[0].split("/")[0]+'"><a href="#"><p><img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%"></p><div class="mui-media-body"><small>'+uinfo[0].split("/")[1]+'</small><p><small alt='+uinfo[0].split("/")[0]+' class="cancel_nows">移除</small></p></div></a></li>';
+     		jQuery("#userul").append(uinfoli);
+	      }
+      
+      
+      
+    	mui('p').on('tap', '.cancel_nows', function(event) {
+	    	var uid = $(this).attr("alt");
+	    	
+			var btnArray = ['是', '否'];
+			mui.confirm('是否删除该成员？', '一把手助手', btnArray, function(e) {
+				if (e.index == 0) {
+					$("#nowli"+uid).remove();
+ 					mui.toast("删除成功！");
+				} else {
+					mui.toast("点了取消！");
+				}
+			})
+		});		
+    	
+    	
+  }
+  
+  
+  
+  
+  
+  
+  
+  //自定义窗体事件  doit 要和b页面定义的 事件名称一致   
+  window.addEventListener('doit',fun1);   
+
+
+$(document).ready(function() {
+	
+	 
+	 
+	 function InitOpenNewsList(domId,initDataId){
+			var _items = initData[initDataId];
+			if(_items.length==0){
+				$("#nowing").html('<div class="empty">暂无相关数据</div>');
+			}
+			
+			for(var i = 0;i < _items.length;i++){
+				var j = _items[i];
+				$(domId).append(
+	 					String.format('<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="rli{2}">'
+	 							+'<a href="#">'
+	 							+'<p>'
+	 							+'	<img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%">'
+	 							+'</p>'
+	 							+'<div class="mui-media-body">'
+	 							+'	<small>{0}</small>'
+	 							+'	<p>'
+	 							+'		<small class="cancel_users" alt={1}>移除</small>'
+	 							+'	</p>'
+	 							+'	</div>'
+	 							+'</a>'
+	 							+'</li>',getnamebyuserid(j["userid"]),j["id"],j["id"]));
+				
+				}
+			
+			
+
+			mui('p').on('tap', '.cancel_users', function(event) {
+		    	var uid = $(this).attr("alt");
+		    	
+				var btnArray = ['是', '否'];
+				mui.confirm('是否删除该成员？', '一把手助手', btnArray, function(e) {
+					if (e.index == 0) {
+						 $.ajax({
+				     			url : "${ctxPath}/phoneui/ajaxdeletechengyuan",//取消报料
+				     			type : "post",
+				     			data : {uid:uid},
+				     			dataType:"json",
+				     			success : function(data) {
+				     				if (data.success) {
+				     					$("#rli"+uid).remove();
+				     					mui.toast("删除成功！");
+				     				}else{
+				     					//
+				     				}
+				     			}
+				     		});
+					} else {
+						mui.toast("点了取消！");
+					}
+				})
+			});				
+			
+			
+			
+		}
+	 
+	
+	 
+		
+		InitOpenNewsList("#userul", "listchengyuans");
+		
+		
+		
+		//根据讨论组id检索出讨论组名称
+		function getnamebyuserid(value){
+			var name='';
+			//异步获取
+			$.ajax({
+			url : 'ajaxgetusernamebyid',
+			type : "post",
+			data :{userid:value},
+			dataType: "json",
+			async: false,
+			success : function(data) {
+				name=data.data.displayName;
+				
+			}
+	
+			});
+			return name;
+	    	
+	    }
+		
+		
+		
+		
+		
+	  	//点击保存事件
+	  	
+  		jQuery("#savebtn").click(function(){
+  			
+  			//循环所有新增的用户
+  			$(".newuserclass").each(function(){
+  				
+  				var nuserid = $(this).attr("alt");
+  				
+  				jQuery.ajax({
+  	  				url : "ajaxeditchengyuans",
+  	  				type : "post",
+  	  				data : {tlzid:$("#tlzid").val(),userid:nuserid},
+  	  				success : function(data) {
+  	  					if (data.success) {
+  	  						//新增成功 
+  	  						mui.toast("保存成功！");
+  	  						setTimeout('location.href="${ctxPath}/phoneui/listgroups"', 3000);
+  	  					} else {
+  	  						toastr.error(data.error);
+  	  					}
+  	  				}
+  	  			}); 
+  				
+  				
+  				
+  				
+  				
+  			});
+  			
+  			
+  			
+  			
+  			
+  			
+  			
+  			
+  		})
+	  		
+	  		
+	  		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+});
+
+</script>
+
 </html>

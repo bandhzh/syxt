@@ -103,5 +103,34 @@ public class BookController extends BaseController{
 		
 		return "book/creategroup";
 	}
+	
+	
+	/**
+	 * 讨论组修改新成员
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/toeditgroup"})
+	public String toeditgroup(Map<String, Object> model) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		SecurityUser principal = (SecurityUser) authentication.getPrincipal();
+		model.put("userDto", principal.getUserDto());
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.label.role"));
+		map.put("roles", ToolModel.recordListConvert(find));
+
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
+
+		model.put("initData", JSON.toJSONString(map));
+		
+		//reload sql
+		SqlXmlPlugin.init(false);
+		
+		
+		return "book/toeditgroup";
+	}
 
 }

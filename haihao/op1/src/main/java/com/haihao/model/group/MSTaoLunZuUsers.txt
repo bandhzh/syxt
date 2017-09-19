@@ -13,6 +13,7 @@ public class MSTaoLunZuUsers extends BaseModel<MSTaoLunZuUsers>{
 
 	
 	private static final long serialVersionUID = -6425056709193461365L;
+	public static MSTaoLunZuUsers dao = new MSTaoLunZuUsers().dao();
 	
 
 }

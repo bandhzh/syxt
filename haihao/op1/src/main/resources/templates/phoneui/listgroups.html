@@ -81,9 +81,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
  	});
  
  	//点击新建群组
- 	
 	 mui(".login_btn").on("tap","input",function(){
-		 /* alert("http://192.168.1.53:8084/phoneui/newaddgroup"); */
         mui.openWindow({
             url:"http://192.168.1.53:8084/phoneui/newaddgroup",
             id:"newadd"
@@ -106,11 +104,23 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 			 							+'<div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon?tlzid={0}"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">{1}</p></div>'
 			 							+'<ul>'
 			 							+'  <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>'
-			 							+'  <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="${ctxPath}/phoneui/editgroup?tlzid={2}"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>'
+			 							+'  <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left editgroup"><a href="#" alt="{2}"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>'
 			 							+' </ul>'
 			 							+'</div>',j["taolunzuid"],getnamebytlzid(j["taolunzuid"]),j["taolunzuid"]));
  					
  				}
+ 				
+ 				
+ 				 mui(".editgroup").on("tap","a",function(){
+ 					var tlzid = $(this).attr("alt");
+ 					 
+ 			        mui.openWindow({
+ 			            url:"http://192.168.1.53:8084/phoneui/editgroup?tlzid="+tlzid,
+ 			            id:"newadd"
+ 			        })
+ 			     })
+ 				
+ 				
  				
  			}
  			

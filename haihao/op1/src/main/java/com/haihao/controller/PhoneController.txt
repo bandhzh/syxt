@@ -916,7 +916,13 @@ public class PhoneController extends BaseController{
 	}
 	
 	
-	
+	/**
+	 * 根据讨论组id转换为讨论组名称
+	 * @param request
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/ajaxgettlznamebyid")
 	@ResponseBody
 	public ResultDto ajaxgettlznamebyid(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
@@ -935,6 +941,106 @@ public class PhoneController extends BaseController{
 	
 	
 	/**
+	 * 根据用户id转换为昵称
+	 * @param request
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/ajaxgetusernamebyid")
+	@ResponseBody
+	public ResultDto ajaxgetusernamebyid(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
+		ResultDto resultDto = new ResultDto();
+		int userid = Integer.parseInt(request.getParameter("userid"));
+		
+		
+		UserModel usermodel = UserModel.dao.findById(userid);
+		
+		resultDto.setData( ModelKit.toMap(usermodel));
+			
+		
+	
+		return resultDto;
+		
+	
+	}
+	
+	
+	/**
+	 * 异步删除讨论组成员
+	 * @param request
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/ajaxdeletechengyuan")
+	@ResponseBody
+	public ResultDto ajaxdeletechengyuan(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
+		ResultDto resultDto = new ResultDto();
+		int uid = Integer.parseInt(request.getParameter("uid"));
+		
+		MSTaoLunZuUsers tlzuser = MSTaoLunZuUsers.dao.findById(uid);
+		tlzuser.set("enabled", -1);
+		
+		tlzuser.update();
+		
+		
+		resultDto.setSuccess(true);
+		resultDto.setData( ModelKit.toMap(tlzuser));
+			
+		
+	
+		return resultDto;
+		
+	
+	}
+	
+	/**
+	 * 异步添加新成员
+	 * @param request
+	 * @param session
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/ajaxeditchengyuans")
+	@ResponseBody
+	public ResultDto ajaxeditchengyuans(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
+		ResultDto resultDto = new ResultDto();
+		
+		
+		String tlzid = request.getParameter("tlzid");
+		String userid = request.getParameter("userid");
+		//根据用户id 以及讨论组id检索是否已经存在
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("taolunzuid", tlzid);
+		map.put("userid", userid);
+		
+		
+		List<Record> opennews =  Db.find(ToolSqlXml.getSql("com.group.selectchengyuanbyuidtid",map));
+		
+		if(null==opennews||opennews.size()==0){//没有查询到值
+			//新增进去
+			
+			MSTaoLunZuUsers tlzuser = new MSTaoLunZuUsers();
+			tlzuser.set("taolunzuid", tlzid);
+			tlzuser.set("userid", userid);
+			tlzuser.set("enabled", 1);
+			tlzuser.save();
+			resultDto.setSuccess(true);
+		}else{
+			resultDto.setSuccess(false);
+		}
+		
+	
+		return resultDto;
+		
+	
+	}
+	
+	
+	
+	/**
 	 * 进入交流中心
 	 * @param model
 	 * @return
@@ -949,8 +1055,10 @@ public class PhoneController extends BaseController{
 		model.put("initData", JSON.toJSONString(map));
 		
 		
-		//int tlzid = Integer.parseInt(request.getParameter("tlzid"));//讨论组id
+		int tlzid = Integer.parseInt(request.getParameter("tlzid"));//讨论组id
+		MSTaoLunZu taolunzu = MSTaoLunZu.dao.findById(tlzid);
 		
+		model.put("createTeam", taolunzu.get("createTeam"));
 		
 		return "phoneui/groupcommon";
 	}
@@ -961,7 +1069,24 @@ public class PhoneController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value = { "/editgroup"})
-	public String editgroup(Map<String, Object> model) {
+	public String editgroup(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
+		
+		
+		int tlzid = Integer.parseInt(request.getParameter("tlzid"));
+		MSTaoLunZu taolunzu = MSTaoLunZu.dao.findById(tlzid);
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("taolunzuid", tlzid);
+		
+		List<Record> listchengyuans = Db.find(ToolSqlXml.getSql("com.group.selecttaolunzusbytlzid",map));//处理完成
+		map.put("listchengyuans", ToolModel.recordListConvert(listchengyuans));
+		
+		model.put("initData", JSON.toJSONString(map));
+		model.put("taolunzuid", tlzid);
+		model.put("taolunzu", taolunzu);
+		
+		
 		
 		return "phoneui/editgroup";
 	}
@@ -1036,24 +1161,6 @@ public class PhoneController extends BaseController{
 					}
 					
 					
-					ImTeamDto imTeamDto = new ImTeamDto();
-					imTeamDto.setTname(request.getParameter("tlzname"));//im群名
-					imTeamDto.setUserId(String.valueOf(ToolSecurity.getUserId()));
-					//检测改组所有的成员
-					List<Long> find = Db.query("select * from op_mashang_taolunzu_users where enabled=1 and taolunzuid="+model.get("id"));
-					List<String> ids = new ArrayList<String>();
-					for(Long id : find){
-					  if(RandomUtils.nextInt(0, 10) < 5){
-					    ids.add(id.toString());
-					  }
-					}
-					imTeamDto.setMembers(ids.toArray(new String[0]));//qun chengyuan 
-					String createTeam = imServiceImpl.createTeam(imTeamDto);
-					
-					
-					
-					
-					
 					
 				} else {
 					model.update();
@@ -1062,6 +1169,23 @@ public class PhoneController extends BaseController{
 			}
 		});
 		
+		
+		ImTeamDto imTeamDto = new ImTeamDto();
+		imTeamDto.setTname(request.getParameter("tlzname"));//im群名
+		imTeamDto.setUserId(String.valueOf(ToolSecurity.getUserId()));
+		//检测改组所有的成员
+		List<Long> find = Db.query("select userid from op_mashang_taolunzu_users where enabled=1 and taolunzuid="+model.get("id"));
+		List<String> ids = new ArrayList<String>();
+		for(Long id : find){
+		  if(RandomUtils.nextInt(0, 10) < 5){
+		    ids.add(id.toString());
+		  }
+		}
+		imTeamDto.setMembers(ids.toArray(new String[0]));//qun chengyuan 
+		String createTeam = imServiceImpl.createTeam(imTeamDto);
+		
+		model.set("createTeam", createTeam);
+		model.update();
 		
 			
 		

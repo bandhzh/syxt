@@ -17,6 +17,16 @@
 		]]>
 	</sql>
 
+
+
+<!-- 根据组id以及用户id查询是否存在 -->
+	<sql id="selectchengyuanbyuidtid">
+		<![CDATA[ 
+			select * from op_mashang_taolunzu_users where enabled = 1 and taolunzuid='${taolunzuid}' and userid='${userid}'
+		]]>
+	</sql>
+	
+	
 </sql-statement>
 
 
