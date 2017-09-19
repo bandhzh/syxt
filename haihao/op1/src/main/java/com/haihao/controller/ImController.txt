@@ -48,6 +48,15 @@ public class ImController {
 		return "im/test";
 	}
 	
+	@RequestMapping(value = "/test2")
+	public String test2(Map<String, Object> model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find = Db.find("select * from op_user where enable = 1");
+		map.put("users", ToolModel.recordListConvert(find));
+		model.put("initData", JSON.toJSONString(map));
+		return "im/test2";
+	}
+	
 	
 	@RequestMapping("/addTeam")
 	@ResponseBody
