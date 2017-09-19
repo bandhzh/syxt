@@ -83,7 +83,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
  	//点击新建群组
 	 mui(".login_btn").on("tap","input",function(){
         mui.openWindow({
-            url:"http://192.168.1.53:8084/phoneui/newaddgroup",
+            url:"http://120.26.62.100:8084/phoneui/newaddgroup",
             id:"newadd"
         })
      })
@@ -115,7 +115,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
  					var tlzid = $(this).attr("alt");
  					 
  			        mui.openWindow({
- 			            url:"http://192.168.1.53:8084/phoneui/editgroup?tlzid="+tlzid,
+ 			            url:"http://120.26.62.100:8084/phoneui/editgroup?tlzid="+tlzid,
  			            id:"newadd"
  			        })
  			     })
