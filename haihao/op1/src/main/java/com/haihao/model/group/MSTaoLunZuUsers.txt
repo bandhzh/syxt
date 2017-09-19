@@ -1,0 +1,18 @@
+package com.haihao.model.group;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+/**
+ * 马上办讨论组成员表
+ * @author Administrator
+ *
+ */
+@TableBind(tableName="op_mashang_taolunzu_users")
+public class MSTaoLunZuUsers extends BaseModel<MSTaoLunZuUsers>{
+
+	
+	private static final long serialVersionUID = -6425056709193461365L;
+	
+
+}

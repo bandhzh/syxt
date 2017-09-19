@@ -77,7 +77,7 @@ public class BookController extends BaseController{
 	
 	
 	/**
-	 * 创建讨论组
+	 * 讨论组添加新成员
 	 * @param model
 	 * @return
 	 */

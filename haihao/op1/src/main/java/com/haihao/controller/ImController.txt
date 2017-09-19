@@ -48,7 +48,11 @@ public class ImController {
 		return "im/test";
 	}
 	
-	
+	/**
+	 * 添加讨论组
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/addTeam")
 	@ResponseBody
 	public String addTeam(HttpServletRequest request){
@@ -67,6 +71,11 @@ public class ImController {
 		return createTeam;
 	}
 	
+	/**
+	 * 新增成员到讨论组
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/addUserFromTeam")
 	@ResponseBody
 	public String addUserFromTeam(HttpServletRequest request){
@@ -81,7 +90,11 @@ public class ImController {
 		return "";
 	}
 	
-	
+	/**
+	 * 从群组中删除成员
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/kickUserFromTeam")
 	@ResponseBody
 	public String kickUserFromTeam(HttpServletRequest request){
@@ -97,7 +110,11 @@ public class ImController {
 	}
 
 	
-	
+	/**
+	 * 删除讨论组
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/removeTeam")
 	@ResponseBody
 	public String removeTeam(HttpServletRequest request){

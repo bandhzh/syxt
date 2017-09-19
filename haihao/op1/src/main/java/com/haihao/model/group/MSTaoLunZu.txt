@@ -1,0 +1,18 @@
+package com.haihao.model.group;
+
+import com.haihao.model.BaseModel;
+import com.haihao.model.baoliao.BaoliaoModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+/**
+ * 马上办讨论组
+ * @author Administrator
+ *
+ */
+@TableBind(tableName="op_mashang_taolunzu")
+public class MSTaoLunZu extends BaseModel<MSTaoLunZu>{
+
+	private static final long serialVersionUID = 5641854147194588797L;
+	public static MSTaoLunZu dao = new MSTaoLunZu().dao();
+
+}

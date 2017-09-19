@@ -1,16 +1,20 @@
 package com.haihao.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.haihao.beetl.ToolSqlXml;
 import com.haihao.constant.DataConstant;
+import com.haihao.dto.ImTeamDto;
 import com.haihao.dto.PageResultDto;
 import com.haihao.dto.PageSqlCommond;
 import com.haihao.dto.ResultDto;
@@ -33,7 +38,11 @@ import com.haihao.dto.SecurityUser;
 import com.haihao.dto.UserDto;
 import com.haihao.jfinal.ModelKit;
 import com.haihao.jfinal.ToolModel;
+import com.haihao.model.baoliao.AccessUserInfo;
 import com.haihao.model.baoliao.BaoliaoModel;
+import com.haihao.model.group.MSTaoLunZu;
+import com.haihao.model.group.MSTaoLunZuUsers;
+import com.haihao.model.im.ImService;
 import com.haihao.model.news.NewsModel;
 import com.haihao.model.opinion.OpinionModel;
 import com.haihao.model.security.PrivilegeModel;
@@ -53,6 +62,10 @@ import com.jfinal.plugin.activerecord.Record;
 @Controller
 @RequestMapping(value = "/phoneui")
 public class PhoneController extends BaseController{
+	
+	
+	@Autowired
+	private ImService imServiceImpl;
 	
 	
 	@RequestMapping(value = { "", "/", "/index" })
@@ -883,19 +896,61 @@ public class PhoneController extends BaseController{
 	@RequestMapping(value = { "/listgroups"})
 	public String listgroups(Map<String, Object> model) {
 		
+		
+		
+		//根据当前用户 检索出当前用户所有的套路组
+	    	
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("userid", ToolSecurity.getUserId());//accessUserInfo.getOpenId()
+		
+		List<Record> listusers = Db.find(ToolSqlXml.getSql("com.group.selecttaolunzusbyuserid",map));//处理中
+		map.put("listusers", ToolModel.recordListConvert(listusers));
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		
+		
 		return "phoneui/listgroups";
 	}
 	
 	
 	
+	@RequestMapping("/ajaxgettlznamebyid")
+	@ResponseBody
+	public ResultDto ajaxgettlznamebyid(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
+		ResultDto resultDto = new ResultDto();
+		int tlzid = Integer.parseInt(request.getParameter("tlzid"));
+		MSTaoLunZu taolunzu = MSTaoLunZu.dao.findById(tlzid);
+		
+		resultDto.setData( ModelKit.toMap(taolunzu));
+			
+		
+	
+		return resultDto;
+		
+	
+	}
+	
 	
 	/**
-	 * 交流中心
+	 * 进入交流中心
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = { "/groupcommon"})
-	public String groupcommon(Map<String, Object> model) {
+	public String groupcommon(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find = Db.find("select * from op_user where enable = 1");
+		map.put("users", ToolModel.recordListConvert(find));
+		model.put("initData", JSON.toJSONString(map));
+		
+		
+		//int tlzid = Integer.parseInt(request.getParameter("tlzid"));//讨论组id
+		
 		
 		return "phoneui/groupcommon";
 	}
@@ -910,6 +965,112 @@ public class PhoneController extends BaseController{
 		
 		return "phoneui/editgroup";
 	}
+	
+	/**
+	 * 新建群组成员
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/newaddgroup"})
+	public String newaddgroup(Map<String, Object> model) {
+		
+		return "phoneui/newaddgroup";
+	}
+	
+	/**
+	 * 异步添加讨论组
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/ajaxaddmstaolunzu")
+	@ResponseBody
+	public ResultDto ajaxaddmstaolunzu(HttpServletRequest request,HttpSession session) {
+		ResultDto resultDto = new ResultDto();
+		MSTaoLunZu model = getModel(request, MSTaoLunZu.class);
+		
+		MSTaoLunZuUsers modelusers = getModel(request, MSTaoLunZuUsers.class);
+		
+		
+		
+		String [] userids = request.getParameter("userids").split(",");
+		
+		
+		
+		
+		Db.tx(new IAtom() {//手动事务处理
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("name", request.getParameter("tlzname"));
+					model.set("mid",  1);//马上办舆情id
+					model.set("mainImg", "");
+					model.set("enabled", 1);
+					model.set("createdDate", System.currentTimeMillis());
+					model.set("createdBy", ToolSecurity.getUserId());
+					model.save();
+					
+					
+					if(modelusers.isNew()){
+						//添加成功后将当前用户添加到成员表
+						modelusers.set("userid", ToolSecurity.getUserId());
+						modelusers.set("taolunzuid", model.get("id"));
+						modelusers.set("enabled", 1);
+						modelusers.save();
+						
+						//将其他用户成员也添加进去
+						for(int i=0;i<userids.length;i++){
+							MSTaoLunZuUsers modeluserchengyuans = new MSTaoLunZuUsers();
+							System.out.println(userids[i]+"+================================");
+							modeluserchengyuans.set("userid", userids[i]);
+							modeluserchengyuans.set("taolunzuid", model.get("id"));
+							modeluserchengyuans.set("enabled", 1);
+							modeluserchengyuans.save();
+						}
+						
+						
+						
+					}else{
+						modelusers.update();
+					}
+					
+					
+					ImTeamDto imTeamDto = new ImTeamDto();
+					imTeamDto.setTname(request.getParameter("tlzname"));//im群名
+					imTeamDto.setUserId(String.valueOf(ToolSecurity.getUserId()));
+					//检测改组所有的成员
+					List<Long> find = Db.query("select * from op_mashang_taolunzu_users where enabled=1 and taolunzuid="+model.get("id"));
+					List<String> ids = new ArrayList<String>();
+					for(Long id : find){
+					  if(RandomUtils.nextInt(0, 10) < 5){
+					    ids.add(id.toString());
+					  }
+					}
+					imTeamDto.setMembers(ids.toArray(new String[0]));//qun chengyuan 
+					String createTeam = imServiceImpl.createTeam(imTeamDto);
+					
+					
+					
+					
+					
+					
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		
+		
+			
+		
+	
+		return resultDto;
+		
+	
+	}
+	
 	
 	/**
 	 * 用户基本信息

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sql-statement namespace="com.group">
+
+<!-- 根据userid 查询出当前用户参与的所有群组 -->
+	<sql id="selecttaolunzusbyuserid">
+		<![CDATA[ 
+			select * from op_mashang_taolunzu_users where enabled=1 and userid='${userid}' and taolunzuid in (select op_mashang_taolunzu.id from op_mashang_taolunzu where enabled=1)
+		]]>
+	</sql>
+	
+	
+	<!-- 根据群组id检索出所有的用户 -->
+	<sql id="selecttaolunzusbytlzid">
+		<![CDATA[ 
+			select * from op_mashang_taolunzu_users where enabled=1 and taolunzuid='${taolunzuid}'
+		]]>
+	</sql>
+
+</sql-statement>
+
+

@@ -100,23 +100,17 @@
   		swipeBack:true //启用右滑关闭功能
   	});
   	
+  	if(window.plus){   
+        plusReady();   
+    }else{   
+        document.addEventListener("plusready",plusReady,false);   
+    }
+    
   	mui.ready(function() {
-  		
-
-      		var list = document.getElementById('list');
-      		var done = document.getElementById('done');
-      		window.indexedList = new mui.IndexedList(list);
-      		
-      		
-      		
+ 		var list = document.getElementById('list');
+ 		var done = document.getElementById('done');
+ 		window.indexedList = new mui.IndexedList(list);
   	});
-  	
-  	
-  	
-  	
-  	
-  	
-  	
   	
   	
   	
@@ -139,7 +133,7 @@
 				          +'<img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">'
 				          +'<div class="mui-media-body pad2">'
 				          +' <p class="black num_name">'+val.displayName+'</p>'
-				          +' <p class="mui-ellipsis"><span class="mui-icon mui-icon-location"></span>&nbsp;'+listFormatter({id:"departments"},val.departmentId)+'&nbsp;&nbsp;<span class="mui-icon mui-icon-phone"></span>&nbsp;'+val.mobile+'</p>'
+				          +' <p class="mui-ellipsis">-'+listFormatter({id:"departments"},val.departmentId)+'</p>'//<span class="mui-icon mui-icon-location"></span>&nbsp;&nbsp;&nbsp;<span class="mui-icon mui-icon-phone"></span>&nbsp;'+val.mobile+'
 				          +'</div>'
 				          +'</a>'
 				          +'</label>'
@@ -169,25 +163,22 @@
 		      		});
 				 
 				 
+					/*  done.addEventListener('tap', function() {
+			      			var checkboxArray = [].slice.call(list.querySelectorAll('input[type="checkbox"]'));
+			      			var checkedValues = [];
+			      			checkboxArray.forEach(function(box) {
+			      				if (box.checked) {
+			      					checkedValues.push(box.value);
+			      				}
+			      			});
+			      			if (checkedValues.length > 0) {
+			      				mui.alert('你选择了: ' + checkedValues);
+			      			} else {
+			      				mui.alert('你没选择任何成员');
+			      			}
+			      		}, false); */
 				 
-				 done.addEventListener('tap', function() {
-		      			var checkboxArray = [].slice.call(list.querySelectorAll('input[type="checkbox"]'));
-		      			var checkedValues = [];
-		      			checkboxArray.forEach(function(box) {
-		      				if (box.checked) {
-		      					checkedValues.push(box.value);
-		      				}
-		      			});
-		      			if (checkedValues.length > 0) {
-		      				mui.alert('你选择了: ' + checkedValues);
-		      			} else {
-		      				mui.alert('你没选择任何成员');
-		      			}
-		      		}, false);
-				 
-				 
-				 
-			}
+			} 
 			
   		}); 
   		
@@ -205,6 +196,38 @@
      }
   	 
   	 
+  	function plusReady(){
+		 done.addEventListener('tap', function() {
+    			var checkboxArray = [].slice.call(list.querySelectorAll('input[type="checkbox"]'));
+    			var checkedValues = [];
+    			var checkeduseridValues = [];
+    			checkboxArray.forEach(function(box) {
+    				if (box.checked) {
+    					
+    					checkeduseridValues.push(box.value);
+    					checkedValues.push(box.parentNode.innerText);//box.value
+    				}
+    			});
+    			if (checkedValues.length > 0) {
+    				//mui.alert('你选择了: ' + checkedValues);
+    				
+    	            var view=plus.webview.getWebviewById("newadd");//注意  HBuilder是上个页面的ID你自己要替换掉   
+    	            mui.fire(view,'doit',{
+    	                inputVal:checkedValues,
+    	                userids:checkeduseridValues
+    	            });   
+    	            mui.back();  
+    				
+    				
+    				
+    				
+    				
+    			} else {
+    				mui.alert('你没选择任何成员');
+    			}
+    		}, false);
+	 
+	}
   	 
   	
   	
