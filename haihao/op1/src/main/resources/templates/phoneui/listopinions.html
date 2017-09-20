@@ -23,7 +23,7 @@
 <!-- 配置文件 -->
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/qiniuurl.js"></script>
 <script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
-
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
 
 <style>
 .content .swiper-slide {
@@ -196,7 +196,22 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
   </div>
 </div>
 <script>
-          
+
+mui.init({
+	pullRefresh: {
+		container: '#offCanvasContentScroll',
+		down: {
+			callback: pulldownRefresh
+		}
+	}
+});
+
+function pulldownRefresh() {
+	setTimeout(function() {
+		location.reload();
+	}, 1500);
+}
+
   $(".mui-table-view-cell a").click(function(){
 	  if($(this).parent().find("ul").hasClass("on")){
 		  
@@ -486,22 +501,9 @@ function listFormatter(columnDef, value){
   
   
 </script>
-<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
+
 <script>
-	mui.init({
-		pullRefresh: {
-			container: 'body',
-			down: {
-				callback: pulldownRefresh
-			}
-		}
-	});
 	
-	function pulldownRefresh() {
-		setTimeout(function() {
-			location.reload();
-		}, 1500);
-	}
 	
 	//解决a标签失效的问题
 	mui('body').on('tap','a',function(){document.location.href=this.href;});
