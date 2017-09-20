@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title>某某某交流中心</title>
+<title>${zuname}交流中心</title>
 <!--  --><link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
@@ -18,6 +18,25 @@
 <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
 
 <script type="text/javascript" src="${ctxPath}/static/assets/nim/sdk/NIM_Web_SDK_v4.2.0.js"></script>
+
+
+
+
+
+<!-- 配置文件 -->
+<script src="${ctxPath}/static/assets/global/scripts/QiniuUUID.js" type="text/javascript"></script>
+<script src="${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/moxie.min.js" type="text/javascript"></script>
+<script src="${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/plupload.full.min.js" type="text/javascript"></script>
+<script src="${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/i18n/zh_CN.js" type="text/javascript"></script>
+<script src="${ctxPath}/static/assets/global/plugins/qiniu/dist/qiniu.min.js" type="text/javascript"></script>
+<style type="text/css">
+.moxie-shim-html5{
+	width:1.8rem;
+	height:1.8rem;
+}
+
+</style>
+
 
 
 
@@ -338,23 +357,12 @@ function onSyncDone() {
 
 
 
-
-
-
-<script type="text/javascript">
-
-mui.init({
-	swipeBack:true  //启用右滑关闭功能
-});
-
-
-</script>
 </head>
 <body class="msgbox mbsc-fr-lock">
 <header class="mui-bar mui-bar-nav ">
 	<a class="mui-icon mui-icon-back"></a>
-  	<h1 class="mui-title">交流中心</h1>
-  	<a class="mui-icon mui-icon-person right" href="${ctxPath}/phoneui/editgroup"></a>
+  	<h1 class="mui-title">${zuname}交流中心</h1>
+  	<a class="mui-icon mui-icon-person right" alt="${tlzid}"></a>
 </header>
 <div class="heihead"></div>
 <div class="content ">
@@ -376,9 +384,14 @@ mui.init({
 	</div>
 	</div>
 </div>
+
+
+<!-- <input type="button" id="okByImg" value="私聊发送带图片" />   -->
+
+
 <div class="heihead"></div>
 <div id="sendmessage">
-  <div class="addico ad" id="shup"> <a href="javascript:void();"><span class="mui-icon mui-icon-plusempty"></span></a> </div>
+  <div class="addico ad" id="shup"> <a href="javascript:void(0);"><span class="mui-icon mui-icon-plusempty"></span></a> </div>
   <div class="inp">
     <input type="text" placeholder="输入内容..." id="sendTextGroup">
   </div>
@@ -394,9 +407,12 @@ mui.init({
     <input type="file" class="mui-input-speech" >
     <a href="#"><span class="mui-icon mui-icon-mic"></span><!--  <i>AUDIO</i> --></a> </div>
   <div class="ad">
-    <input type="file" class="mui-input-speech" >
-    <a href="#"><span class="mui-icon mui-icon-image"></span><!--  <i>IMAGE</i> --></a> </div>
+    <input type="button" class="mui-input-speech" id="okByImg" value="私聊发送带图片">
+    <a href="#"><span class="mui-icon mui-icon-image" ></span><!--  <i>IMAGE</i> --></a> </div>
 </div>
+
+<!-- <input type="button" id="okByImg" style="display: none;"/>    -->
+   
 
 <!-- 测试数据 -->
 <input type="hidden" id="initData" value='${initData}' />
@@ -446,6 +462,19 @@ mui.init({
 
 
 <script type="text/javascript">
+
+	mui.init({
+		swipeBack:true  //启用右滑关闭功能
+	});
+	mui("header").on("tap",".right",function(){
+			var tlzid = $(this).attr("alt");
+			 
+	     mui.openWindow({
+	         url:"http://120.26.62.100:8084/phoneui/editgroup?tlzid="+tlzid,
+	         id:"newadd"
+	     })
+	  })
+
    function stopPropagation(e) { 
 		if (e.stopPropagation) 
 		e.stopPropagation(); 
@@ -466,11 +495,21 @@ mui.init({
 		})
 		   
 		$('#shup').bind('click',function(e){ 
+			$(".moxie-shim-html5").css("width","1.8rem");
+			$(".moxie-shim-html5").css("height","1.8rem");
+			
+			
 			stopPropagation(e); 
 		}); 
 </script>
 
 <script type="text/javascript">
+
+window.ctxPath = "${ctxPath!}";
+window.qiniuDomain = "orbzivh5n.bkt.clouddn.com";
+window.qiniuDomainHttp = "http://" + window.qiniuDomain + "/";
+
+
 Date.prototype.pattern = function(fmt) {      
 	    var o = {         
 	    "M+" : this.getMonth()+1, //月份         
@@ -569,15 +608,111 @@ Date.prototype.pattern = function(fmt) {
   }
   
   //一个应该常用的javascript string函数，不知为何没有直接提供
-  String.prototype.escapeHTML = function () {                                       
+  String.prototype.escapeHTML = function () {  
       return this.replace(/&/g,'&amp;').replace(/>/g,'&gt;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-  };
+  }
 	
   String.prototype.unescapeHTML = function () {                                       
       return this.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'\"').replace(/&nbsp;/g,' ');
-  };
+  }
   var initData = {};
+  function isWindow(){
+	  return true;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
 $(document).ready(function(){
+	
+	var uploader = Qiniu.uploader({
+        runtimes: 'html5,flash,html4',
+        browse_button: 'okByImg',
+        max_file_size: '10mb',
+        flash_swf_url: '${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/Moxie.swf',
+        chunk_size: '4mb',
+        filters:[{title : "图片文件", extensions : "jpg,png,gif"}],
+        uptoken_url: "${ctxPath}/ajaxGetUploadToken",
+        domain: window.qiniuDomain,
+        get_new_uptoken: false,
+        auto_start: true,
+        log_level: 5,
+        init: {
+            'FilesAdded': function(up, files) {
+            },
+            'BeforeUpload': function(up, file) {
+            },
+            'UploadProgress': function(up, file) {
+            },
+            'UploadComplete': function() {
+            },
+            'FileUploaded': function(up, file, info) {
+            	var _key = $.parseJSON(info).key;
+            	
+            	var _data = new Date();
+            	
+            	
+            	var _content = String.format("<img src='{0}'>",window.qiniuDomainHttp + _key);
+            	
+            	
+        		nim.sendText({
+        		    scene: 'team',
+        		    to: $("#groupSelect").val(),
+        		    text: _content,
+        		    done: function sendMsgDone (error, msg) {
+        		    	var newmsg ='<div class="message">'
+							+'	<img src="${ctxPath}/static/assets/phoneui/img/headc.png">'
+							+'	<div class="bubble">'
+							+'		<p>'+_content+'</p>'
+							+'		<div class="corner"></div>'
+							+'	</div>'
+							+'</div>';
+						$('html, body').animate({  
+		                    scrollTop: $("#chat-messages").height()
+		                }, 1000);  
+		    			$("#chat-messages").append(newmsg);
+	    			  
+        		    }
+        		  });	
+        		
+        		
+        		
+            	//$("#mainImg").val(_key);
+				//$("#productImage_1").attr("src",window.qiniuDomainHttp + _key)	            	
+            },
+            'Error': function(up, err, errTip) {
+            	//App.unblockUI();
+            },
+            Key:function(up, file) {
+          	return $.QiniuUUID().getKet(file);
+          }
+        }
+        
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 	
@@ -605,6 +740,12 @@ $(document).ready(function(){
 							+'</div>';
 		    	
 		    	$("#chat-messages").append(newmsg);
+		    	
+		    	
+	                $('html, body').animate({  
+	                    scrollTop: $("#chat-messages").height()
+	                }, 1000);  
+	                
 		    	
 		    	
 		    	$("#sendTextGroup").val("");

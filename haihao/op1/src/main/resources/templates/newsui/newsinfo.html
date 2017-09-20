@@ -28,8 +28,14 @@
 	overflow: hidden;
 	background: #000 !important;
 }
-.mui-media-body .mui-icon-navigate{
+.mui-media-body .mui-icon-paperplane {
 	font-size: 16px;
+}
+.mui-media-body .mui-icon-compose{
+	font-size: 16px;
+}
+.mui-media-body p{
+	margin-top: 4px;
 }
 </style>
 </head>
@@ -72,6 +78,22 @@
 		    }         
 		    return fmt;         
 		};
+		
+		$(document).ready(function(){
+			$.ajax({
+				url : 'ajaxgetusernamebyid',
+				type : "post",
+				data :{userid:"${newsmodel.createdBy}"},
+				dataType: "json",
+				async: false,
+				success : function(data) {
+					
+					$("#disname").html(data.data.displayName);
+					
+				}
+
+			});
+		}); 
 	
 </script>
 
@@ -95,8 +117,8 @@
 		<div class="mui-card-header mui-card-media">
 			<img src="${ctxPath}/static/assets/phoneui/img/headc.png" />
 			<div class="mui-media-body">
-				${newsmodel.createdBy}
-				<p><span class="mui-icon mui-icon-navigate"></span>&nbsp;&nbsp;<small class="typeid"></small>&nbsp;&nbsp;<span class="mui-icon mui-icon-navigate"></span> <small class="time"></small></p>
+				<b id="disname"></b>
+				<p><span class="mui-icon mui-icon-paperplane"></span>&nbsp;&nbsp;<small class="typeid"></small>&nbsp;&nbsp;<span class="mui-icon mui-icon-compose"></span> <small class="time"></small></p>
 			</div>
 			
 		</div>
@@ -384,7 +406,7 @@ _content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&
 
 
 	$(".time").html(dateFormatter("${newsmodel.createdDate}"));
-	$(".typeid").html(listFormatter({id:"lists"},"${newsmodel.categoryId}"));
+	$(".typeid").html(listFormatter({id:"lists"},"${newsmodel.typeid}"));
 
 	function listFormatter(columnDef, value){
 		var _items = initData[columnDef.id];

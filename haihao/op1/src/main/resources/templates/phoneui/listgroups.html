@@ -96,29 +96,29 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
  					$("#item1mobile").html('<div class="empty">暂无相关数据</div>');
  				}
  				
+ 				var lis ='';
  				for(var i = 0;i < _items.length;i++){
  					var j = _items[i];
- 					
+ 					lis+='<li class="mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>';
  					$(domId).append(
-			 					String.format('<div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left">'
-			 							+'<div class="mui-text-center"><a href="${ctxPath}/phoneui/groupcommon?tlzid={0}"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">{1}</p></div>'
+			 					String.format('<div class="box1 mui-col-xs-3 mui-col-sm-3 mui-pull-left" alt="{0}">'
+			 							+'<div class="mui-text-center"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/1.png" width="24%"></a><p class="black">{1}</p></div>'
 			 							+'<ul>'
-			 							+'  <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left"><a href="#"><img src="${ctxPath}/static/assets/phoneui/img/headd.png" width="100%"></a></li>'
-			 							+'  <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left editgroup"><a href="#" alt="{2}"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>'
+			 							+lis
+			 							/* +'  <li class=" mui-col-xs-3 mui-col-sm-3 mui-pull-left editgroup"><a href="#" alt="{2}"><img src="${ctxPath}/static/assets/phoneui/img/add2.png" width="100%"></a></li>' */
 			 							+' </ul>'
 			 							+'</div>',j["taolunzuid"],getnamebytlzid(j["taolunzuid"]),j["taolunzuid"]));
  					
  				}
  				
  				
- 				 mui(".editgroup").on("tap","a",function(){
+ 				  mui("body").on("tap",".box1",function(){
  					var tlzid = $(this).attr("alt");
  					 
- 			        mui.openWindow({
- 			            url:"http://120.26.62.100:8084/phoneui/editgroup?tlzid="+tlzid,
- 			            id:"newadd"
- 			        })
- 			     })
+ 					location.href="${ctxPath}/phoneui/groupcommon?tlzid="+tlzid;
+ 					
+ 			       
+ 			     }) 
  				
  				
  				

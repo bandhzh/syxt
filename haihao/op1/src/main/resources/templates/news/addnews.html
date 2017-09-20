@@ -304,10 +304,12 @@ $(document).ready(function() {
 					type : "post",
 					data : jsonData,
 					success : function(data) {
-						$('#large').modal('hide');
 						if (data.success) {
 							toastr.success("提交成功，等待后台审核！");
 							//提交成功后刷新当前页面
+							
+							setTimeout('location.href="${ctxPath}/phoneui/listnewsblock"', 3000);
+							
 							
 						} else {
 							toastr.error(data.error);

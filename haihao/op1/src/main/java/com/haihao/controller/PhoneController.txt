@@ -1058,6 +1058,9 @@ public class PhoneController extends BaseController{
 		int tlzid = Integer.parseInt(request.getParameter("tlzid"));//讨论组id
 		MSTaoLunZu taolunzu = MSTaoLunZu.dao.findById(tlzid);
 		
+		model.put("tlzid", tlzid);
+		model.put("zuname", taolunzu.get("name"));
+		
 		model.put("createTeam", taolunzu.get("createTeam"));
 		
 		return "phoneui/groupcommon";

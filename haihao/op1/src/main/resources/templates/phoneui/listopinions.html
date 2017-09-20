@@ -141,7 +141,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				</div>
 				
 				<div id="item3mobile" class="mui-slider-item mui-control-content">
-					<ul class="mui-table-view zhuanbannews">
+					<ul class="mui-table-view news zhuanbannews">
 					<!-- 舆情转办 -->
 						
 
@@ -150,7 +150,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				
 				
 				<div id="item4mobile" class="mui-slider-item mui-control-content">
-					<ul class="mui-table-view pishinews">
+					<ul class="mui-table-view news pishinews">
 						<!-- 舆情批示 -->
 
 					</ul>
@@ -258,17 +258,17 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				
 	 			$(domId).append(
 	 							String.format('<li class="mui-table-view-cell mui-media">'
-	 									+'<a href="${ctxPath}/phoneui/opinionsinfo?id={6}">'
+	 									+'<a href="${ctxPath}/phoneui/opinionsinfo?id={5}">'
 	 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
 	 									+'<div class="mui-media-body">'
 	 									+'	<p><small class="blue">{1}</small> &nbsp; <small class="grew"></small></p>'
 	 									+'	<p class="hei"></p>'
-	 									+'	<p class="black ">{2}</p>'
+	 									+'	<p>{2}</p>'
 	 									+'	<p class="hei"></p>'
-	 									+'	<p><font class="black">{3}</font> <font class="grew"></font>&nbsp; &nbsp;{5}&nbsp; &nbsp;{4}</p>'
+	 									+'	<p><font class="grew"></font>{4}&nbsp; &nbsp;{3}</p>'
 	 									+'</div>'
 	 									+'</a>'
-	 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["subject"],j["memo"],listFormatter({id:"lists"},j["categoryId"]),dateFormatter(j["createdDate"]),status,j["id"])
+	 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["subject"],listFormatter({id:"lists"},j["categoryId"]),dateFormatter(j["createdDate"]),status,j["id"])
 	 							
 	 							
 	 			);
@@ -366,9 +366,9 @@ function listFormatter(columnDef, value){
 								+'<div class="mui-media-body">'
 								+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
 								+'	<p class="hei"></p>'
-								+'	<p class="black ">'+val.memo+'</p>'
+								+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
 								+'	<p class="hei"></p>'
-								+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
 								+'</div>'
 								+'</a>'
 								+'</li>');
@@ -414,9 +414,9 @@ function listFormatter(columnDef, value){
 							+'<div class="mui-media-body">'
 							+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
 							+'	<p class="hei"></p>'
-							+'	<p class="black ">'+val.memo+'</p>'
+							+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
 							+'	<p class="hei"></p>'
-							+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+							+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
 							+'</div>'
 							+'</a>'
 							+'</li>');
@@ -460,9 +460,9 @@ function listFormatter(columnDef, value){
 							+'<div class="mui-media-body">'
 							+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
 							+'	<p class="hei"></p>'
-							+'	<p class="black ">'+val.memo+'</p>'
+							+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
 							+'	<p class="hei"></p>'
-							+'	<p><font class="black">'+listFormatter({id:"lists"},val.categoryId)+'</font> <font class="grew"></font>&nbsp; &nbsp;'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+							+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
 							+'</div>'
 							+'</a>'
 							+'</li>');

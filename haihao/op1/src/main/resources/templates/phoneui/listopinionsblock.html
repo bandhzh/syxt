@@ -228,7 +228,7 @@ $(document).ready(function() {
  							+'	{5}</div>'
  							+'<P class="mui-clearfix hei"></P>'
  							+'<a href="${ctxPath}/phoneui/opinionsinfo?id={6}" class="mui-btn mui-btn-block mui-btn-green ">去看看</a>'
- 							+'</div>',j["subject"],dateFormatter(j["createdDate"]),window.qiniuDomainHttp+j["mainImg"],listFormatter({id:"lists"},j["categoryId"]),j["createdBy"],j["memo"],j["id"]);
+ 							+'</div>',j["subject"],dateFormatter(j["createdDate"]),window.qiniuDomainHttp+j["mainImg"],listFormatter({id:"lists"},j["categoryId"]),getdisplaynamebyuid(j["createdBy"]),j["memo"],j["id"]);
 	 			
 	 			
 		}
@@ -280,11 +280,30 @@ $(document).ready(function() {
     }
     
     function dateFormatter(value){
-			  var d = new Date();
-			  d.setTime(value);
-			  return d.pattern("MM-dd HH:mm");
+	  var d = new Date();
+	  d.setTime(value);
+	  return d.pattern("MM-dd HH:mm");
     }
     
+    
+    function getdisplaynamebyuid(value){//根据用户id检索出当前用户名
+    	var name='';
+		//异步获取
+		$.ajax({
+		url : 'ajaxgetusernamebyid',
+		type : "post",
+		data :{userid:value},
+		dataType: "json",
+		async: false,
+		success : function(data) {
+			name=data.data.displayName;
+			
+		}
+
+		});
+		return name;
+    	
+    }
     
    
     

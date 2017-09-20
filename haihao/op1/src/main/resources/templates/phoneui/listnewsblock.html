@@ -68,7 +68,7 @@ padding-bottom:.3rem
 }
 
 .news2 .pad {
-padding:.5rem .8rem
+padding:.8rem .8rem
 }
 .news2 .mui-btn-block {
 	margin-bottom: 0;
@@ -81,6 +81,22 @@ padding:.5rem .8rem
 
 .swiper-pagination{ position:fixed; bottom:1rem; color:#fff;} 
 .mui-scroll{ height:calc(100% - 44px); background:#242a34}
+
+.pad a .mui-icon{
+	margin-top: 3px;
+	
+}
+.pad a{
+	margin: 3px;
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	text-align: center;
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+	border-radius: 25px;
+	background-clip: padding-box;
+}
 </style>
 </head>
 
@@ -194,15 +210,14 @@ $(document).ready(function() {
  							+'<P class="mui-clearfix hei"></P>'
  							+'<img src="{2}" alt="图片加载失败">'
  							+'<div class="pad grew">'
- 							+'	<span class="mui-pull-left"> <i class="ico22"></i>{3}</span>' 
- 							+'	<span class="mui-pull-right"> <i class="ico22"></i> {4}</span>'
+ 							+'	<span class="mui-pull-left"> <a class="active"><span class="mui-icon mui-icon-paperplane"></span></a> {3}</span>' //<span class="mui-icon mui-icon-paperplane"></span>
+ 							+'	<span class="mui-pull-right"> <a id="icon-icon-contact"><span class="mui-icon mui-icon-contact"></span></a> {4}</span>'
  							+'</div>'
  							+'<P class="mui-clearfix hei"></P>'
- 							+'<div class="mui-clearfix pad grew">'
- 							+'	{5}</div>'
+ 							/* +'<div class="mui-clearfix pad grew">{5}</div>' */
  							+'<P class="mui-clearfix hei"></P>'
- 							+'<a href="${ctxPath}/phoneui/newsinfo?id={6}" class="mui-btn mui-btn-block mui-btn-green ">去看看</a>'
- 							+'</div>',j["title"],dateFormatter(j["createdDate"]),window.qiniuDomainHttp+j["mainImg"],listFormatter({id:"lists"},j["sourceid"]),j["createdBy"],j["memo"],j["id"]);
+ 							+'<a href="${ctxPath}/phoneui/newsinfo?id={5}" class="mui-btn mui-btn-block mui-btn-green ">去看看</a>'
+ 							+'</div>',j["title"],dateFormatter(j["createdDate"]),window.qiniuDomainHttp+j["mainImg"],listFormatter({id:"lists"},j["sourceid"]),getdisplaynamebyuid(j["createdBy"]),j["id"]);
 	 			
 	 			
 		}
@@ -230,7 +245,7 @@ $(document).ready(function() {
 			        depth: 120,// 深度   切换图片间上下的间距和密集度  
 			        modifier: 5,// 修正值 该值越大前面的效果越明显  
 			        slideShadows : true// 页面阴影效果  
-			    }  
+			    }
 			}); 
 		
 	}
@@ -261,6 +276,24 @@ $(document).ready(function() {
 			  return d.pattern("MM-dd HH:mm");
     }
     
+    function getdisplaynamebyuid(value){//根据用户id检索出当前用户名
+    	var name='';
+		//异步获取
+		$.ajax({
+		url : 'ajaxgetusernamebyid',
+		type : "post",
+		data :{userid:value},
+		dataType: "json",
+		async: false,
+		success : function(data) {
+			name=data.data.displayName;
+			
+		}
+
+		});
+		return name;
+    	
+    }
     
    
     
@@ -334,8 +367,7 @@ $(document).ready(function() {
 	 							+'	<span class="mui-pull-right"> <i class="ico22"></i> '+val.createdBy+'</span>'
 	 							+'</div>'
 	 							+'<P class="mui-clearfix hei"></P>'
-	 							+'<div class="mui-clearfix pad grew">'
-	 							+val.memo+'</div>'
+	 							/* +'<div class="mui-clearfix pad grew">'+val.memo+'</div>' */
 	 							+'<P class="mui-clearfix hei"></P>'
 	 							+'<a href="${ctxPath}/phoneui/'+newsurl+val.id+'" class="mui-btn mui-btn-block mui-btn-green ">'+wordremark+'</a>'
 	 							+'</div>';
