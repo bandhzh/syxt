@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- -->
+<sql-statement namespace="com.mashang">
+	
+	<sql id="selectHearder">
+		<![CDATA[ 
+			select maShangeModel.*,userModel.displayName 
+		]]>
+	</sql>
+	
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_mashang maShangeModel left join 
+			op_user userModel on maShangeModel.createdBy = userModel.id 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	<sql id="selectInstructionMashangId">
+		<![CDATA[ 
+			select maShangeInstructionModel.*,userModel.displayName,departmentModel.name as departmentName  from op_mashang_instruction maShangeInstructionModel
+			left join 
+			op_user userModel on maShangeInstructionModel.userId = userModel.id 
+			left join op_department departmentModel on userModel.departmentId = departmentModel.id
+			where mashangId = ${mashangId} 
+		]]>
+	</sql>
+	
+	<sql id="listUserSelectHearder">
+		<![CDATA[ 
+			select maShangeModel.*,userModel.displayName 
+		]]>
+	</sql>
+	
+	<sql id="listUserSelectBody">
+		<![CDATA[ 
+			from op_mashang maShangeModel left join 
+			op_user userModel on maShangeModel.createdBy = userModel.id 
+			inner join ( 
+				select distinct mashangId from op_mashang_users where userId = ${data.userId} 
+			) maShangeUserModel on maShangeModel.id = maShangeUserModel.mashangId 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	<sql id="selectFollowByMaShangId">
+		<![CDATA[ 
+			select maShangeFollowModel.*,userModel.displayName,departmentModel.name as departmentName  from op_mashang_follow maShangeFollowModel
+			left join 
+			op_user userModel on maShangeFollowModel.userId = userModel.id 
+			left join op_department departmentModel on userModel.departmentId = departmentModel.id
+			where mashangId = ${mashangId} 
+		]]>
+	</sql>
+	
+	
+	
+	
+	
+
+</sql-statement>

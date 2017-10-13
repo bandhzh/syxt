@@ -1,0 +1,16 @@
+package com.haihao.model.mashang;
+
+import com.haihao.model.BaseModel;
+import com.haihao.model.opinion.OpinionModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+@TableBind(tableName="op_mashang")
+public class MaShangeModel extends BaseModel<MaShangeModel> {
+
+	private static final long serialVersionUID = 1L;
+	
+	public static MaShangeModel dao = new MaShangeModel().dao();
+	
+	
+
+}

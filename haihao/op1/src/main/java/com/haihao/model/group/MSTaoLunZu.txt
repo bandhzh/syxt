@@ -1,7 +1,10 @@
 package com.haihao.model.group;
 
+import java.util.Map;
+
 import com.haihao.model.BaseModel;
 import com.haihao.model.baoliao.BaoliaoModel;
+import com.haihao.model.mashang.MaShangeModel;
 import com.haihao.plugin.tablebind.TableBind;
 
 /**
@@ -14,5 +17,16 @@ public class MSTaoLunZu extends BaseModel<MSTaoLunZu>{
 
 	private static final long serialVersionUID = 5641854147194588797L;
 	public static MSTaoLunZu dao = new MSTaoLunZu().dao();
+	
+	
+	public static void saveByMaShange(Map<String,Object> MaShangeModelMap){
+		MSTaoLunZu msTaoLunZu = new MSTaoLunZu();
+		msTaoLunZu.set("mid", MaShangeModelMap.get("id"));
+		msTaoLunZu.set("name", MaShangeModelMap.get("subject"));
+		
+		
+		
+		
+	}
 
 }

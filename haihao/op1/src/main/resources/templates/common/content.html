@@ -202,6 +202,8 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                             </ul>
                         </li>
                         <% }%>
+                        
+                         <% if(aclFn("rightAway_query")){ %>
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>
@@ -209,8 +211,26 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
+                            
+                             <% if(aclFn("rightAway_manger")){ %>
+                            	 <li class="nav-item  ">
+                                    <a href="${ctxPath}/mashange/index" class="nav-link ">
+                                        <span class="title">管理列表</span>
+                                    </a>
+                                </li>
+                                <% }%>
+                                
+                                
+                                 <li class="nav-item  ">
+                                    <a href="${ctxPath}/mashange/listUsers" class="nav-link ">
+                                        <span class="title">讨论组列表</span>
+                                    </a>
+                                </li>
+                                
                             </ul>
                         </li>
+                        <% }%>
+                        
                         <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>

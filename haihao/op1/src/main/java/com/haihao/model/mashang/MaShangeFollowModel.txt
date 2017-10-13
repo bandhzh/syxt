@@ -1,0 +1,13 @@
+package com.haihao.model.mashang;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+@TableBind(tableName="op_mashang_follow")
+public class MaShangeFollowModel extends BaseModel<MaShangeFollowModel> {
+
+	private static final long serialVersionUID = 1L;
+	
+	
+
+}

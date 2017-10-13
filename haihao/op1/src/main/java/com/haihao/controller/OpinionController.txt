@@ -44,7 +44,6 @@ import com.jfinal.plugin.activerecord.Record;
 @RequestMapping(value = "/opinion")
 public class OpinionController extends BaseController {
 
-	@PreAuthorize("hasRole('opinion_manager')")
 	@RequestMapping(value = { "", "/", "/index" })
 	public String index(Map<String, Object> model) {
 		model.put("htmlContent", "/templates/opinion/opinion.html");

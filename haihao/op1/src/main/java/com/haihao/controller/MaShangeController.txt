@@ -1,0 +1,371 @@
+package com.haihao.controller;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.constant.DataConstant;
+import com.haihao.dto.ImTeamDto;
+import com.haihao.dto.PageResultDto;
+import com.haihao.dto.PageSqlCommond;
+import com.haihao.dto.RequestDTO;
+import com.haihao.dto.ResultDto;
+import com.haihao.dto.SQLCallback;
+import com.haihao.jfinal.SqlXmlPlugin;
+import com.haihao.jfinal.ToolModel;
+import com.haihao.model.group.MSTaoLunZu;
+import com.haihao.model.group.MSTaoLunZuUsers;
+import com.haihao.model.im.ImService;
+import com.haihao.model.mashang.MaShangeFollowModel;
+import com.haihao.model.mashang.MaShangeInstructionModel;
+import com.haihao.model.mashang.MaShangeModel;
+import com.haihao.model.mashang.MaShangeUserModel;
+import com.haihao.model.opinion.OpinionModel;
+import com.haihao.model.opinion.OpinionToDoFollowModel;
+import com.haihao.tool.ToolSecurity;
+import com.haihao.tool.ToolString;
+import com.haihao.utils.UrlMatchUtils;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
+import com.jfinal.plugin.activerecord.Record;
+
+
+@Controller
+@RequestMapping(value = "/mashange")
+public class MaShangeController extends BaseController {
+	
+	@Autowired
+	private ImService imServiceImpl;
+	
+	
+	@RequestMapping(value = { "", "/", "/index" })
+	public String index(Map<String, Object> model) {
+		SqlXmlPlugin.init(false);
+		model.put("htmlContent", "/templates/mashang/index.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+		
+		List<Record> find3 = Db.find(ToolSqlXml.getSql("com.user.selectAll"));
+		map.put("users", ToolModel.recordListConvert(find3));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+	
+	@RequestMapping("/listMashang")
+	@ResponseBody
+	public PageResultDto listOpinion(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.mashang.selectBody");
+		pageSqlCommond.setHeadSql("com.mashang.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	@RequestMapping("/save")
+	@ResponseBody
+	public ResultDto save(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		MaShangeModel model = getModel(request, MaShangeModel.class);
+		boolean tx = Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("isVerify", DataConstant.Yes);
+					model.set("isPublic", DataConstant.No);
+					model.set("status", DataConstant.OpinionStatus.finishVerify);
+					model.set("needVerify", DataConstant.No);
+					model.set("createdBy", ToolSecurity.getUserId());
+					long currentTimeMillis = System.currentTimeMillis();
+					model.set("createdDate", currentTimeMillis);
+					model.set("publishDate", currentTimeMillis);
+					model.set("hasInstruction", DataConstant.Yes);
+					model.set("toDoStatus", DataConstant.OpinionToDoStatus.inDo);
+					
+					model.save();
+					String contextUrl = UrlMatchUtils.getBaseAccessUrl(request);
+					String postUrl = contextUrl + "/phoneui/ajaxaddmstaolunzu";
+					Map<String,Object> params = new HashMap<String,Object>();
+					params.put("tlzname", model.getStr("subject"));
+					params.put("userids", ToolSecurity.getUserId());
+					params.put("mid", model.getLong("id"));
+					params.put("mainImg", model.getStr("mainImg"));
+					HttpRequest saveTlz = HttpRequest.post(postUrl);
+					saveTlz.form(params);
+					
+					
+					Cookie[] cookies = request.getCookies();
+					jodd.http.Cookie[] joddCookies = new jodd.http.Cookie[cookies.length];
+					int i = 0;
+					for(Cookie cookie : cookies){
+						jodd.http.Cookie joddCookie = new jodd.http.Cookie(cookie.getName(),cookie.getValue());
+						joddCookies[i++] = joddCookie;
+ 					}
+					saveTlz.cookies(joddCookies);
+					HttpResponse send = saveTlz.send();
+					String bodyText = send.bodyText();
+					ResultDto saveTlzRD = JSON.parseObject(bodyText, ResultDto.class);
+					if(!saveTlzRD.isSuccess())return false;
+					
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		resultDto.setSuccess(tx);
+		return resultDto;
+	}
+	
+	@RequestMapping("/saveInstruction")
+	@ResponseBody
+	public ResultDto saveInstruction(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		MaShangeInstructionModel model = getModel(request, MaShangeInstructionModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdDate", System.currentTimeMillis());
+					model.set("userId", ToolSecurity.getUserId());
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	@RequestMapping("/listInstructionOpinion")
+	@ResponseBody
+	public ResultDto listInstructionOpinion(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.mashang.selectInstructionMashangId", requestDTO.getData()));
+		resultDto.setData(ToolModel.recordListConvert(find));
+		return resultDto;
+	}
+	
+	@RequestMapping("/saveUsers")
+	@ResponseBody
+	public ResultDto saveUsers(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		String parameter = request.getParameter("users");
+		String mashangId = request.getParameter("mashangId");
+		List<Map> parseArray = JSON.parseArray(parameter, Map.class);
+		Record findFirst = Db.findFirst("select * from op_mashang_taolunzu where mid = ?",mashangId);
+		Long createdBy = findFirst.getLong("createdBy");
+		Record findFirst2 = Db.findFirst("select * from op_user where id = ?",createdBy);
+		String createTeam = findFirst.getStr("createTeam");
+		Long taolunzuid = findFirst.getLong("id");
+		ImTeamDto addImTeamDto = new ImTeamDto();
+		ImTeamDto removeImTeamDto = new ImTeamDto();
+		List<String> removeUsers = new ArrayList<String>();
+		List<String> addUsers = new ArrayList<String>();
+		addImTeamDto.setTeamId(createTeam);
+		removeImTeamDto.setTeamId(createTeam);
+		addImTeamDto.setUserId(createdBy.toString());
+		removeImTeamDto.setUserId(createdBy.toString());
+		
+		
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				
+				List<Long> userIds = Db.query("select userId from op_mashang_users where mashangId = ?",mashangId);
+				Db.update("delete from op_mashang_taolunzu_users where taolunzuid = ?",taolunzuid);
+				for(Map m : parseArray){
+					if(userIds.contains(Long.parseLong(m.get("userId").toString()))){
+						userIds.remove(Long.parseLong(m.get("userId").toString()));
+					}else{
+						MaShangeUserModel maShangeUserModel = new MaShangeUserModel();
+						maShangeUserModel.put(m);
+						maShangeUserModel.save();
+						addUsers.add(m.get("userId").toString());
+						
+						MSTaoLunZuUsers msTaoLunZuUsers = new MSTaoLunZuUsers();
+						msTaoLunZuUsers.set("taolunzuid", taolunzuid);
+						msTaoLunZuUsers.set("userid", Long.parseLong(m.get("userId").toString()));
+						msTaoLunZuUsers.save();
+					}
+				}
+				for(Long userId : userIds){
+					removeUsers.add(userId.toString());
+				}
+				if(addUsers.size() > 0){
+					addImTeamDto.setMembers(addUsers.toArray(new String[0]));
+					imServiceImpl.addUserFromTeam(addImTeamDto);
+				}
+				if(removeUsers.size() > 0){
+					Db.update("delete from op_mashang_users where mashangId = ? and userId in (" + ToolString.joinForSQL(removeUsers, ",") + ")",mashangId);
+					removeImTeamDto.setMembers(removeUsers.toArray(new String[0]));
+					imServiceImpl.kickUserFromTeam(removeImTeamDto);
+				}
+				
+				
+				
+				
+				
+				return true;
+			}
+		});
+		
+		
+		
+		return resultDto;
+	}
+	
+	@RequestMapping("/remove")
+	@ResponseBody
+	public ResultDto removeOpinion(HttpServletRequest request) {
+		RequestDTO requestDTO = getRequestDTO(request);
+		ResultDto resultDto = new ResultDto();
+		for (String id : requestDTO.getData().get("ids").toString().split(",")) {
+			Record findFirst = Db.findFirst("select * from op_mashang_taolunzu where mid = ?",id);
+			if(null != findFirst){
+				ImTeamDto imTeamDto = new ImTeamDto();
+				imTeamDto.setTeamId(findFirst.getStr("createTeam"));
+				imTeamDto.setUserId(findFirst.getLong("createdBy").toString());
+				imServiceImpl.removeTeam(imTeamDto);
+				Db.update("update op_mashang_taolunzu set enabled = -1 where mid = ?", id);
+			}
+			MaShangeModel maShangeModel = MaShangeModel.dao.findById(id);
+			maShangeModel.set("enabled", DataConstant.No);
+			maShangeModel.update();
+			
+			Db.update("update op_mashang set enabled = -1 where id = ?", id);
+		}
+		return resultDto;
+	}
+	
+	
+	@RequestMapping("/get")
+	@ResponseBody
+	public ResultDto get(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		String id = request.getParameter("id");
+		Record findFirst = Db.findFirst("select * from op_mashang where id = ?", id);
+		Map<String, Object> columns = findFirst.getColumns();
+		List<Record> find = Db.find("select * from op_mashang_users where mashangId = ?",id);
+		columns.put("users", ToolModel.recordListConvert(find));
+		resultDto.setData(columns);
+		return resultDto;
+	}
+	
+	@RequestMapping("/listUsers")
+	public String listUsers(Map<String, Object> model) {
+		SqlXmlPlugin.init(false);
+		model.put("htmlContent", "/templates/mashang/listUsers.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(find2));
+		
+		List<Record> find3 = Db.find(ToolSqlXml.getSql("com.user.selectAll"));
+		map.put("users", ToolModel.recordListConvert(find3));
+
+		model.put("initData", JSON.toJSONString(map));
+		return "common/content";
+	}
+	
+	@RequestMapping("/listMashangByUsers")
+	@ResponseBody
+	public PageResultDto listMashangByUsers(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.mashang.listUserSelectBody");
+		pageSqlCommond.setHeadSql("com.mashang.listUserSelectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	@RequestMapping("/saveToDoFoller")
+	@ResponseBody
+	public ResultDto saveToDoFoller(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		MaShangeFollowModel model = getModel(request, MaShangeFollowModel.class);
+		Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				if (model.isNew()) {
+					model.set("createdDate", System.currentTimeMillis());
+					model.save();
+				} else {
+					model.update();
+				}
+				return true;
+			}
+		});
+		return resultDto;
+	}
+	
+	
+	@RequestMapping("/listVerifyFollerOpinion")
+	@ResponseBody
+	public ResultDto listVerifyFollerOpinion(HttpServletRequest request) {
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		List<Record> find = Db.find(ToolSqlXml.getSql("com.mashang.selectFollowByMaShangId", requestDTO.getData()));
+		resultDto.setData(ToolModel.recordListConvert(find));
+		return resultDto;
+	}
+	
+	@RequestMapping("/finishTodoFoller/{id}")
+	@ResponseBody
+	public ResultDto finishTodoFoller(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		MaShangeModel findById = MaShangeModel.dao.findById(id);
+		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.finishDo);
+		findById.update();
+		return resultDto;
+	}
+
+	@RequestMapping("/untTodoFollerOpinion/{id}")
+	@ResponseBody
+	public ResultDto untTodoFollerOpinion(@PathVariable Long id) {
+		ResultDto resultDto = new ResultDto();
+		MaShangeModel findById = MaShangeModel.dao.findById(id);
+		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.untDo);
+		findById.update();
+		return resultDto;
+	}
+	
+}

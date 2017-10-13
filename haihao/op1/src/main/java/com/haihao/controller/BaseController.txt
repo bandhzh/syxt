@@ -3,9 +3,12 @@ package com.haihao.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +94,34 @@ public class BaseController  {
 		RequestDTO requestDTO = JSON.parseObject(data, RequestDTO.class);
 		return requestDTO;
 	}
+	
+
+	protected void validateRequired(RequestDTO requestDTO, String field, String error) {
+		Object object = requestDTO.getData().get(field);
+		if (null == object || StringUtils.isEmpty(object.toString())) {
+			throw new RuntimeException(error);
+		}
+	}
+
+	protected void validateInteger(RequestDTO requestDTO, String field, int min, int max, String error) {
+		validateRequired(requestDTO, field, error);
+		Integer integer = Integer.parseInt(requestDTO.getData().get(field).toString());
+		if (integer < min || integer > max) {
+			throw new RuntimeException(error);
+		}
+	}
+
+	protected void validateRegex(RequestDTO requestDTO, String field, String regExpression, boolean isCaseSensitive, String error) {
+		String string = requestDTO.getData().get(field).toString();
+		Pattern pattern = isCaseSensitive ? Pattern.compile(regExpression) : Pattern.compile(regExpression, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(string);
+		if (!matcher.matches()) {
+			throw new RuntimeException(error);
+		}
+
+	}
+	
+	
 	
 
 }

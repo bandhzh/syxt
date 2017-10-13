@@ -1132,8 +1132,8 @@ public class PhoneController extends BaseController{
 			public boolean run() throws SQLException {
 				if (model.isNew()) {
 					model.set("name", request.getParameter("tlzname"));
-					model.set("mid",  1);//马上办舆情id
-					model.set("mainImg", "");
+					model.set("mid",  request.getParameter("mid"));//马上办舆情id
+					model.set("mainImg", request.getParameter("mainImg"));
 					model.set("enabled", 1);
 					model.set("createdDate", System.currentTimeMillis());
 					model.set("createdBy", ToolSecurity.getUserId());

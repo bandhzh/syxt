@@ -23,4 +23,36 @@ public abstract class UrlMatchUtils {
 	public static String getContextUrl(HttpServletRequest request) {
 		return URL_PATHHELPER.getContextPath(request);
 	}
+	
+	 /**
+		 * @param request
+		 * @return 应用程序的访问地址（不含端口号，因为发布后要使用80端口，即不用指定），如 http://localhost/crm/
+		 */
+	public static String getBaseAccessUrlWithoutPort(HttpServletRequest request) {
+		String path = request.getContextPath();
+		// FIXME 把应用放到ROOT下时，path是否为'/'?!
+		// 如果是，就应如下：
+		if ("/".equals(path)) {
+			path = ""; // 就忽略他
+		}
+		// FIXME 不加path了，是同一网站就行。   
+		String basePath = request.getScheme() + "://" + request.getServerName(); // + path + "/";
+		return basePath;
+	}
+	
+	 /**
+		 * @param request
+		 * @return 应用程序的访问地址（不含端口号，因为发布后要使用80端口，即不用指定），如 http://localhost/crm/
+		 */
+	public static String getBaseAccessUrl(HttpServletRequest request) {
+		String path = request.getContextPath();
+		// FIXME 把应用放到ROOT下时，path是否为'/'?!
+		// 如果是，就应如下：
+		if ("/".equals(path)) {
+			path = ""; // 就忽略他
+		}
+		// FIXME 不加path了，是同一网站就行。   
+		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort(); // + path + "/";
+		return basePath;
+	}
 }

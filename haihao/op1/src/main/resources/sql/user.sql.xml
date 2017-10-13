@@ -25,7 +25,7 @@
 	
 	<sql id="selectAll">
 		<![CDATA[ 
-			select * from op_user;
+			select * from op_user where enable = 1;
 		]]>
 	</sql>
 

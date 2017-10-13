@@ -1,0 +1,12 @@
+package com.haihao.model.mashang;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+
+@TableBind(tableName="op_mashang_instruction")
+public class MaShangeInstructionModel extends BaseModel<MaShangeInstructionModel> {
+
+	private static final long serialVersionUID = -1658354762004192287L;
+
+}
