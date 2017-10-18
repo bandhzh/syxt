@@ -470,7 +470,7 @@ function onSyncDone() {
 			var tlzid = $(this).attr("alt");
 			 
 	     mui.openWindow({
-	         url:"http://120.26.62.100:8084/phoneui/editgroup?tlzid="+tlzid,
+	         url:"http://192.168.1.53:8084/phoneui/editgroup?tlzid="+tlzid,
 	         id:"newadd"
 	     })
 	  })
@@ -635,7 +635,7 @@ $(document).ready(function(){
         max_file_size: '10mb',
         flash_swf_url: '${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/Moxie.swf',
         chunk_size: '4mb',
-        filters:[{title : "图片文件", extensions : "jpg,png,gif"}],
+        filters:[{title : "图片文件", extensions : "jpg,png,gif,jpeg"}],
         uptoken_url: "${ctxPath}/ajaxGetUploadToken",
         domain: window.qiniuDomain,
         get_new_uptoken: false,

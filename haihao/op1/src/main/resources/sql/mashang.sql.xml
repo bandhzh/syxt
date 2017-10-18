@@ -20,6 +20,24 @@
 		]]>
 	</sql>
 	
+	
+	<!-- 根据马上办的处理状态进行检索 -->
+	<sql id="selectBodyBystatus">
+		<![CDATA[ 
+			from op_mashang maShangeModel left join 
+			op_user userModel on maShangeModel.createdBy = userModel.id 
+			where 1 = 1 and toDoStatus = ${data.toDoStatus}
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	
+	
+	
+	
 	<sql id="selectInstructionMashangId">
 		<![CDATA[ 
 			select maShangeInstructionModel.*,userModel.displayName,departmentModel.name as departmentName  from op_mashang_instruction maShangeInstructionModel
@@ -60,6 +78,13 @@
 		]]>
 	</sql>
 	
+	
+	<!-- 根据马上办id 查询当前讨论组的讨论id -->
+	<sql id="selectlzidbymid">
+		<![CDATA[ 
+			select * from op_mashang_taolunzu where enabled=1 and mid='${mid}'
+		]]>
+	</sql>
 	
 	
 	

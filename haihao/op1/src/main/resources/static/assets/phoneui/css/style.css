@@ -563,7 +563,9 @@ input[type=submit].ok{ background:#01bad4; padding-left:0 !important; width:100%
 	height: auto;
 	margin-top: 1.51rem;
 }
-big{ font-size:.8rem}small{ font-size:.4rem}
+big{ font-size:.8rem}
+small{ font-size:.5rem;}
+#sliderSegmentedControl small{font-weight: 800;}
 .nobg{ background:none !important}
 
 .content form .code{

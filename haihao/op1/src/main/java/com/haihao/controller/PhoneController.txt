@@ -43,6 +43,7 @@ import com.haihao.model.baoliao.BaoliaoModel;
 import com.haihao.model.group.MSTaoLunZu;
 import com.haihao.model.group.MSTaoLunZuUsers;
 import com.haihao.model.im.ImService;
+import com.haihao.model.mashang.MaShangeModel;
 import com.haihao.model.news.NewsModel;
 import com.haihao.model.opinion.OpinionModel;
 import com.haihao.model.security.PrivilegeModel;
@@ -743,6 +744,35 @@ public class PhoneController extends BaseController{
 	
 	
 	/**
+	 * app 马上办详情
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/mashanginfo"})
+	public String mashanginfo(Map<String, Object> model,HttpServletRequest request) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));//报料类别
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find1));
+
+		int mid = Integer.parseInt(request.getParameter("mid"));
+		MaShangeModel mashangmodel = MaShangeModel.dao.findById(mid);
+		model.put("newsmodel", ModelKit.toMap(mashangmodel));
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+		
+		return "mashangui/mashanginfo";
+	}
+	
+	
+	
+	/**
 	 * 进入转办操作界面
 	 * @param model
 	 * @param request
@@ -873,6 +903,21 @@ public class PhoneController extends BaseController{
 		
 		return "phoneui/message";
 	}
+	
+	
+	
+	/**
+	 * app 马上办中心
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/tomashangeCenter"})
+	public String tomashangeCenter(Map<String, Object> model) {
+		
+		
+		return "mashangui/mashangcenter";
+	}
+	
 	
 	
 	/**
@@ -1040,6 +1085,44 @@ public class PhoneController extends BaseController{
 	
 	
 	
+	
+	
+	/**
+	 * 进入马上办交流中心
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/mashanggroupcommon"})
+	public String mashanggroupcommon(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Record> find = Db.find("select * from op_user where enable = 1");
+		map.put("users", ToolModel.recordListConvert(find));
+		model.put("initData", JSON.toJSONString(map));
+		
+		
+		map.put("mid", request.getParameter("mid"));
+		
+		//根据马上办id 检索出该讨论组id
+		List<Record> listbaoliaoends = Db.find(ToolSqlXml.getSql("com.mashang.selectlzidbymid",map));
+//		if(null==listbaoliaoends||listbaoliaoends.size()==0){//该马上办讨论组未创建
+//			
+//		}
+		
+		Map<String, Object> taolunzu = ToolModel.recordListConvert(listbaoliaoends).get(0);
+		
+		model.put("tlzid", taolunzu.get("id"));
+		model.put("zuname", taolunzu.get("name"));
+		
+		model.put("createTeam", taolunzu.get("createTeam"));
+		
+		return "phoneui/groupcommon";
+	}
+	
+	
+	
+	
 	/**
 	 * 进入交流中心
 	 * @param model
@@ -1065,6 +1148,11 @@ public class PhoneController extends BaseController{
 		
 		return "phoneui/groupcommon";
 	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * 修改群组成员

@@ -87,6 +87,28 @@ public class MaShangeController extends BaseController {
 		return ajaxList(pageSqlCommond);
 	}
 	
+	
+	/**
+	 * 根据处理类型检索出马上办列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/ajaxlistMashangbystatus")
+	@ResponseBody
+	public PageResultDto ajaxlistMashangbystatus(HttpServletRequest request) {
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.mashang.selectBodyBystatus");
+		pageSqlCommond.setHeadSql("com.mashang.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
 	@RequestMapping("/save")
 	@ResponseBody
 	public ResultDto save(HttpServletRequest request) {
@@ -175,6 +197,11 @@ public class MaShangeController extends BaseController {
 		return resultDto;
 	}
 	
+	/**
+	 * 保存讨论组成员
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/saveUsers")
 	@ResponseBody
 	public ResultDto saveUsers(HttpServletRequest request) {
@@ -367,5 +394,7 @@ public class MaShangeController extends BaseController {
 		findById.update();
 		return resultDto;
 	}
+	
+	
 	
 }

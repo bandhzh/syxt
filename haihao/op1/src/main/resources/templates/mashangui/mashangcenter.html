@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>处理中心</title>
+<link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
+<link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery-1.11.2.min.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
+
+<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
+
+<!-- 配置文件 -->
+<script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
+
+<style>
+.content .swiper-slide {
+	padding: 0 20px;
+	width: 50%;/**auto**/
+}
+.swiper-slide {
+	color: #999
+}
+#header {
+	width: 100%;
+	overflow: hidden
+}
+#sliderSegmentedControl small{
+	font-size: 0.58rem;
+	letter-spacing:10px;
+}
+
+.ev a{
+	font-weight: 800;
+}
+</style>
+</head>
+<body class="chat mbsc-fr-lock">
+<header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-back"></a>
+  <h1 class="mui-title">马上办处理中心</h1>
+  
+</header>
+<div class="heihead"></div>
+
+<div class="content ">
+  <div id="header">
+
+    <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
+	    <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+	      <div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>正在进行</small></a></div>
+	      <div class="swiper-slide"><a class="mui-control-item"  href=#item2mobile><small>往期事项</small></a></div><!-- #item2mobile toDoStatus-->
+	    </div>
+    </div>  
+  </div>
+
+
+  <script type="text/javascript">
+	window.onload = function() {
+	  var mySwiper1 = new Swiper('#header',{
+		  freeMode : true,
+		  slidesPerView : 'auto',
+		  freeModeSticky : true ,
+	  });
+	  
+	  
+	}
+	</script>
+  <div class="mui-content">
+	<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+		<div class="event pad">
+			<!-- 正在进行中的马上办 -->
+			
+		</div>
+	</div>
+
+	<div id="item2mobile" class="mui-slider-item mui-control-content ">
+    <div class="event pad">
+      <!-- 往期回顾的马上办 -->
+      
+      
+    </div>
+    </div>
+    
+    
+  </div>
+</div>
+
+
+
+
+</body>
+
+<!-- 返回上一步操作 -->
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/back.js" ></script>
+
+<script type="text/javascript">
+
+mui.init({
+	swipeBack:true //启用右滑关闭功能
+});
+
+
+//data=5 根据类型 检索出 正在进行的马上办
+var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"maShangeModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"maShangeModel.id","order":"desc"}],"data":{"toDoStatus":"5"}};
+$.ajax({
+		url : "${ctxPath}/mashange/ajaxlistMashangbystatus",
+		type : "post",
+		data :{data:JSON.stringify(datajson)},
+		dataType: "json",
+		success : function(data) {
+			if (data.success) {//加载待核实舆情
+				
+				$.each(data.results,function(i,val){
+					
+					$("#item1mobile .pad").append('<div class="ev">'
+							+'<div class="mui-text-center"><a href="${ctxPath}/phoneui/mashanginfo?mid='+val.id+'">'+val.subject+'</a></div>'
+							+'<div>'
+							+'	<span class="mui-col-xs-6 mui-col-sm-6 mui-pull-left bodr">'
+							+'		<img class="mui-media-object mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">'
+							+'		<div class="mui-media-body padl">'
+							+'			<p style="padding-top: .5rem">'
+							+'				<span class="padl mui-pull-left">'+getdisplaynamebyuid(val.createdBy)+'</span>'
+							+'			</p>'
+							+'		</div>'
+							+'	</span>'
+							+'	<span class="mui-col-xs-6 mui-col-sm-6 mui-pull-left padl">'
+							+'		<small class="grew">发布时间</small>'
+							+'		<p>'
+							+'			'+dateFormatter(val.createdDate)+'<span class="ico20"></span>'
+							+'		</p>'
+							+'	</span>'
+							+'</div>'
+							+'<p class="mui-clearfix"></p>'
+							+'<div>'
+							+'	<small class="grew">备注</small>'
+							+'	<p>'
+							+val.memo
+							+'	</p>'
+							+'</div>'
+							+'</div>');
+					
+				})
+				
+			} else {//提示暂无
+				$("#item1mobile .pad").html("暂无相关安排！");
+			}
+		}
+	});
+	
+	
+	
+	
+	//往期回顾 处理完成 data=6
+	var olddatajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"maShangeModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"maShangeModel.id","order":"desc"}],"data":{"toDoStatus":"6"}};
+	$.ajax({
+			url : "${ctxPath}/mashange/ajaxlistMashangbystatus",
+			type : "post",
+			data :{data:JSON.stringify(olddatajson)},
+			dataType: "json",
+			success : function(data) {
+				if (data.success) {
+					
+					//alert(data.results);
+					
+					if(data.results==""){
+						$("#item2mobile .pad").html('<div style="text-align:center;padding-top:48%;font-size:18px;"><span class="mui-icon mui-icon-info"></span>&nbsp;&nbsp;暂无相关安排！</div>');
+					}
+					
+					
+					$.each(data.results,function(i,val){
+						
+						$("#item2mobile .pad").append('<div class="ev">'
+								+'<div class="mui-text-center"><a href="${ctxPath}/phoneui/mashanginfo?mid='+val.id+'">'+val.subject+'</a></div>'
+								+'<div>'
+								+'	<span class="mui-col-xs-6 mui-col-sm-6 mui-pull-left bodr">'
+								+'		<img class="mui-media-object mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">'
+								+'		<div class="mui-media-body padl">'
+								+'			<p style="padding-top: .5rem">'
+								+'				<span class="padl mui-pull-left">'+getdisplaynamebyuid(val.createdBy)+'</span>'
+								+'			</p>'
+								+'		</div>'
+								+'	</span>'
+								+'	<span class="mui-col-xs-6 mui-col-sm-6 mui-pull-left padl">'
+								+'		<small class="grew">发布时间</small>'
+								+'		<p>'
+								+'			'+dateFormatter(val.createdDate)+'<span class="ico20"></span>'
+								+'		</p>'
+								+'	</span>'
+								+'</div>'
+								+'<p class="mui-clearfix"></p>'
+								+'<div>'
+								+'	<small class="grew">备注</small>'
+								+'	<p>'
+								+val.memo
+								+'	</p>'
+								+'</div>'
+								+'</div>');
+						
+						
+					
+					
+					
+						
+					})
+					
+				} else {//提示暂无
+					$("#item2mobile .pad").html('<div style="text-align:center;padding-top:48%;font-size:18px;"><span class="mui-icon mui-icon-info"></span>&nbsp;&nbsp;暂无相关安排！</div>');
+				}
+			}
+		});
+	
+	
+	
+	
+	
+	
+	
+	
+function dateFormatter(value){
+	  var d = new Date();
+	  d.setTime(value);
+	  return d.pattern("MM-dd HH:mm");
+}
+
+function getdisplaynamebyuid(value){//根据用户id检索出当前用户名
+	var name='';
+	//异步获取
+	$.ajax({
+	url : 'ajaxgetusernamebyid',
+	type : "post",
+	data :{userid:value},
+	dataType: "json",
+	async: false,
+	success : function(data) {
+		name=data.data.displayName;
+		
+	}
+
+	});
+	return name;
+	
+}
+
+</script>
+
+
+
+</html>
