@@ -19,6 +19,7 @@
 	<script type="text/javascript">
 	   var userInfo ;
 	</script>
+    <script src="${ctxPath}/static/assets/phoneui/js/httpurl.js"></script>
     
     </head>
    
@@ -116,7 +117,7 @@ mui.init({
 function plusReady(){
        mui(".addrenyuan").on("tap","a",function(){   
           mui.openWindow({
-              url:"http://120.26.62.100:8084/book/toeditgroup",//120.26.62.100
+              url:httpurl+"/book/toeditgroup", //120.26.62.100
               id:"b"
           })   
        })   

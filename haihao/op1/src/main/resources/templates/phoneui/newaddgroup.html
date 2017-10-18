@@ -14,7 +14,7 @@
     <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
     <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
     <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
-
+	<script src="${ctxPath}/static/assets/phoneui/js/httpurl.js"></script>
     
     </head>
    
@@ -113,7 +113,7 @@
   	 function plusReady(){
          mui(".tx").on("tap","a",function(){   
             mui.openWindow({
-                url:"http://120.26.62.100:8084/book/creategroup",   
+                url:httpurl+"/book/creategroup",   //120.26.62.100
                 id:"b"
             })   
          })   

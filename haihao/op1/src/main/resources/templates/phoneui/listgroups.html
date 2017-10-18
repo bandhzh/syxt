@@ -19,6 +19,8 @@
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
 
+<script src="${ctxPath}/static/assets/phoneui/js/httpurl.js"></script>
+
 <style>
 .content .swiper-slide {
 	padding: 0 20px;
@@ -83,7 +85,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
  	//点击新建群组
 	 mui(".login_btn").on("tap","input",function(){
         mui.openWindow({
-            url:"http://120.26.62.100:8084/phoneui/newaddgroup",
+            url:httpurl+"/phoneui/newaddgroup",//120.26.62.100
             id:"newadd"
         })
      })
