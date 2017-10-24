@@ -54,7 +54,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
   <aside id="offCanvasSide" class="mui-off-canvas-left">
     <div id="offCanvasSideScroll" class="mui-scroll-wrapper">
       <div class="mui-scroll">
-        <div class="title font-avenir" style="padding:30px 15px; color:#fff; font-size:1rem; letter-spacing:5px">区委宣传部</div>
+        <div class="title font-avenir departmentname" style="padding:30px 15px; color:#fff; font-size:1rem; letter-spacing:5px"></div>
         <div class="content">
           <button type="hidden" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px; display:none"></button>
         </div>
@@ -211,7 +211,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
   
   
   
-  
+  jQuery(".departmentname").html(listFormatter({id:"departments"},"${authenticationFn().userDto.departmentId}"));
   
   function InitOpenNewsList(domId,initDataId){
 		$(".wangluonews").html("");

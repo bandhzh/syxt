@@ -327,6 +327,8 @@ public class PhoneController extends BaseController{
 		List<Record> opennews = Db.find(ToolSqlXml.getSql("com.news.selectisPublic"));//开放的舆情
 		map.put("listopennews", ToolModel.recordListConvert(opennews));
 		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
 		
 		model.put("initData", JSON.toJSONString(map));
 		
@@ -353,6 +355,9 @@ public class PhoneController extends BaseController{
 		
 		List<Record> opennews = Db.find(ToolSqlXml.getSql("com.news.selectisPublic"));//开放的新闻
 		map.put("listopennews", ToolModel.recordListConvert(opennews));
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
 		
 		model.put("initData", JSON.toJSONString(map));
 		
@@ -445,6 +450,9 @@ public class PhoneController extends BaseController{
 		
 		List<Record> opennews = Db.find(ToolSqlXml.getSql("com.opinion.selectisPublic"));//开放的舆情
 		map.put("listopennews", ToolModel.recordListConvert(opennews));
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
 		
 		//+需要自己处理的核实 以及转办给我的舆情
 		
@@ -539,6 +547,9 @@ public class PhoneController extends BaseController{
 		
 		List<Record> opennews = Db.find(ToolSqlXml.getSql("com.opinion.selectisPublic"));//开放的舆论
 		map.put("listopennews", ToolModel.recordListConvert(opennews));
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
 		
 		model.put("initData", JSON.toJSONString(map));
 		
