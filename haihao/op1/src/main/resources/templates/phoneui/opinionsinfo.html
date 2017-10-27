@@ -231,7 +231,7 @@
 
  
  	<% heshi = "no"; %>
-	<% if(opinionmodel.isVerify < 0 && opinionmodel.status < 1){ %>
+	<% if(opinionmodel.isVerify < 0 && opinionmodel.status < 1&& aclFn("opinion_verify")){ %>
 	    <a class="mui-tab-item" id="heshi">
 			<span class="mui-icon mui-icon-eye"></span>
 	  		<p>发起核实</p>
@@ -243,7 +243,7 @@
 	
 	
 	<% zhuanban = "no"; %>
-  	<% if(opinionmodel.status >= 2 && opinionmodel.toDoStatus < 5){ %>
+  	<% if(opinionmodel.status >= 2 && opinionmodel.toDoStatus < 5 && aclFn("opinion_query_zb")){ %>
 	  	<a class="mui-tab-item " id="zhuanban"><!-- 转到新界面进行转办操作 -->
 	  		<span class="mui-icon mui-icon-redo"></span>
 	  		<p>发起转办</p>
@@ -251,16 +251,18 @@
 	  	<% zhuanban = "yes"; %>
   	<% }%>
   	
-  	
+  	<% if(aclFn("user_instruction")){ %>
   	<a class="mui-tab-item" id="pishi">
   		<span class="mui-icon mui-icon-flag"></span>
   		<p>批示</p>
   	</a>
+  	<% }%>
   	
-  	<a class="mui-tab-item" id="fankui">
+  	
+  	<!-- <a class="mui-tab-item" id="fankui">
   		<span class="mui-icon mui-icon-compose"></span>
   		<p>反馈</p>
-  	</a>
+  	</a> -->
  </nav>
 </body>
 

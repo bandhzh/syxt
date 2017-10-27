@@ -250,7 +250,7 @@ _content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&
 
  
  	<% heshi = "no"; %>
-	<% if(newsmodel.isVerify < 0 && newsmodel.status < 1){ %>
+	<% if(newsmodel.isVerify < 0 && newsmodel.status < 1 && aclFn("opinion_verify")){ %>
 	    <a class="mui-tab-item" id="heshi">
 			<span class="mui-icon mui-icon-eye"></span>
 	  		<p>发起核实</p>
@@ -262,7 +262,7 @@ _content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&
 	
 	
 	<% zhuanban = "no"; %>
-  	<% if(newsmodel.status >= 2 && newsmodel.toDoStatus < 5){ %>
+  	<% if(newsmodel.status >= 2 && newsmodel.toDoStatus < 5 && aclFn("opinion_query_zb")){ %>
 	  	<a class="mui-tab-item " id="zhuanban"><!-- 转到新界面进行转办操作 -->
 	  		<span class="mui-icon mui-icon-redo"></span>
 	  		<p>发起转办</p>
