@@ -37,6 +37,15 @@
 	width: 100%;
 	overflow: hidden
 }
+/* .wangbaonews:after{
+	background-color:#ffffff;
+}
+.zhuanbannews:after{
+	background-color:#ffffff;
+}
+.pishinews:after{
+	background-color:#ffffff;
+} */
 </style>
 </head>
 
@@ -127,6 +136,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 						
 
 					</ul>
+					<div style="text-align:center;padding-top:50%;font-size:18px;display: none;" id="wlid"><span class="mui-icon mui-icon-info"></span>&nbsp;暂无新闻处理</div>
 				</div>
 				
 				<div id="item2mobile" class="mui-slider-item mui-control-content">
@@ -138,6 +148,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 						
 
 					</ul>
+					<div style="text-align:center;padding-top:50%;font-size:18px;display: none;" id="wbid"><span class="mui-icon mui-icon-info"></span>&nbsp;暂无新闻处理</div>
 				</div>
 				
 				<div id="item3mobile" class="mui-slider-item mui-control-content">
@@ -146,6 +157,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 						
 
 					</ul>
+					<div style="text-align:center;padding-top:50%;font-size:18px;display: none;" id="zbid"><span class="mui-icon mui-icon-info"></span>&nbsp;暂无新闻处理</div>
 				</div>
 				
 				
@@ -154,6 +166,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 						<!-- 舆情批示 -->
 
 					</ul>
+					<div style="text-align:center;padding-top:50%;font-size:18px;display: none;" id="psid"><span class="mui-icon mui-icon-info"></span>&nbsp;暂无新闻处理</div>
 				</div>
 				
               
@@ -216,80 +229,93 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
   function InitOpenNewsList(domId,initDataId){
 		$(".wangluonews").html("");
 		var _items = initData[initDataId];
-		for(var i = 0;i < _items.length;i++){
-			var j = _items[i];
+		
+		if(_items.length>0){
 			
-				var starsval = listFormatter({id:"lists"},j["levelId"]);
-				var stars ='<span class="mui-icon mui-icon-star"></span>';
-				if(starsval=="0"){
-					stars='<span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
-				}
+			$("#wlid").hide();
+			
+			for(var i = 0;i < _items.length;i++){
+				var j = _items[i];
 				
-				if(starsval=="1星"){
-					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
-				}
-				if(starsval=="2星"){
-					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
-				}
-				if(starsval=="3星"){
-					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
-				}
-				if(starsval=="4星"){
-					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span>';
-				}
-				if(starsval=="5星"){
-					stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span>';
-				}
-				
-				var status="";
-				if (j["status"] == "1") {
-					status= "核实中";
-				} else if (j["status"] == "2") {
-					status = "已核实";
-				} else if (j["status"] == "3") {
-					status = "已转办";
-				} else if (j["status"] == "10") {
-					status = "归档";
-				} else {
-					status = "待核实";
-				}
+					var starsval = listFormatter({id:"lists"},j["levelId"]);
+					var stars ='<span class="mui-icon mui-icon-star"></span>';
+					if(starsval=="0"){
+						stars='<span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
+					}
+					
+					if(starsval=="1星"){
+						stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
+					}
+					if(starsval=="2星"){
+						stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
+					}
+					if(starsval=="3星"){
+						stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span><span class="mui-icon mui-icon-star"></span>';
+					}
+					if(starsval=="4星"){
+						stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star"></span>';
+					}
+					if(starsval=="5星"){
+						stars='<span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span><span class="mui-icon mui-icon-star-filled"></span>';
+					}
+					
+					var status="";
+					if (j["status"] == "1") {
+						status= "核实中";
+					} else if (j["status"] == "2") {
+						status = "已核实";
+					} else if (j["status"] == "3") {
+						status = "已转办";
+					} else if (j["status"] == "10") {
+						status = "归档";
+					} else {
+						status = "待核实";
+					}
 
-				
-				
-	 			$(domId).append(
-	 							String.format('<li class="mui-table-view-cell mui-media">'
-	 									+'<a href="${ctxPath}/phoneui/newsinfo?id={5}">'
-	 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
-	 									+'<div class="mui-media-body">'
-	 									+'	<p><small class="blue">{1}</small> &nbsp; <small class="grew"></small></p>'
-	 									+'	<p class="hei"></p>'
-	 									+'	<p>{2}</p>'
-	 									+'	<p class="hei"></p>'
-	 									+'	<p><font class="grew"></font>{4}&nbsp; &nbsp;{3}</p>'
-	 									+'</div>'
-	 									+'</a>'
-	 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["title"],listFormatter({id:"lists"},j["sourceid"]),dateFormatter(j["createdDate"]),status,j["id"])
-	 							
-	 							
-	 			);
-	 			
-	 			var swiper = new Swiper('.swiper-container', {
-	 			    pagination: '.swiper-pagination',  
-	 			    effect: 'coverflow',  
-	 			    grabCursor: true,  
-	 			    centeredSlides: true,  
-	 			    slidesPerView: 'auto',  
-	 				paginationType: 'fraction',
-	 			    coverflow: {  
-	 			        rotate: 0,// 旋转的角度  
-	 			        stretch: 100,// 拉伸   图片间左右的间距和密集度  
-	 			        depth: 120,// 深度   切换图片间上下的间距和密集度  
-	 			        modifier: 5,// 修正值 该值越大前面的效果越明显  
-	 			        slideShadows : true// 页面阴影效果  
-	 			    }  
-	 			}); 
-	 			
+					
+					
+		 			$(domId).append(
+		 							String.format('<li class="mui-table-view-cell mui-media">'
+		 									+'<a href="${ctxPath}/phoneui/newsinfo?id={5}">'
+		 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
+		 									+'<div class="mui-media-body">'
+		 									+'	<p><small class="blue">{1}</small> &nbsp; <small class="grew"></small></p>'
+		 									+'	<p class="hei"></p>'
+		 									+'	<p>{2}</p>'
+		 									+'	<p class="hei"></p>'
+		 									+'	<p><font class="grew"></font>{4}&nbsp; &nbsp;{3}</p>'
+		 									+'</div>'
+		 									+'</a>'
+		 									+'</li>',window.qiniuDomainHttp+j["mainImg"],j["title"],listFormatter({id:"lists"},j["sourceid"]),dateFormatter(j["createdDate"]),status,j["id"])
+		 							
+		 							
+		 			);
+		 			
+		 			var swiper = new Swiper('.swiper-container', {
+		 			    pagination: '.swiper-pagination',  
+		 			    effect: 'coverflow',  
+		 			    grabCursor: true,  
+		 			    centeredSlides: true,  
+		 			    slidesPerView: 'auto',  
+		 				paginationType: 'fraction',
+		 			    coverflow: {  
+		 			        rotate: 0,// 旋转的角度  
+		 			        stretch: 100,// 拉伸   图片间左右的间距和密集度  
+		 			        depth: 120,// 深度   切换图片间上下的间距和密集度  
+		 			        modifier: 5,// 修正值 该值越大前面的效果越明显  
+		 			        slideShadows : true// 页面阴影效果  
+		 			    }  
+		 			}); 
+		 			
+			}
+		}else{
+			
+			$("#wlid").show();
 		}
+		
+		
+		
+		
 	}
 	
 	InitOpenNewsList(".wangluonews", "listopennews");
@@ -342,41 +368,48 @@ function listFormatter(columnDef, value){
   			if (data.success) {//加载待核实舆情
   				
   				$(".wangbaonews").html("");
+  				if(data.hits>0){//有数据
+  					
+  					$("#wbid").hide();
+  					
+  					$.each(data.results,function(i,val){
+  	  					
+  	  					var status="";
+  	  					if (val.status == "1") {
+  	  						status= "核实中";
+  	  					} else if (val.status == "2") {
+  	  						status = "已核实";
+  	  					} else if (val.status == "3") {
+  	  						status = "已转办";
+  	  					} else if (val.status == "10") {
+  	  						status = "归档";
+  	  					} else {
+  	  						status = "待核实";
+  	  					}
+  	  					
+  	  					
+  	  					$(".wangbaonews").append('<li class="mui-table-view-cell mui-media">'
+  									+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
+  									+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
+  									+'<div class="mui-media-body">'
+  									+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
+  									+'	<p class="hei"></p>'
+  									+'	<p>'+listFormatter({id:"lists"},val.sourceid)+'</p>'
+  									+'	<p class="hei"></p>'
+  									+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+  									+'</div>'
+  									+'</a>'
+  									+'</li>');
+  	  					
+  	  				});
+  				}else{
+  					$("#wbid").show();
+  				}
   				
-  				
-  				$.each(data.results,function(i,val){
-  					
-  					var status="";
-  					if (val.status == "1") {
-  						status= "核实中";
-  					} else if (val.status == "2") {
-  						status = "已核实";
-  					} else if (val.status == "3") {
-  						status = "已转办";
-  					} else if (val.status == "10") {
-  						status = "归档";
-  					} else {
-  						status = "待核实";
-  					}
-  					
-  					
-  					$(".wangbaonews").append('<li class="mui-table-view-cell mui-media">'
-								+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
-								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
-								+'<div class="mui-media-body">'
-								+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
-								+'	<p class="hei"></p>'
-								+'	<p>'+listFormatter({id:"lists"},val.sourceid)+'</p>'
-								+'	<p class="hei"></p>'
-								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
-								+'</div>'
-								+'</a>'
-								+'</li>');
-  					
-  				})
   				
   			} else {//提示暂无
-  				$(".wangbaonews").html("暂无相关新闻！");
+  				
+  				$("#wbid").show();
   			}
   		}
   	});
@@ -393,37 +426,46 @@ function listFormatter(columnDef, value){
    		success : function(data) {
    			if (data.success) {//加载待核实舆情
    				$(".zhuanbannews").html("");
-   				$.each(data.results,function(i,val){
+   				if(data.hits>0){//有数据
+   					$("#zbid").hide();
+   					$.each(data.results,function(i,val){
+   	   					
+   	   					var status="";
+   	  					if (val.status == "1") {
+   	  						status= "核实中";
+   	  					} else if (val.status == "2") {
+   	  						status = "已核实";
+   	  					} else if (val.status == "3") {
+   	  						status = "已转办";
+   	  					} else if (val.status == "10") {
+   	  						status = "归档";
+   	  					} else {
+   	  						status = "待核实";
+   	  					}
+   	   					
+   	   					$(".zhuanbannews").append('<li class="mui-table-view-cell mui-media">'
+   								+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
+   								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
+   								+'<div class="mui-media-body">'
+   								+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
+   								+'	<p class="hei"></p>'
+   								+'	<p class="">'+listFormatter({id:"lists"},val.sourceid)+'</p>'
+   								+'	<p class="hei"></p>'
+   								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+   								+'</div>'
+   								+'</a>'
+   								+'</li>');
+   	   					});
    					
-   					var status="";
-  					if (val.status == "1") {
-  						status= "核实中";
-  					} else if (val.status == "2") {
-  						status = "已核实";
-  					} else if (val.status == "3") {
-  						status = "已转办";
-  					} else if (val.status == "10") {
-  						status = "归档";
-  					} else {
-  						status = "待核实";
-  					}
-   					
-   					$(".zhuanbannews").append('<li class="mui-table-view-cell mui-media">'
-							+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
-							+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
-							+'<div class="mui-media-body">'
-							+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
-							+'	<p class="hei"></p>'
-							+'	<p class="">'+listFormatter({id:"lists"},val.sourceid)+'</p>'
-							+'	<p class="hei"></p>'
-							+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
-							+'</div>'
-							+'</a>'
-							+'</li>');
-   					})
+   				}else{
+   					$("#zbid").show();
+   				}
+   			
+   			
+   				
    				
    			} else {//提示暂无
-   				$(".zhuanbannews").html("暂无相关新闻！");
+   				$("#zbid").hide();
    			}
    		}
    	});
@@ -440,37 +482,46 @@ function listFormatter(columnDef, value){
    		success : function(data) {
    			if (data.success) {//加载待核实新闻
    				$(".pishinews").html("");
-   				$.each(data.results,function(i,val){
+   				if(data.hits>0){//有数据
+   					$("#psid").hide();
+   				
+   					$.each(data.results,function(i,val){
+   	   					
+   	   					var status="";
+   	  					if (val.status == "1") {
+   	  						status= "核实中";
+   	  					} else if (val.status == "2") {
+   	  						status = "已核实";
+   	  					} else if (val.status == "3") {
+   	  						status = "已转办";
+   	  					} else if (val.status == "10") {
+   	  						status = "归档";
+   	  					} else {
+   	  						status = "待核实";
+   	  					}
+   	   					
+   	   					$(".pishinews").append('<li class="mui-table-view-cell mui-media">'
+   								+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
+   								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
+   								+'<div class="mui-media-body">'
+   								+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
+   								+'	<p class="hei"></p>'
+   								+'	<p class="">'+listFormatter({id:"lists"},val.sourceid)+'</p>'
+   								+'	<p class="hei"></p>'
+   								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
+   								+'</div>'
+   								+'</a>'
+   								+'</li>');
+   	   					});
    					
-   					var status="";
-  					if (val.status == "1") {
-  						status= "核实中";
-  					} else if (val.status == "2") {
-  						status = "已核实";
-  					} else if (val.status == "3") {
-  						status = "已转办";
-  					} else if (val.status == "10") {
-  						status = "归档";
-  					} else {
-  						status = "待核实";
-  					}
-   					
-   					$(".pishinews").append('<li class="mui-table-view-cell mui-media">'
-							+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
-							+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
-							+'<div class="mui-media-body">'
-							+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
-							+'	<p class="hei"></p>'
-							+'	<p class="">'+listFormatter({id:"lists"},val.sourceid)+'</p>'
-							+'	<p class="hei"></p>'
-							+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
-							+'</div>'
-							+'</a>'
-							+'</li>');
-   					})
+   				}else{
+   					$("#psid").hide();
+   				}
+   			
+   				
    				
    			} else {//提示暂无
-   				$(".pishinews").html("暂无相关新闻！");
+   				$("#psid").show();
    			}
    		}
    	});

@@ -353,6 +353,7 @@ $(document).ready(function() {
 			data :{data:JSON.stringify(datajson)},
 			dataType: "json",
 			success : function(data) {
+				
 				if (data.hits>0) {//加载待核实舆情
 					
 					$("#hhh").html("");
@@ -366,8 +367,8 @@ $(document).ready(function() {
 	 							+'<P class="mui-clearfix hei"></P>'
 	 							+'<img src="'+window.qiniuDomainHttp+val.mainImg+'" alt="图片加载失败">'
 	 							+'<div class="pad grew">'
-	 							+'	<span class="mui-pull-left"> <i class="ico22"></i>'+listFormatter({id:"lists"},val.sourceid)+'</span>'
-	 							+'	<span class="mui-pull-right"> <i class="ico22"></i> '+val.createdBy+'</span>'
+	 							+'	<span class="mui-pull-left"> <a class="active"><span class="mui-icon mui-icon-paperplane"></span></a>'+listFormatter({id:"lists"},val.sourceid)+'</span>'
+	 							+'	<span class="mui-pull-right"> <a id="icon-icon-contact"><span class="mui-icon mui-icon-contact"></span></a> '+getdisplaynamebyuid(val.createdBy)+'</span>'
 	 							+'</div>'
 	 							+'<P class="mui-clearfix hei"></P>'
 	 							/* +'<div class="mui-clearfix pad grew">'+val.memo+'</div>' */
@@ -407,7 +408,7 @@ $(document).ready(function() {
 					
 					
 				} else {//提示暂无
-					$("#hhh").html('');
+					$("#hhh").html('<div style="text-align:center;padding-top:50%;color:white;font-size:18px;"><span class="mui-icon mui-icon-info"></span>&nbsp;暂无新闻处理</div>');
 				}
 			}
 		});
