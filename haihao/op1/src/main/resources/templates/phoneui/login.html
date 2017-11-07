@@ -17,10 +17,11 @@
     <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
     
     <script type="text/javascript" charset="utf-8">
+    var _ClientInfo = {};
       	mui.init();
       	//检测当前设备是否已经登录过了
      	mui.plusReady(function(){//设备唯一标识
-     		//var info = plus.push.getClientInfo();
+     		var _ClientInfo = plus.push.getClientInfo();
      		//alert( JSON.stringify( info ) );
      		if("${state!}"!=1){//使用手势密码
      			mui.ajax('${ctxPath}/phoneui/ajaxcheckimei',{
@@ -74,7 +75,9 @@
       			mui.ajax('${ctxPath}/phoneui/ajaxLoginCheck',{
       				data:{
       					loginName:$("#loginName").val(),
-      					password:$("#password").val()
+      					password:$("#password").val(),
+      					clientid:_ClientInfo.clientid
+      					
       				},
       				dataType:'json',//服务器返回json格式数据
       				type:'post',//HTTP请求类型
