@@ -50,6 +50,8 @@ import com.haihao.model.security.PrivilegeModel;
 import com.haihao.model.security.RoleModel;
 import com.haihao.model.security.UserModel;
 import com.haihao.tool.ToolSecurity;
+import com.haihao.tool.ToolString;
+import com.haihao.utils.GeTuiUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Record;
@@ -70,8 +72,11 @@ public class PhoneController extends BaseController{
 	
 	
 	@RequestMapping(value = { "", "/", "/index" })
-	public String index(Map<String, Object> model) {
-		
+	public String index(Map<String, Object> model,HttpServletRequest request) {
+		String parameter = request.getParameter("gtCientid");
+		if(!ToolString.isEmptyString(parameter)){
+			GeTuiUtils.send(parameter, "登录推送消息");
+		}
 		return "phoneui/login";
 	}
 	

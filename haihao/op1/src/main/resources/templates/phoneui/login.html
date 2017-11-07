@@ -20,7 +20,8 @@
       	mui.init();
       	//检测当前设备是否已经登录过了
      	mui.plusReady(function(){//设备唯一标识
-     		
+     		//var info = plus.push.getClientInfo();
+     		//alert( JSON.stringify( info ) );
      		if("${state!}"!=1){//使用手势密码
      			mui.ajax('${ctxPath}/phoneui/ajaxcheckimei',{
       				data:{imei:plus.device.imei},
