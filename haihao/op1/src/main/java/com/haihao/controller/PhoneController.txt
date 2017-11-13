@@ -106,7 +106,7 @@ public class PhoneController extends BaseController{
 				throw new UsernameNotFoundException("账号或密码错误");
 			}
 			if(!ToolString.isEmptyString(clientid)){
-				Db.update("update set op_user set gtToken = ? where id = ?",clientid,byLoginName.getLong("id"));
+				Db.update("update op_user set gtCientid = ? where id = ?",clientid,byLoginName.getLong("id"));
 			}
 			
 			Set<GrantedAuthority> authorities = new HashSet<>();

@@ -44,14 +44,14 @@ public abstract class GeTuiUtils {
 		template.setAppkey(appKey);
 		// 透传消息设置，1为强制启动应用，客户端接收到消息后就会立即启动应用；2为等待应用启动
 		template.setTransmissionType(1);
-		template.setTransmissionContent("请输入您要透传的内容");
+		template.setTransmissionContent(content);
 		// 设置定时展示时间
 		// template.setDuration("2015-01-16 11:40:00", "2015-01-16 12:24:00");
 
 		Style0 style = new Style0();
 		// 设置通知栏标题与内容
-		style.setTitle("请输入通知栏标题");
-		style.setText("请输入通知栏内容");
+		style.setTitle("系统选修");
+		style.setText(content);
 		// 配置通知栏图标
 		style.setLogo("icon.png");
 		// 配置通知栏网络图标
@@ -69,15 +69,17 @@ public abstract class GeTuiUtils {
 
 		IPushResult ret = null;
 		try {
+			logger.info("尝试推送消息");
 			ret = push.pushMessageToSingle(message, target);
 		} catch (RequestException e) {
 			e.printStackTrace();
 			ret = push.pushMessageToSingle(message, target, e.getRequestId());
+			logger.error("推送失败",e);
 		}
 		if (ret != null) {
-			System.out.println(ret.getResponse().toString());
+			logger.info(ret.getResponse().toString());
 		} else {
-			System.out.println("服务器响应异常");
+			logger.info("服务器响应异常");
 		}
 
 	}

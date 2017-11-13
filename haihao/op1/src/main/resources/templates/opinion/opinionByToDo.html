@@ -119,6 +119,13 @@
  								  }
  							  });
  							 filterParameters.push({property:"opinionModel.enabled",value:"1",operation:"="});
+ 							 
+ 							filterParameters.push({
+ 								property : "opinionModel.type",
+ 								value : "${session.opinionType!}",
+ 								operation : "="
+ 							});
+ 							 
  							  pager.setSearch(filterParameters);
   							 pager.setSort([{"property":"opinionModel.id","order":"desc"}]);
   							pager.setData({"departmentId":"${authenticationFn().userDto.departmentId}"});

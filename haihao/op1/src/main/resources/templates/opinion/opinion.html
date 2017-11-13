@@ -98,12 +98,13 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-							<h4 class="modal-title">舆论信息</h4>
+							<h4 class="modal-title">信息</h4>
 						</div>
 						<div class="modal-body">
 							<div class="portlet-body form">
 								<form action="#" class="horizontal-form" id="validationForm">
 									<input type="hidden" class="form-control columnName" columnName="opinionModel.id">
+									<input type="hidden" class="form-control columnName" columnName="opinionModel.type" value="${session.opinionType!}">
 									<div class="form-body">
 										<h3 class="form-section batchHidden" style="margin-top: 0px;">基本信息</h3>
 										<div class="row">
@@ -463,7 +464,8 @@
 					$(".add-submit").bind("click", function() {
 						$('#large').modal('show');
 						formClear({
-							filter : "#validationForm .columnName"
+							filter : "#validationForm .columnName",
+							ext:["opinionModel.type"]
 						})
 					});
 
@@ -475,6 +477,14 @@
 							value : "1",
 							operation : "="
 						});
+						
+						filterParameters.push({
+							property : "opinionModel.type",
+							value : "${session.opinionType!}",
+							operation : "="
+						});
+						
+						
 						pager.setSearch(filterParameters);
 						pager.setSort([ {
 							"property" : "opinionModel.id",
@@ -605,29 +615,49 @@
 							var status = dataContext.status;
 							var isVerify = dataContext.isVerify;
 							var hasInstruction = dataContext.hasInstruction;
+							
+							
+							 <% if(aclFn("opinion_add_verify")){ %>
 							if (isVerify < 0 && status < 1) {
 								_content.push(String.format("<a href='javascript:initVerify({0});'>{1}</a>&nbsp;&nbsp;", row, "提交核实"));
 							}
+							 <% }%>
+							
 							if (status > 0) {
 								_content.push(String.format("<a href='javascript:listVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看核实"));
 							}
 
 							var toDoStatus = dataContext.toDoStatus;
+							
+							 <% if(aclFn("opinion_add_zb")){ %>
 							if (status >= 2 && toDoStatus < 5) {
 								_content.push(String.format("<a href='javascript:initTodo({0});'>{1}</a>&nbsp;&nbsp;", row, "发起转办"));
 							}
+							 <% }%>
 
 							if (toDoStatus >= 5) {
 								_content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看转办"));
 							}
+							
+							 <% if(aclFn("user_instruction")){ %>
 							_content.push(String.format("<a href='javascript:initInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "批示"));
+							 <% }%>
 
 							if (hasInstruction > 0) {
 								_content.push(String.format("<a href='javascript:listInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看批示"));
 							}
 							
-							_content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&nbsp;&nbsp;", row, "添加跟进人员"));
+							<% if(aclFn("opinion_to_mashang")){ %>
+							_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "转到马上办"));
+							 <% }%>
 							
+							if(toDoStatus >= 5){
+								_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "完成"));
+							}
+							 
+							/* 
+							_content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&nbsp;&nbsp;", row, "添加跟进人员"));
+							 */
 
 							return _content.join("");
 						}
@@ -736,6 +766,7 @@
 									jsonData[$(this).attr("columnName")] = $(this).val();
 								}
 							});
+							
 
 							jsonData["opinionModel.content"] = ue.getContent();
 

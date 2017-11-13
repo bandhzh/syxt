@@ -231,15 +231,53 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                         </li>
                         <% }%>
                         
-                        <li class="nav-item  ">
+                        <% if(aclFn("opinion_query")){ %>
+                        <li class="nav-item  start active open">
                             <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-bulb"></i>
+                                <i class="icon-diamond"></i>
                                 <span class="title">安全</span>
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
+                            
+                                 <% if(aclFn("opinion_manager")){ %>
+                                <li class="nav-item  ">
+                                    <a href="${ctxPath}/opinion?type=2" class="nav-link ">
+                                        <span class="title">管理列表</span>
+                                    </a>
+                                </li>
+                                 <% }%>
+                                
+                                <% if(aclFn("opinion_verify")){ %>
+                                <li class="nav-item  ">
+                                    <a href="${ctxPath}/opinion/opinionByVerify?type=2" class="nav-link ">
+                                        <span class="title">核实列表</span>
+                                    </a>
+                                </li>
+                                <% }%>
+                                
+                                <% if(aclFn("opinion_query_zb")){ %>
+                                 <li class="nav-item  ">
+                                    <a href="${ctxPath}/opinion/opinionByTodo?type=2" class="nav-link ">
+                                        <span class="title">转办列表</span>
+                                    </a>
+                                </li>
+                              	<% }%>
+                                
+                                 <% if(aclFn("opinion_duban")){ %>
+                                 <li class="nav-item  ">
+                                    <a href="${ctxPath}/opinion/opinionByInstruction?type=2" class="nav-link ">
+                                        <span class="title">含批示列表</span>
+                                    </a>
+                                </li>
+                                 <% }%>
                             </ul>
                         </li>
+                        <% }%>
+                        
+                        
+                        
+                        
                           <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>
@@ -592,8 +630,12 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
             }
             
             function formClear(opt){
+            	var _ext = opt.ext;
             	 $(opt.filter).each(function() {
         			 if($(this).attr("columnName")){
+        				 if(ext){
+        					 if(_ext.indexOf($(this).attr("columnName")))continue;
+        				 }
         				 if($(this).attr("controlType") == "select"){
         					 $(this).selectpicker('val', "");
         				 }else if($(this).attr("controlType") == "image"){

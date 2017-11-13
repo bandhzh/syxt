@@ -21,7 +21,7 @@
       	mui.init();
       	//检测当前设备是否已经登录过了
      	mui.plusReady(function(){//设备唯一标识
-     		var _ClientInfo = plus.push.getClientInfo();
+     		_ClientInfo = plus.push.getClientInfo();
      		//alert( JSON.stringify( info ) );
      		if("${state!}"!=1){//使用手势密码
      			mui.ajax('${ctxPath}/phoneui/ajaxcheckimei',{
@@ -71,7 +71,6 @@
       		if($("#loginName").val().length==0||$("#password").val().length==0){
       			mui.toast('用户名/密码不能为空！');
       		}else{
-      			
       			mui.ajax('${ctxPath}/phoneui/ajaxLoginCheck',{
       				data:{
       					loginName:$("#loginName").val(),

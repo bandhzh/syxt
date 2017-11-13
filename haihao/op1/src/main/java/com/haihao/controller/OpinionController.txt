@@ -45,7 +45,7 @@ import com.jfinal.plugin.activerecord.Record;
 public class OpinionController extends BaseController {
 
 	@RequestMapping(value = { "", "/", "/index" })
-	public String index(Map<String, Object> model) {
+	public String index(Map<String, Object> model,HttpServletRequest request) {
 		model.put("htmlContent", "/templates/opinion/opinion.html");
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
@@ -58,7 +58,19 @@ public class OpinionController extends BaseController {
 		map.put("users", ToolModel.recordListConvert(find3));
 
 		model.put("initData", JSON.toJSONString(map));
+		setOpinionType(request);
+		
 		return "common/content";
+	}
+	
+	private void setOpinionType(HttpServletRequest request){
+		//类型
+		String parameter = request.getParameter("type");
+		if(ToolString.isEmptyString(parameter)){
+			parameter = "1"; 
+		}
+		request.getSession().setAttribute("opinionType", parameter);
+				
 	}
 
 	@RequestMapping("/listOpinion")
@@ -145,7 +157,7 @@ public class OpinionController extends BaseController {
 	}
 
 	@RequestMapping("/opinionByVerify")
-	public String opinionByVerify(Map<String, Object> model) {
+	public String opinionByVerify(Map<String, Object> model,HttpServletRequest request) {
 		model.put("htmlContent", "/templates/opinion/opinionByVerify.html");
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
@@ -154,6 +166,9 @@ public class OpinionController extends BaseController {
 		map.put("lists", ToolModel.recordListConvert(find2));
 
 		model.put("initData", JSON.toJSONString(map));
+		
+		setOpinionType(request);
+		
 		return "common/content";
 	}
 
@@ -275,7 +290,7 @@ public class OpinionController extends BaseController {
 	}
 
 	@RequestMapping("/opinionByTodo")
-	public String opinionByTodo(Map<String, Object> model) {
+	public String opinionByTodo(Map<String, Object> model,HttpServletRequest request) {
 		model.put("htmlContent", "/templates/opinion/opinionByToDo.html");
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
@@ -284,6 +299,9 @@ public class OpinionController extends BaseController {
 		map.put("lists", ToolModel.recordListConvert(find2));
 
 		model.put("initData", JSON.toJSONString(map));
+		
+		setOpinionType(request);
+		
 		return "common/content";
 	}
 
@@ -390,7 +408,7 @@ public class OpinionController extends BaseController {
 	}
 
 	@RequestMapping("/opinionByInstruction")
-	public String opinionByInstruction(Map<String, Object> model) {
+	public String opinionByInstruction(Map<String, Object> model,HttpServletRequest request) {
 		model.put("htmlContent", "/templates/opinion/opinionByInstruction.html");
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
@@ -399,6 +417,8 @@ public class OpinionController extends BaseController {
 		map.put("lists", ToolModel.recordListConvert(find2));
 
 		model.put("initData", JSON.toJSONString(map));
+		setOpinionType(request);
+		
 		return "common/content";
 	}
 
