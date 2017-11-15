@@ -5,12 +5,15 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.haihao.dto.ImMessageDto;
 import com.haihao.tool.ToolQiniu;
+import com.haihao.tool.ToolSecurity;
 import com.haihao.tool.ToolString;
 import com.haihao.utils.GeTuiUtils;
 import com.jfinal.plugin.activerecord.Db;
@@ -53,13 +56,19 @@ public class IndexController {
 	public Map<String,Object> ajaxTestIm(HttpServletRequest request){
 		Map<String,Object> map = new HashMap<String,Object>();
 		try{
-			String msg = request.getParameter("msg");
 			String loginName = request.getParameter("loginName");
 			Record findFirst = Db.findFirst("select * from op_user where loginName = ?",loginName);
 			if(null != findFirst && !ToolString.isEmptyString(findFirst.getStr("gtCientid"))){
-				GeTuiUtils.send(findFirst.getStr("gtCientid"), msg);
+				ImMessageDto imMessageDto = new ImMessageDto();
+				imMessageDto.setContent("内容");
+				imMessageDto.setCreatedBy(ToolSecurity.getUserId());
+				imMessageDto.setCreatedDate(System.currentTimeMillis());
+				imMessageDto.setReceiverBy(findFirst.getLong("id"));
+				imMessageDto.setSubject("标题");
+				imMessageDto.setCid(findFirst.getStr("gtCientid"));
+				GeTuiUtils.send(imMessageDto);
 			}
-			map.put("uptoken", ToolQiniu.getUpToken());
+			
 		}catch(Exception e){
 			map.put("success", false);
 			map.put("error", e.getMessage());

@@ -681,9 +681,10 @@ body.open .alert_bg .btn .btnRight{
 	float: left;
 }
 .mui-bar{ 
-	height: 1.88rem !important; background:#333
+	height: 1.88rem !important; background:#333;/* padding-top:2.5rem; */
 
-	}.mui-grid-view.mui-grid-9{ border:none}
+}
+.mui-grid-view.mui-grid-9{ border:none}
 	.pad{ padding:0.4rem}
 	h1{ font-weight:normal }
 .mui-title{

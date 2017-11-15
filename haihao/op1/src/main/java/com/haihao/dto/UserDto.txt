@@ -16,6 +16,7 @@ public class UserDto extends BaseDTO{
 	private int gender;
 	private String imAccountId;
 	private String imToken;
+	private String headimgurl;
 	private SimpleGrantedAuthority[] listSimpleGrantedAuthority;
 	
 	
@@ -86,4 +87,11 @@ public class UserDto extends BaseDTO{
 	public void setImToken(String imToken) {
 		this.imToken = imToken;
 	}
+	public String getHeadimgurl() {
+		return headimgurl;
+	}
+	public void setHeadimgurl(String headimgurl) {
+		this.headimgurl = headimgurl;
+	}
+	
 }

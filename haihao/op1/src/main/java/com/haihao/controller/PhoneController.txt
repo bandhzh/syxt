@@ -127,6 +127,7 @@ public class PhoneController extends BaseController{
 			userDto.setUserId(byLoginName.getLong("id"));
 			userDto.setImAccountId(byLoginName.getStr("imAccountId"));
 			userDto.setImToken(byLoginName.getStr("imToken"));
+			userDto.setHeadimgurl(byLoginName.getStr("headimgurl"));
 			securityUser.setUserDto(userDto);
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(securityUser, password, authorities);
 			ToolSecurity.addSecurityUser(usernamePasswordAuthenticationToken);
@@ -1020,6 +1021,29 @@ public class PhoneController extends BaseController{
 		
 		
 		UserModel usermodel = UserModel.dao.findById(userid);
+		
+		resultDto.setData( ModelKit.toMap(usermodel));
+			
+		
+	
+		return resultDto;
+		
+	
+	}
+	
+	
+	@RequestMapping("/ajaxupdateusernamebyid")
+	@ResponseBody
+	public ResultDto ajaxupdateusernamebyid(HttpServletRequest request,HttpSession session,Map<String, Object> model) {
+		ResultDto resultDto = new ResultDto();
+		int userid = Integer.parseInt(request.getParameter("userid"));
+		String headimgurl = request.getParameter("headimgurl");
+		
+		
+		UserModel usermodel = UserModel.dao.findById(userid);
+		usermodel.set("headimgurl", headimgurl);
+		usermodel.update();
+		
 		
 		resultDto.setData( ModelKit.toMap(usermodel));
 			

@@ -99,6 +99,12 @@
 		]]>
 	</sql>
 	
+	<!-- 根据舆情id检索出转办人 -->
+	<sql id="selecttodobynewsId">
+		<![CDATA[ 
+			select * from op_news_todo where newsId = ${newsId};
+		]]>
+	</sql>
 	
 
 </sql-statement>

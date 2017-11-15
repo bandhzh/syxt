@@ -9,4 +9,8 @@ public class NewsToDoModel extends BaseModel<NewsToDoModel> {
 
 	private static final long serialVersionUID = -1658354762004192287L;
 
+	
+	public static NewsToDoModel dao = new NewsToDoModel().dao();
+	
+	
 }

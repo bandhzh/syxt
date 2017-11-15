@@ -18,6 +18,7 @@ import com.haihao.beetl.ToolSqlXml;
 import com.haihao.constant.DataConstant;
 import com.haihao.constant.DataConstant.NewsStatus;
 import com.haihao.constant.DataConstant.OpinionToDoStatus;
+import com.haihao.dto.ImMessageDto;
 import com.haihao.dto.PageResultDto;
 import com.haihao.dto.PageSqlCommond;
 import com.haihao.dto.RequestDTO;
@@ -32,10 +33,13 @@ import com.haihao.model.news.NewsVerifyFollowModel;
 import com.haihao.model.news.NewsVerifyModel;
 import com.haihao.model.opinion.OpinionModel;
 import com.haihao.model.opinion.OpinionToDoFollowModel;
+import com.haihao.model.opinion.OpinionToDoModel;
 import com.haihao.model.opinion.OpinionVerifyFollowModel;
+import com.haihao.model.security.UserModel;
 import com.haihao.service.ServiceException;
 import com.haihao.tool.ToolSecurity;
 import com.haihao.tool.ToolString;
+import com.haihao.utils.GeTuiUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Record;
@@ -119,6 +123,39 @@ public class NewsController extends BaseController{
 				newsVerifyModel.set("createdBy", ToolSecurity.getUserId());
 				newsVerifyModel.set("createdDate", System.currentTimeMillis());
 				newsVerifyModel.save();
+				
+				
+				//循环获取选中部门的用户
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("departmentId", departmentId);
+				List<UserModel> listusers = UserModel.dao.find(ToolSqlXml.getSql("com.user.selectAlluserbydepartmentId", map));
+				for (int i = 0; i < listusers.size(); i++) {
+					UserModel userModel = listusers.get(i);
+					if(null != userModel){
+						ImMessageDto imMessageDto = new ImMessageDto();
+						imMessageDto.setContent("你有一条新的新闻需要进行核实，请登录平台进行操作！");
+						imMessageDto.setCreatedBy(ToolSecurity.getUserId());
+						imMessageDto.setCreatedDate(System.currentTimeMillis());
+						imMessageDto.setReceiverBy(userModel.getLong("id"));
+						imMessageDto.setSubject("舆情核实");
+						imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+						GeTuiUtils.send(imMessageDto);
+					}
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				return true;
 
 			}
@@ -179,6 +216,27 @@ public class NewsController extends BaseController{
 						newsToDoModel.set("createdBy", ToolSecurity.getUserId());
 						newsToDoModel.set("createdDate", System.currentTimeMillis());
 						newsToDoModel.save();
+						
+						
+						//循环获取选中部门的用户
+						Map<String, Object> map = new HashMap<String, Object>();
+						map.put("departmentId", newsToDoModel.get("departmentId"));
+						List<UserModel> listusers = UserModel.dao.find(ToolSqlXml.getSql("com.user.selectAlluserbydepartmentId", map));
+						for (int i = 0; i < listusers.size(); i++) {
+							UserModel userModel = listusers.get(i);
+							if(null != userModel){
+								ImMessageDto imMessageDto = new ImMessageDto();
+								imMessageDto.setContent("你有一条新的新闻需要进行处理，请登录平台进行操作！");
+								imMessageDto.setCreatedBy(ToolSecurity.getUserId());
+								imMessageDto.setCreatedDate(System.currentTimeMillis());
+								imMessageDto.setReceiverBy(userModel.getLong("id"));
+								imMessageDto.setSubject("新闻转办");
+								imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+								GeTuiUtils.send(imMessageDto);
+							}
+						}
+						
+						
 					}
 				}
 
@@ -191,6 +249,27 @@ public class NewsController extends BaseController{
 						newsToDoModel.set("createdBy", ToolSecurity.getUserId());
 						newsToDoModel.set("createdDate", System.currentTimeMillis());
 						newsToDoModel.save();
+						
+						//循环获取选中部门的用户
+						Map<String, Object> map = new HashMap<String, Object>();
+						map.put("departmentId", id);
+						List<UserModel> listusers = UserModel.dao.find(ToolSqlXml.getSql("com.user.selectAlluserbydepartmentId", map));
+						for (int i = 0; i < listusers.size(); i++) {
+							UserModel userModel = listusers.get(i);
+							if(null != userModel){
+								ImMessageDto imMessageDto = new ImMessageDto();
+								imMessageDto.setContent("你有一条新的新闻需要进行处理，请登录平台进行操作！");
+								imMessageDto.setCreatedBy(ToolSecurity.getUserId());
+								imMessageDto.setCreatedDate(System.currentTimeMillis());
+								imMessageDto.setReceiverBy(userModel.getLong("id"));
+								imMessageDto.setSubject("新闻转办");
+								imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+								GeTuiUtils.send(imMessageDto);
+							}
+						}
+						
+						
+						
 					}
 
 				}
@@ -388,7 +467,7 @@ public class NewsController extends BaseController{
 	
 	
 	/**
-	 * pc 保存核实反馈内容
+	 * pc 保存转办反馈内容
 	 * @param request
 	 * @return
 	 */
@@ -407,6 +486,35 @@ public class NewsController extends BaseController{
 				} else {
 					model.update();
 				}
+				
+
+				//将反馈的消息推送给转办人 根据舆情id检索出转办表
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("newsId", model.get("newsId"));
+				List<NewsToDoModel> listtodos = NewsToDoModel.dao.find(ToolSqlXml.getSql("com.news.selecttodobynewsId", map));
+				
+				//获取当前舆情的转办者
+				UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy")));
+				
+				if(null != userModel){
+					ImMessageDto imMessageDto = new ImMessageDto();
+					imMessageDto.setContent("你有一条新的新闻反馈，请登录平台进行查看！");
+					imMessageDto.setCreatedBy(ToolSecurity.getUserId());
+					imMessageDto.setCreatedDate(System.currentTimeMillis());
+					imMessageDto.setReceiverBy(userModel.getLong("id"));
+					imMessageDto.setSubject("新闻反馈");
+					imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+					GeTuiUtils.send(imMessageDto);
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				return true;
 			}
 		});
@@ -426,6 +534,34 @@ public class NewsController extends BaseController{
 		NewsModel findById = NewsModel.dao.findById(id);
 		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.finishDo);
 		findById.update();
+		
+		
+
+		//将反馈的消息推送给转办人 根据新闻id检索出转办表
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("newsId", id);
+		List<NewsToDoModel> listtodos = NewsToDoModel.dao.find(ToolSqlXml.getSql("com.news.selecttodobynewsId", map));
+		
+		//获取当前新闻的转办者
+		UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy")));
+		
+		if(null != userModel){
+			ImMessageDto imMessageDto = new ImMessageDto();
+			imMessageDto.setContent("你有一条新的新闻反馈已处理完成，请登录平台进行查看！");
+			imMessageDto.setCreatedBy(ToolSecurity.getUserId());
+			imMessageDto.setCreatedDate(System.currentTimeMillis());
+			imMessageDto.setReceiverBy(userModel.getLong("id"));
+			imMessageDto.setSubject("处理完成反馈");
+			imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+			GeTuiUtils.send(imMessageDto);
+		}
+		
+		
+		
+		
+		
+		
+		
 		return resultDto;
 	}
 	
@@ -442,6 +578,27 @@ public class NewsController extends BaseController{
 		NewsModel findById = NewsModel.dao.findById(id);
 		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.untDo);
 		findById.update();
+		
+		//将反馈的消息推送给转办人 根据新闻id检索出转办表
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("newsId", id);
+			List<NewsToDoModel> listtodos = NewsToDoModel.dao.find(ToolSqlXml.getSql("com.news.selecttodobynewsId", map));
+			
+			//获取当前新闻的转办者
+			UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy")));
+			
+			if(null != userModel){
+				ImMessageDto imMessageDto = new ImMessageDto();
+				imMessageDto.setContent("你有一条新的新闻反馈无法处理，请登录平台进行查看！");
+				imMessageDto.setCreatedBy(ToolSecurity.getUserId());
+				imMessageDto.setCreatedDate(System.currentTimeMillis());
+				imMessageDto.setReceiverBy(userModel.getLong("id"));
+				imMessageDto.setSubject("无法处理反馈");
+				imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+				GeTuiUtils.send(imMessageDto);
+			}
+		
+		
 		return resultDto;
 	}
 	

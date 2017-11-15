@@ -193,7 +193,51 @@
 </div>
 <div class="heihead"></div>
 
+<!-- 
+var status = dataContext.status;
+var isVerify = dataContext.isVerify;
+var hasInstruction = dataContext.hasInstruction;
 
+
+ <% if(aclFn("opinion_add_verify")){ %>
+if (isVerify < 0 && status < 1) {
+	_content.push(String.format("<a href='javascript:initVerify({0});'>{1}</a>&nbsp;&nbsp;", row, "提交核实"));
+}
+ <% }%>
+
+if (status > 0) {
+	_content.push(String.format("<a href='javascript:listVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看核实"));
+}
+
+var toDoStatus = dataContext.toDoStatus;
+
+ <% if(aclFn("opinion_add_zb")){ %>
+if (status >= 2 && toDoStatus < 5) {
+	_content.push(String.format("<a href='javascript:initTodo({0});'>{1}</a>&nbsp;&nbsp;", row, "发起转办"));
+}
+ <% }%>
+
+if (toDoStatus >= 5) {
+	_content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看转办"));
+}
+
+ <% if(aclFn("user_instruction")){ %>
+_content.push(String.format("<a href='javascript:initInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "批示"));
+ <% }%>
+
+if (hasInstruction > 0) {
+	_content.push(String.format("<a href='javascript:listInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看批示"));
+}
+
+<% if(aclFn("opinion_to_mashang")){ %>
+_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "转到马上办"));
+ <% }%>
+
+if(toDoStatus >= 5){
+	_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "完成"));
+}
+
+ -->
 
 <nav class="mui-bar mui-bar-tab foot">
 
@@ -204,6 +248,18 @@
 	  		<span class="mui-icon mui-icon-compose"></span>
 	  		<p>核实反馈</p>
 	  	</a>
+	  	
+	    <a class="mui-tab-item" id="heshi">
+			<span class="mui-icon mui-icon-eye"></span>
+	  		<p>核实完毕</p>
+	  	</a>
+		 
+	  	<% heshi = "yes"; %>
+	  	
+	<% }%>
+	
+	<% if(newsmodel.status < 2 && aclFn("new_verify_wb")){ %>
+	    
 	  	
 	    <a class="mui-tab-item" id="heshi">
 			<span class="mui-icon mui-icon-eye"></span>

@@ -273,9 +273,13 @@
 											  _content.push(String.format("<a href='javascript:verifyed({0});'>{1}</a>&nbsp;&nbsp;",row,"反馈"));
 										  }
 										  _content.push(String.format("<a href='javascript:listVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"查看"));
+										  
+										  <% if(aclFn("new_verify_wb")){ %>
 										  if(status < 2){
 											  _content.push(String.format("<a href='javascript:finishVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"核实完毕"));
 										  }
+										  <% }%>
+										
 										  return _content.join(""); 
 									  }
 									}

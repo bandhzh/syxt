@@ -37,6 +37,13 @@
 	width: 100%;
 	overflow: hidden
 }
+
+.mui-table-view-cell p{
+	padding-top: 8px;
+}
+.news  .mui-media-object{
+	max-height: 3rem;
+}
 </style>
 </head>
 
@@ -51,7 +58,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 
 <div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable"> 
   <!--侧滑菜单部分-->
-  <aside id="offCanvasSide" class="mui-off-canvas-left">
+  <!-- --><aside id="offCanvasSide" class="mui-off-canvas-left">
     <div id="offCanvasSideScroll" class="mui-scroll-wrapper">
       <div class="mui-scroll">
         <div class="title font-avenir departmentname" style="padding:30px 15px; color:#fff; font-size:1rem; letter-spacing:5px">区委宣传部</div>
@@ -60,16 +67,16 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         </div>
         <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
 	       
-			<li class="mui-table-view-cell mui-collapse">
+			<!-- <li class="mui-table-view-cell mui-collapse">
 				<a class="mui-navigate-right" href="#">类别</a>
 				<div class="mui-collapse-content" id="typeid">
 					
 				</div>
-			</li>
-		
-	       <!--  <li class="mui-table-view-cell mui-collapse">
-				<a class="" href="${ctxPath}/news/toaddnews">我要发布</a>
 			</li> -->
+		
+	        <li class="mui-table-view-cell mui-collapse">
+				<a class="" href="${ctxPath}/news/toaddnews">我要发布</a>
+			</li>
 			
 			<li class="mui-table-view-cell mui-collapse">
 				<a class="" href="${ctxPath}/phoneui/usercenter">返回个人中心</a>
@@ -80,12 +87,12 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         </ul>
       </div>
     </div>
-  </aside>
+  </aside> 
   <!--主界面部分-->
   <div class="mui-inner-wrap">
     <header class="mui-bar mui-bar-nav bgh">
     	<a class="mui-icon mui-icon-bars" href="#offCanvasSide"></a>
-      	<h1 class="mui-title">舆情中心</h1>
+      	<h1 class="mui-title">舆情列表</h1>
       	<!-- <a class="mui-icon mui-icon-compose right"></a> -->
       	<a href="${ctxPath}/phoneui/listopinionsblock" class="mui-icon mui-icon-settings right"></a>
      </header>
@@ -95,7 +102,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         <div class="">
           <div class="content ">
           <div class="heihead"></div>
-            <div id="header">
+             <!--<div id="header">
               <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
 	              	<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 	              		<div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>公开舆情</small></a></div>
@@ -104,7 +111,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 		                <div class="swiper-slide"><a class="mui-control-item " href="#item4mobile"><small>舆情批示</small></a></div>
 	                </div>
               </div>
-            </div>
+            </div>-->
             <script type="text/javascript">
 				window.onload = function() {
 				  var mySwiper1 = new Swiper('#header',{
@@ -115,7 +122,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				  
 				  
 				}
-				</script>
+				</script> 
             <div class="mui-content">
 
 
@@ -175,7 +182,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         </form>
         
       </div>
-		<nav class="mui-bar mui-bar-tab foot">
+		<!-- <nav class="mui-bar mui-bar-tab foot">
 			<a class="mui-tab-item mui-active" href="#"> 
 				
 				<span class="mui-icon mui-icon-home"></span>
@@ -193,7 +200,32 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				<span class="mui-icon mui-icon-person"></span>
 				<p>个人中心</p>
 			</a>
+		</nav> -->
+		
+		
+		
+		<nav class="mui-bar mui-bar-tab foot">
+			<a class="mui-tab-item mui-active" href="#item1mobile"> 
+				<span class="mui-icon mui-icon-home"></span>
+				<p>公开舆情</p>
+			</a>
+			<a class="mui-tab-item" href="#item2mobile">
+				<span class="mui-icon mui-icon-bars"></span>
+				<p>舆情核实</p>
+			</a>
+			<a class="mui-tab-item " href="#item3mobile">
+				<span class="mui-icon mui-icon-search"></span>
+				<p>舆情转办</p>
+			</a>
+			<a class="mui-tab-item" href="#item4mobile">
+				<span class="mui-icon mui-icon-person"></span>
+				<p>舆情批示</p>
+			</a>
 		</nav>
+		
+		
+		
+		
 	</div>
     <!-- off-canvas backdrop -->
     <div class="mui-off-canvas-backdrop"></div>
@@ -286,10 +318,8 @@ function pulldownRefresh() {
 		 									+'<a href="${ctxPath}/phoneui/opinionsinfo?id={5}">'
 		 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
 		 									+'<div class="mui-media-body">'
-		 									+'	<p><small class="blue">{1}</small> &nbsp; <small class="grew"></small></p>'
-		 									+'	<p class="hei"></p>'
+		 									+'	<small class="blue">{1}</small> &nbsp; <small class="grew"></small>'
 		 									+'	<p>{2}</p>'
-		 									+'	<p class="hei"></p>'
 		 									+'	<p><font class="grew"></font>{4}&nbsp; &nbsp;{3}</p>'
 		 									+'</div>'
 		 									+'</a>'
@@ -341,7 +371,7 @@ function listFormatter(columnDef, value){
 			  return d.pattern("MM-dd HH:mm");
   }
 
-  function selectInitList(domId,initDataId,listId){
+  /* function selectInitList(domId,initDataId,listId){
   	var _items = initData[initDataId];
   	$(domId).append(String.format('<p value="{0}">{1}</p>',"","全部"));
   	for(var i = 0;i < _items.length;i++){
@@ -350,10 +380,10 @@ function listFormatter(columnDef, value){
    			$(domId).append(String.format('<p value="{0}">{1}</p>',j["id"],j["label"]));
   		}
   	}
-  }
+  } */
   
   
-  selectInitList("#typeid", "lists", 1);
+  //selectInitList("#typeid", "lists", 1);
   
   
   
@@ -395,10 +425,8 @@ function listFormatter(columnDef, value){
   									+'<a href="${ctxPath}/phoneui/opinionsheshiinfo?id='+val.id+'">'
   									+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
   									+'<div class="mui-media-body">'
-  									+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
-  									+'	<p class="hei"></p>'
+  									+'	<small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small>'
   									+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
-  									+'	<p class="hei"></p>'
   									+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
   									+'</div>'
   									+'</a>'
@@ -454,10 +482,8 @@ function listFormatter(columnDef, value){
   								+'<a href="${ctxPath}/phoneui/opinionszhuanbaninfo?id='+val.id+'">'
   								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
   								+'<div class="mui-media-body">'
-  								+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
-  								+'	<p class="hei"></p>'
+  								+'	<small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small>'
   								+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
-  								+'	<p class="hei"></p>'
   								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
   								+'</div>'
   								+'</a>'
@@ -510,10 +536,8 @@ function listFormatter(columnDef, value){
   								+'<a href="${ctxPath}/phoneui/opinionspishiinfo?id='+val.id+'">'
   								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
   								+'<div class="mui-media-body">'
-  								+'	<p><small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small></p>'
-  								+'	<p class="hei"></p>'
+  								+'	<small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small>'
   								+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
-  								+'	<p class="hei"></p>'
   								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
   								+'</div>'
   								+'</a>'

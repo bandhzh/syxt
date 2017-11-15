@@ -198,13 +198,21 @@
 <nav class="mui-bar mui-bar-tab foot">
 
  	<% heshi = "no"; %>
-	<% if(opinionmodel.status < 2 ){ %>
+	<% if(opinionmodel.status < 2){ %>
 	    
 	    <a class="mui-tab-item" id="fankui">
 	  		<span class="mui-icon mui-icon-compose"></span>
 	  		<p>核实反馈</p>
 	  	</a>
 	  	
+		 
+	  	<% heshi = "yes"; %>
+	  	
+	<% }%>
+	
+	
+	<% if(opinionmodel.status < 2 && aclFn("opinion_verify_wb")){ %>
+	    
 	    <a class="mui-tab-item" id="heshi">
 			<span class="mui-icon mui-icon-eye"></span>
 	  		<p>核实完毕</p>
@@ -214,6 +222,7 @@
 	  	<% heshi = "yes"; %>
 	  	
 	<% }%>
+	
   
   
  </nav>

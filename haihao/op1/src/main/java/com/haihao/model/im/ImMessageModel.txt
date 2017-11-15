@@ -1,0 +1,14 @@
+package com.haihao.model.im;
+
+import com.haihao.model.BaseModel;
+import com.haihao.plugin.tablebind.TableBind;
+
+@TableBind(tableName="op_message")
+public class ImMessageModel extends BaseModel<ImMessageModel> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+}

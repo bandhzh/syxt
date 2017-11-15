@@ -11,7 +11,21 @@
 		<link href="${ctxPath}/static/assets/phoneui/css/mui.min.set.css" rel="stylesheet"/>
 		<script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script>
 		<script src="${ctxPath}/static/assets/phoneui/js/mui.view.js "></script>
-		<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
+		
+		
+		<script src="${ctxPath}/static/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+		<!-- 配置文件 -->
+		<script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
+		<script src="${ctxPath}/static/assets/global/scripts/QiniuUUID.js" type="text/javascript"></script>
+		<script src="${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/moxie.min.js" type="text/javascript"></script>
+		<script src="${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/plupload.full.min.js" type="text/javascript"></script>
+		<script src="${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/i18n/zh_CN.js" type="text/javascript"></script>
+		<script src="${ctxPath}/static/assets/global/plugins/qiniu/dist/qiniu.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			window.ctxPath = "${ctxPath!}";
+			window.qiniuDomain = "orbzivh5n.bkt.clouddn.com";
+			window.qiniuDomainHttp = "http://" + window.qiniuDomain + "/";
+		</script>
 	
 		<style>
 			html,
@@ -199,11 +213,11 @@
 						<ul class="mui-table-view mui-table-view-chevron">
 							<li class="mui-table-view-cell mui-media">
 								<a class="mui-navigate-right" href="#account">
-									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="">
+									<img class="mui-media-object mui-pull-left head-img" id="head-img" src="${authenticationFn().userDto.headimgurl}">
 									<div class="mui-media-body">
 										${authenticationFn().userDto.displayName}
-										
 										<p class='mui-ellipsis'>用户名:${authenticationFn().userDto.loginName}</p>
+										<input type="hidden" id="userid" value='${authenticationFn().userDto.userId}'/>
 									</div>
 								</a>
 							</li>
@@ -251,10 +265,10 @@
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll">
 						<ul class="mui-table-view">
-							<li class="mui-table-view-cell">
+							<li class="mui-table-view-cell" id="pickfiles">
 								<a id="head" class="mui-navigate-right">头像
 									<span class="mui-pull-right head">
-										<img class="head-img mui-action-preview" id="head-img1" src=""/>
+										<img class="head-img mui-action-preview" id="head-img1" src="${authenticationFn().userDto.headimgurl}"/>
 									</span>
 								</a>
 							</li>
@@ -441,9 +455,7 @@
 		//初始化单页的区域滚动
 		mui('.mui-scroll-wrapper').scroll();
 		
-		setTimeout(function () {
-			defaultImg();
-		},500);
+	
 		
 	
 		
@@ -491,30 +503,63 @@
 			});
 		})(mui);
 		
-
-	
 		
+		document.getElementById("pickfiles").addEventListener('tap', function(e) {
+			var uploader = Qiniu.uploader({
+			      runtimes: 'html5,flash,html4',
+			      browse_button: 'pickfiles',
+			      max_file_size: '10mb',
+			      flash_swf_url: '${ctxPath}/static/assets/global/plugins/plupload-2.1.8/js/Moxie.swf',
+			      chunk_size: '4mb',
+			      filters:[{title : "图片文件", extensions : "jpg,png,gif"}],
+			      uptoken_url: "${ctxPath}/ajaxGetUploadToken",
+			      domain: window.qiniuDomain,
+			      get_new_uptoken: false,
+			      auto_start: true,
+			      log_level: 5,
+			      init: {
+			          'FilesAdded': function(up, files) {
+			          },
+			         
+			          'UploadProgress': function(up, file) {
+			          },
+			          'UploadComplete': function(up, file, info) {
+			          	
+			        	  mui.toast("上传成功！");
+			        	  
+			          },
+			          'FileUploaded': function(up, file, info) {
+			          	var _key = $.parseJSON(info).key;
+			          	
+			          	document.getElementById("head-img1").src = window.qiniuDomainHttp + _key;
+			          	document.getElementById("head-img").src = window.qiniuDomainHttp + _key;
+			          	
+			          	$.ajax({
+			    			url : 'ajaxupdateusernamebyid',
+			    			type : "post",
+			    			data :{userid:jQuery("#userid").val(),headimgurl:window.qiniuDomainHttp + _key},
+			    			dataType: "json",
+			    			async: false,
+			    			success : function(data) {
+			    				
+			    				mui.toast("上传成功！");
+			    				
+			    			}
 
-		function defaultImg() {
-			if(mui.os.plus){
-				plus.io.resolveLocalFileSystemURL("_doc/head.jpg", function(entry) {
-					var s = entry.fullPath + "?version=" + new Date().getTime();;
-					document.getElementById("head-img").src = s;
-					document.getElementById("head-img1").src = s;
-				}, function(e) {
-					document.getElementById("head-img").src = '${ctxPath}/static/assets/phoneui/img/logo_head.png';
-					document.getElementById("head-img1").src = '${ctxPath}/static/assets/phoneui/img/logo_head.png';
-				})
-			}else{
-				document.getElementById("head-img").src = '${ctxPath}/static/assets/phoneui/img/logo_head.png';
-				document.getElementById("head-img1").src = '${ctxPath}/static/assets/phoneui/img/logo_head.png';
-			}
-			
-		}
-		
-		document.getElementById("head-img1").addEventListener('tap', function(e) {
-			e.stopPropagation();
-		});
+			    		});
+			          	
+			          	
+			          },
+			          'Error': function(up, err, errTip) {
+			        	  
+			          },
+			          Key:function(up, file) {
+			          	return jQuery.QiniuUUID().getKet(file);
+			          }
+			      }
+			      
+				 });
+		}); 
 		
 
 		 function listFormatter(columnDef, value){
@@ -528,6 +573,7 @@
 		     }
 		 jQuery(document).ready(function() {
 			 jQuery(".departmentname").html(listFormatter({id:"departments"},"${authenticationFn().userDto.departmentId}"));
+			 
 		 });
 		
 	

@@ -1,0 +1,65 @@
+package com.haihao.dto;
+
+public class ImMessageDto {
+	
+	private Long createdBy;
+	
+	private Long receiverBy;
+	
+	private String content;
+	
+	private String subject;
+	
+	private Long createdDate;
+	
+	private String cid;
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getReceiverBy() {
+		return receiverBy;
+	}
+
+	public void setReceiverBy(Long receiverBy) {
+		this.receiverBy = receiverBy;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public Long getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Long createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getCid() {
+		return cid;
+	}
+
+	public void setCid(String cid) {
+		this.cid = cid;
+	}
+
+}

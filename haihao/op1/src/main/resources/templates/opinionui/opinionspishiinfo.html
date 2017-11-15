@@ -191,7 +191,7 @@
 <nav class="mui-bar mui-bar-tab foot">
 
 	<% zhuanban = "no"; %>
-	<% if(opinionmodel.status >=2 && opinionmodel.toDoStatus < 5 ){ %>
+	<% if(opinionmodel.status >=2 && opinionmodel.toDoStatus < 5 && aclFn("opinion_add_zb")){ %>
 	  	<a class="mui-tab-item " id="zhuanban">
 	  		<span class="mui-icon mui-icon-redo"></span>
 	  		<p>发起转办</p>

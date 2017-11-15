@@ -1,5 +1,7 @@
 package com.haihao.model.security;
 
+import java.util.List;
+
 import com.haihao.beetl.ToolSqlXml;
 import com.haihao.model.BaseModel;
 import com.haihao.plugin.tablebind.TableBind;

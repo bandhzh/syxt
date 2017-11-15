@@ -619,26 +619,45 @@
 							var status = dataContext.status;//核实状态
 							var isVerify = dataContext.isVerify;//是否已经核实
 							var hasInstruction = dataContext.hasInstruction;//是否包含批示
-							if (isVerify < 0 && status < 1) {//未核实 并且 等待核实
-								_content.push(String.format("<a href='javascript:initVerify({0});'>{1}</a>&nbsp;&nbsp;", row, "提交核实"));
-							}
+							
+							
+							<% if(aclFn("new_add_verify")){ %>
+								if (isVerify < 0 && status < 1) {//未核实 并且 等待核实
+									_content.push(String.format("<a href='javascript:initVerify({0});'>{1}</a>&nbsp;&nbsp;", row, "提交核实"));
+								}
+							 <% }%>
+							 
 							if (status > 0) {//已经核实
 								_content.push(String.format("<a href='javascript:listVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看核实"));
 							}
 
 							var toDoStatus = dataContext.toDoStatus;//处理状态 
-							if (status >= 2 && toDoStatus < 5) { //已核实 ，并且待处理 或者处理中的
-								_content.push(String.format("<a href='javascript:initTodo({0});'>{1}</a>&nbsp;&nbsp;", row, "发起转办"));
-							}
+							<% if(aclFn("new_add_zb")){ %>
+								if (status >= 2 && toDoStatus < 5) { //已核实 ，并且待处理 或者处理中的
+									_content.push(String.format("<a href='javascript:initTodo({0});'>{1}</a>&nbsp;&nbsp;", row, "发起转办"));
+								}
+							<% }%>
 
+							
+							
 							if (toDoStatus >= 5) {//处理中或者处理完成 。无法处理，归档。
 								_content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看转办"));
 							}
-							_content.push(String.format("<a href='javascript:initInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "批示"));
-
+							
+							<% if(aclFn("user_instruction")){ %>
+								_content.push(String.format("<a href='javascript:initInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "批示"));
+							<% }%>
+							
+							
 							if (hasInstruction > 0) {//有批示
 								_content.push(String.format("<a href='javascript:listInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看批示"));
 							}
+							
+							<% if(aclFn("new_to_mashang")){ %>
+								_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "转到马上办"));
+							<% }%>
+							
+							
 							
 							_content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&nbsp;&nbsp;", row, "添加跟进人员"));
 							

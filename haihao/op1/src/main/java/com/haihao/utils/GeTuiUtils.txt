@@ -3,6 +3,8 @@ package com.haihao.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.json.JSON;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +16,9 @@ import com.gexin.rp.sdk.exceptions.RequestException;
 import com.gexin.rp.sdk.http.IGtPush;
 import com.gexin.rp.sdk.template.NotificationTemplate;
 import com.gexin.rp.sdk.template.style.Style0;
+import com.haihao.dto.ImMessageDto;
+import com.haihao.model.im.ImMessageModel;
+import com.haihao.tool.ToolString;
 
 public abstract class GeTuiUtils {
 
@@ -36,7 +41,21 @@ public abstract class GeTuiUtils {
 	 * @param cid
 	 * @param content
 	 */
-	public static void send(String cid, String content) {
+	public static void send(ImMessageDto imMessageDto) {
+		try{
+			ImMessageModel imMessageModel = new ImMessageModel();
+			imMessageModel.put(BeanUtils2.objectToMap(imMessageDto));
+			imMessageModel.save();
+			
+			if(ToolString.isEmptyString(imMessageDto.getCid())){
+				logger.info("不存在cid:" +com.alibaba.fastjson.JSON.toJSONString(imMessageDto));
+				return ;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
 		SingleMessage message = new SingleMessage();
 		NotificationTemplate template = new NotificationTemplate();
 		// 设置APPID与APPKEY
@@ -44,14 +63,14 @@ public abstract class GeTuiUtils {
 		template.setAppkey(appKey);
 		// 透传消息设置，1为强制启动应用，客户端接收到消息后就会立即启动应用；2为等待应用启动
 		template.setTransmissionType(1);
-		template.setTransmissionContent(content);
+		template.setTransmissionContent(imMessageDto.getContent());
 		// 设置定时展示时间
 		// template.setDuration("2015-01-16 11:40:00", "2015-01-16 12:24:00");
 
 		Style0 style = new Style0();
 		// 设置通知栏标题与内容
-		style.setTitle("系统选修");
-		style.setText(content);
+		style.setTitle(imMessageDto.getSubject());
+		style.setText(imMessageDto.getContent());
 		// 配置通知栏图标
 		style.setLogo("icon.png");
 		// 配置通知栏网络图标
@@ -65,7 +84,7 @@ public abstract class GeTuiUtils {
 
 		Target target = new Target();
 		target.setAppId(appId);
-		target.setClientId(cid);
+		target.setClientId(imMessageDto.getCid());
 
 		IPushResult ret = null;
 		try {

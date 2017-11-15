@@ -2,6 +2,7 @@ package com.haihao.model.security;
 
 import java.util.List;
 
+import com.haihao.beetl.ToolSqlXml;
 import com.haihao.model.BaseModel;
 import com.haihao.plugin.tablebind.TableBind;
 
@@ -17,5 +18,7 @@ public class DepartmentModel extends BaseModel<DepartmentModel> {
 		List<DepartmentManagerModel> find = DepartmentManagerModel.dao.find("select * from op_department_manager where deptId = ?",id);
 		return find;
 	}
+	
+	
 
 }

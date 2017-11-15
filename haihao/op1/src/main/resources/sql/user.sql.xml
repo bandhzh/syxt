@@ -28,6 +28,14 @@
 			select * from op_user where enable = 1;
 		]]>
 	</sql>
+	
+	
+	<sql id="selectAlluserbydepartmentId">
+		<![CDATA[ 
+			select * from op_user where enable = 1 and departmentId=${departmentId};
+		]]>
+	</sql>
+	
 
 	<sql id="selectHearder">
 		<![CDATA[ 

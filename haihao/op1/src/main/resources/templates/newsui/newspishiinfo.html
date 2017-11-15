@@ -188,11 +188,19 @@
 </div>
 <div class="heihead"></div>
 
+<!-- 
+	<% if(aclFn("opinion_add_zb")){ %>
+if (status >= 2 && toDoStatus < 5) {
+	_content.push(String.format("<a href='javascript:initTodo({0});'>{1}</a>&nbsp;&nbsp;", row, "发起转办"));
+}
+ <% }%>
+
+ -->
 
 <nav class="mui-bar mui-bar-tab foot">
 
 	<% zhuanban = "no"; %>
-	<% if(newsmodel.status >=2 && newsmodel.toDoStatus < 5 ){ %>
+	<% if(newsmodel.status >=2 && newsmodel.toDoStatus < 5 && aclFn("new_add_zb") ){ %>
 	  	<a class="mui-tab-item " id="zhuanban">
 	  		<span class="mui-icon mui-icon-redo"></span>
 	  		<p>发起转办</p>

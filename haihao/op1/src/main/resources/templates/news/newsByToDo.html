@@ -265,7 +265,7 @@
 										  }
 										  _content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"查看"))
 										 
-										  <% if(aclFn("opinion_finish_zb")){ %>
+										  <% if(aclFn("new_finish_zb")){ %>
 										  if(status < 6){
 											  _content.push(String.format("<a href='javascript:finishFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"处理完成"));
 											  _content.push(String.format("<a href='javascript:untTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;",row,"无法处理"));
@@ -378,7 +378,7 @@
 	function todo(id){
 		var _data = myDataView.getItemByIdx(id);
 		bootbox.prompt({
-		    title: "请输入核实内容",
+		    title: "请输入反馈内容",
 		    inputType: 'textarea',
 		    callback: function (result) {
 		    	if($.trim(result)){

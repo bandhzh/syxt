@@ -220,37 +220,56 @@
 <div class="heihead"></div>
 
 <!-- 
-if (isVerify < 0 && status < 1) {//未核实 并且 等待核实
+var status = dataContext.status;
+var isVerify = dataContext.isVerify;
+var hasInstruction = dataContext.hasInstruction;
+
+
+ <% if(aclFn("opinion_add_verify")){ %>
+if (isVerify < 0 && status < 1) {
 	_content.push(String.format("<a href='javascript:initVerify({0});'>{1}</a>&nbsp;&nbsp;", row, "提交核实"));
 }
-if (status > 0) {//已经核实
+ <% }%>
+
+if (status > 0) {
 	_content.push(String.format("<a href='javascript:listVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看核实"));
 }
 
-var toDoStatus = dataContext.toDoStatus;//处理状态 
-if (status >= 2 && toDoStatus < 5) { //已核实 ，并且待处理 或者处理中的
+var toDoStatus = dataContext.toDoStatus;
+
+ <% if(aclFn("opinion_add_zb")){ %>
+if (status >= 2 && toDoStatus < 5) {
 	_content.push(String.format("<a href='javascript:initTodo({0});'>{1}</a>&nbsp;&nbsp;", row, "发起转办"));
 }
+ <% }%>
 
-if (toDoStatus >= 5) {//处理中或者处理完成 。无法处理，归档。
+if (toDoStatus >= 5) {
 	_content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看转办"));
 }
-_content.push(String.format("<a href='javascript:initInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "批示"));
 
-if (hasInstruction > 0) {//有批示
+ <% if(aclFn("user_instruction")){ %>
+_content.push(String.format("<a href='javascript:initInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "批示"));
+ <% }%>
+
+if (hasInstruction > 0) {
 	_content.push(String.format("<a href='javascript:listInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看批示"));
 }
 
-_content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&nbsp;&nbsp;", row, "添加跟进人员"));
+<% if(aclFn("opinion_to_mashang")){ %>
+_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "转到马上办"));
+ <% }%>
+
+if(toDoStatus >= 5){
+	_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "完成"));
+}
 
  -->
 
 <nav class="mui-bar mui-bar-tab foot">
 
-
  
  	<% heshi = "no"; %>
-	<% if(newsmodel.isVerify < 0 && newsmodel.status < 1 && aclFn("opinion_verify")){ %>
+	<% if(newsmodel.isVerify < 0 && newsmodel.status < 1 && aclFn("new_add_verify")){ %>
 	    <a class="mui-tab-item" id="heshi">
 			<span class="mui-icon mui-icon-eye"></span>
 	  		<p>发起核实</p>
@@ -262,7 +281,7 @@ _content.push(String.format("<a href='javascript:addOpinionUsers({0});'>{1}</a>&
 	
 	
 	<% zhuanban = "no"; %>
-  	<% if(newsmodel.status >= 2 && newsmodel.toDoStatus < 5 && aclFn("opinion_query_zb")){ %>
+  	<% if(newsmodel.status >= 2 && newsmodel.toDoStatus < 5 && aclFn("new_add_zb")){ %>
 	  	<a class="mui-tab-item " id="zhuanban"><!-- 转到新界面进行转办操作 -->
 	  		<span class="mui-icon mui-icon-redo"></span>
 	  		<p>发起转办</p>

@@ -46,6 +46,13 @@
 .pishinews:after{
 	background-color:#ffffff;
 } */
+
+.mui-table-view-cell p{
+	padding-top: 8px;
+}
+.news  .mui-media-object{
+	max-height: 3rem;
+}
 </style>
 </head>
 
@@ -69,12 +76,12 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         </div>
         <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
 	       
-			<li class="mui-table-view-cell mui-collapse">
+			<!-- <li class="mui-table-view-cell mui-collapse">
 				<a class="mui-navigate-right" href="#">类别</a>
 				<div class="mui-collapse-content" id="typeid">
 					
 				</div>
-			</li>
+			</li> -->
 		
 	        <li class="mui-table-view-cell mui-collapse">
 				<a class="" href="${ctxPath}/news/addnews">我要发布</a>
@@ -89,14 +96,14 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         </ul>
       </div>
     </div>
-  </aside>
+  </aside> 
   <!--主界面部分-->
   <div class="mui-inner-wrap">
     <header class="mui-bar mui-bar-nav bgh">
     	<a class="mui-icon mui-icon-bars" href="#offCanvasSide"></a>
       	<h1 class="mui-title">新闻中心</h1>
       	<!-- <a class="mui-icon mui-icon-compose right"></a> -->
-      	<a href="${ctxPath}/phoneui/listopinionsblock" class="mui-icon mui-icon-settings right"></a>
+      	<a href="${ctxPath}/phoneui/listnewsblock" class="mui-icon mui-icon-settings right"></a>
      </header>
     <div class="heihead"></div>
     <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
@@ -104,7 +111,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         <div class="">
           <div class="content ">
           <div class="heihead"></div>
-            <div id="header">
+          <!--   <div id="header">
               <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
 	              	<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
 	              		<div class="swiper-slide "><a class="mui-control-item mui-active" href="#item1mobile"><small>公开新闻</small></a></div>
@@ -113,7 +120,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 		                <div class="swiper-slide"><a class="mui-control-item " href="#item4mobile"><small>新闻批示</small></a></div>
 	                </div>
               </div>
-            </div>
+            </div>-->
             <script type="text/javascript">
 				window.onload = function() {
 				  var mySwiper1 = new Swiper('#header',{
@@ -124,7 +131,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				  
 				  
 				}
-				</script>
+				</script> 
             <div class="mui-content">
 
 
@@ -152,7 +159,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				</div>
 				
 				<div id="item3mobile" class="mui-slider-item mui-control-content">
-					<ul class="mui-table-view zhuanbannews">
+					<ul class="mui-table-view news zhuanbannews">
 					<!-- 舆情转办 -->
 						
 
@@ -162,7 +169,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 				
 				
 				<div id="item4mobile" class="mui-slider-item mui-control-content">
-					<ul class="mui-table-view pishinews">
+					<ul class="mui-table-view news pishinews">
 						<!-- 舆情批示 -->
 
 					</ul>
@@ -184,23 +191,23 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
         </form>
         
       </div>
+		                
 		<nav class="mui-bar mui-bar-tab foot">
-			<a class="mui-tab-item mui-active" href="#"> 
-				
+			<a class="mui-tab-item mui-active" href="#item1mobile"> 
 				<span class="mui-icon mui-icon-home"></span>
-				<p>首页</p>
+				<p>公开新闻</p>
 			</a>
-			<a class="mui-tab-item" href="#offCanvasSide">
+			<a class="mui-tab-item" href="#item2mobile">
 				<span class="mui-icon mui-icon-bars"></span>
-				<p>分类</p>
+				<p>新闻核实</p>
 			</a>
-			<a class="mui-tab-item " href="#">
+			<a class="mui-tab-item " href="#item3mobile">
 				<span class="mui-icon mui-icon-search"></span>
-				<p>搜索</p>
+				<p>新闻转办</p>
 			</a>
-			<a class="mui-tab-item" href="${ctxPath}/phoneui/usercenter">
+			<a class="mui-tab-item" href="#item4mobile">
 				<span class="mui-icon mui-icon-person"></span>
-				<p>个人中心</p>
+				<p>新闻批示</p>
 			</a>
 		</nav>
 	</div>
@@ -279,10 +286,8 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 		 									+'<a href="${ctxPath}/phoneui/newsinfo?id={5}">'
 		 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
 		 									+'<div class="mui-media-body">'
-		 									+'	<p><small class="blue">{1}</small> &nbsp; <small class="grew"></small></p>'
-		 									+'	<p class="hei"></p>'
+		 									+'	<small class="blue">{1}</small> &nbsp; <small class="grew"></small>'
 		 									+'	<p>{2}</p>'
-		 									+'	<p class="hei"></p>'
 		 									+'	<p><font class="grew"></font>{4}&nbsp; &nbsp;{3}</p>'
 		 									+'</div>'
 		 									+'</a>'
@@ -337,7 +342,7 @@ function listFormatter(columnDef, value){
 			  return d.pattern("MM-dd HH:mm");
   }
 
-  function selectInitList(domId,initDataId,listId){
+ /*  function selectInitList(domId,initDataId,listId){
   	var _items = initData[initDataId];
   	$(domId).append(String.format('<p value="{0}">{1}</p>',"","全部"));
   	for(var i = 0;i < _items.length;i++){
@@ -346,10 +351,10 @@ function listFormatter(columnDef, value){
    			$(domId).append(String.format('<p value="{0}">{1}</p>',j["id"],j["label"]));
   		}
   	}
-  }
+  } */
   
   
-  selectInitList("#typeid", "lists", 1);
+  //selectInitList("#typeid", "lists", 1);
   
   
   
@@ -392,14 +397,14 @@ function listFormatter(columnDef, value){
   									+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
   									+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
   									+'<div class="mui-media-body">'
-  									+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
-  									+'	<p class="hei"></p>'
+  									+'	<small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small>'
   									+'	<p>'+listFormatter({id:"lists"},val.sourceid)+'</p>'
-  									+'	<p class="hei"></p>'
   									+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
   									+'</div>'
   									+'</a>'
   									+'</li>');
+  	  					
+  	  				
   	  					
   	  				});
   				}else{
@@ -447,10 +452,8 @@ function listFormatter(columnDef, value){
    								+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
    								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
    								+'<div class="mui-media-body">'
-   								+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
-   								+'	<p class="hei"></p>'
+   								+'	<small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small>'
    								+'	<p class="">'+listFormatter({id:"lists"},val.sourceid)+'</p>'
-   								+'	<p class="hei"></p>'
    								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
    								+'</div>'
    								+'</a>'
@@ -504,10 +507,8 @@ function listFormatter(columnDef, value){
    								+'<a href="${ctxPath}/phoneui/newsinfo?id='+val.id+'">'
    								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
    								+'<div class="mui-media-body">'
-   								+'	<p><small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small></p>'
-   								+'	<p class="hei"></p>'
+   								+'	<small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small>'
    								+'	<p class="">'+listFormatter({id:"lists"},val.sourceid)+'</p>'
-   								+'	<p class="hei"></p>'
    								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
    								+'</div>'
    								+'</a>'
@@ -526,15 +527,6 @@ function listFormatter(columnDef, value){
    		}
    	});
    	
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   
 </script>
