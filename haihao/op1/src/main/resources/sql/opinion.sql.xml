@@ -119,6 +119,15 @@
 	</sql>
 	
 	
+	<!-- 根据舆情id检索出提交核实的人员 -->
+	<sql id="selecttVerifybyopinionId">
+		<![CDATA[ 
+			select * from op_opinion_verify where opinionId = ${opinionId};
+		]]>
+	</sql>
+	
+	
+	
 	
 
 </sql-statement>

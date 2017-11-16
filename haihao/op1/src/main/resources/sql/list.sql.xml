@@ -26,6 +26,14 @@
 		]]>
 	</sql>
 
+	<!-- 根据接收者检索出所有的消息 -->
+	<sql id="selectAllmessagesbyuser">
+		<![CDATA[ 
+			select * from op_message where receiverBy = ${receiverBy} order by id desc;
+		]]>
+	</sql>
+	
+	
 	
 
 

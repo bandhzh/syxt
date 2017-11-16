@@ -88,10 +88,10 @@
   <!-- 舆情基本信息 -->
  	<div class="mui-card">
 		<div class="mui-card-header mui-card-media">
-			<img src="${ctxPath}/static/assets/phoneui/img/headc.png" />
+			<img id="disheadimg" src="${ctxPath}/static/assets/phoneui/img/headc.png" />
 			<div class="mui-media-body">
 				<b id="disname"></b>
-				<p><span class="mui-icon mui-icon-paperplane"></span>&nbsp;&nbsp;<small class="typeid"></small>&nbsp;&nbsp;<span class="mui-icon mui-icon-compose"></span>&nbsp;&nbsp;<small class="time"></small></p>
+				<p style="padding-top:2px;"><span class="mui-icon mui-icon-paperplane" style="font-size:19px;"></span>&nbsp;<small class="typeid"></small>&nbsp;&nbsp;<span class="mui-icon mui-icon-compose" style="font-size:19px;"></span>&nbsp;<small class="time"></small></p>
 			</div>
 			
 		</div>
@@ -213,7 +213,7 @@
 	
 	<% if(opinionmodel.status < 6 ){ %>
 	    <a class="mui-tab-item" id="fankui">
-	  		<span class="mui-icon mui-icon-compose"></span>
+	  		<span class="mui-icon mui-icon-chatbubble"></span>
 	  		<p>处理反馈</p>
 	  	</a>
 	  	<% fankui = "yes"; %>
@@ -227,12 +227,12 @@
 		  <%if(opinionmodel.status < 6){ %>
 		  
 		   <a class="mui-tab-item" id="finishFoller">
-		  		<span class="mui-icon mui-icon-compose"></span>
+		  		<span class="mui-icon mui-icon-locked"></span>
 		  		<p>处理完成</p>
 		  	</a>
 		  	
 		  	<a class="mui-tab-item" id="untTodoFoller">
-		  		<span class="mui-icon mui-icon-compose"></span>
+		  		<span class="mui-icon mui-icon-close"></span>
 		  		<p>无法处理</p>
 		  	</a>
 		   <% }%>
@@ -370,7 +370,7 @@
 			success : function(data) {
 				
 				$("#disname").html(data.data.displayName);
-				
+				$("#disheadimg").attr("src",data.data.headimgurl);
 			}
 
 		});

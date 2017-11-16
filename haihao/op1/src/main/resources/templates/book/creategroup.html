@@ -115,7 +115,7 @@
   	
   	
   	$(document).ready(function() {
-  		 var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[]};
+  		var datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[]};
   		var usercont="";
   		var indecont="";
   		$.ajax({
@@ -130,7 +130,7 @@
 				          +'<div class="mui-input-row mui-checkbox mui-left">'
 				          +'<label>'
 				          +'<a href="javascript:;">'
-				          +'<img class=" mui-pull-left tx2" src="${ctxPath}/static/assets/phoneui/img/headc.png">'
+				          +'<img class=" mui-pull-left tx2" src="'+val.headimgurl+'" style="width:66px;height:66px;">'
 				          +'<div class="mui-media-body pad2">'
 				          +' <p class="black num_name">'+val.displayName+'</p>'
 				          +' <p class="mui-ellipsis">-'+listFormatter({id:"departments"},val.departmentId)+'</p>'//<span class="mui-icon mui-icon-location"></span>&nbsp;&nbsp;&nbsp;<span class="mui-icon mui-icon-phone"></span>&nbsp;'+val.mobile+'

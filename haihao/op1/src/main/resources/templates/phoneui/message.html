@@ -4,199 +4,66 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 <title>消息中心</title>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-	<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
 	
 <link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/style.css">
+<script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/jquery.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/responsive.js" ></script>
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/swiper.min.js" ></script>
 
 <style>
-.btn {
-	position: absolute;
-	top: -0.5rem;
-	right: -80px;
-	height: 3rem;
-	text-align: center;
-	background: #F00 !important;
-	color: #fff;
-	width: 80px;
-	height: 100%;
-}
-.content .swiper-slide {
-	padding: 0 20px;
-	width: auto;
-}
-.swiper-slide {
-	color: #999
-}
+
 #header {
 	width: 100%;
 	overflow: hidden
 }
-.btn {
-	position: absolute;
-	top: 0;
-	right: -80px;
+
+.empty{
+	padding-top: 50%;
 	text-align: center;
-	background: #ffcb20;
-	color: #fff;
-	width: 80px;
-	display: -webkit-box;
-	-webkit-box-orient: horizontal;
-	-webkit-box-pack: center;
-	-webkit-box-align: center;
-	display: -moz-box;
-	-moz-box-orient: horizontal;
-	-moz-box-pack: center;
-	-moz-box-align: center;
-	display: -o-box;
-	-o-box-orient: horizontal;
-	-o-box-pack: center;
-	-o-box-align: center;
-	display: -ms-box;
-	-ms-box-orient: horizontal;
-	-ms-box-pack: center;
-	-ms-box-align: center;
-	display: box;
-	box-orient: horizontal;
-	box-pack: center;
-	box-align: center;
+	font-size: 18px;
+}
+.mui-ellipsis{
+	padding-top: 6px;
 }
 </style>
+
+<!-- 配置文件 -->
+<script src="${ctxPath}/static/assets/layouts/layout2/scripts/demo.js" type="text/javascript"></script>
+<script type="text/javascript">
+   var userInfo ;
+</script>
+
+
 </head>
 <body class="chat mbsc-fr-lock">
+
+<input type="text" id="initData" value='${initData!}'>
+<script type="text/javascript">
+var initData = {};
+if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
+</script>
+
+
 <header class="mui-bar mui-bar-nav bgh">
 	<a class="mui-icon mui-icon-back"></a>
   	<h1 class="mui-title">消息中心</h1>
-  <!-- <a class="mui-icon mui-icon-compose right"></a> -->
 </header>
-<div class="heihead"></div>
 <div class="content " >
   <div class="mui-content">
-    <div   id="header" >
-      <div class="swiper-wrapper">
-        <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-          <div class="swiper-slide"><small><a class="mui-control-item mui-active" href="#item1mobile"> 消息 </a></small></div>
-          <div class="swiper-slide"><small><a class="mui-control-item" href="#item2mobile"> 消息 </a></small></div>
-          <div class="swiper-slide"><small><a class="mui-control-item" href="#item3mobile"> 消息类型 </a></small></div>
-          <div class="swiper-slide"><small><a class="mui-control-item" href="#item4mobile"> 消息类型 </a></small></div>
-        </div>
-      </div>
-    </div>
-    <script type="text/javascript">
-	window.onload = function() {
-	  var mySwiper1 = new Swiper('#header',{
-		  freeMode : true,
-		  slidesPerView : 'auto',
-		  freeModeSticky : true ,
-	  });
-	  
-	  
-	}
-	</script>
+    
     <div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">FIRST TATT2222OO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
-            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
-            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">CAROLINE ROSS<small class="right grew">17 min ago</small></p>
-            <p class='mui-ellipsis'>Yes, I got! Thank you dear!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">CAROLINE ROSS<small class="right grew">17 min ago</small></p>
-            <p class='mui-ellipsis'>Yes, I got! Thank you dear!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-      </ul>
+      
     </div>
-    <div id="item2mobile" class="mui-slider-item mui-control-content">
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">FIRST TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
-            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
-            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-      </ul>
-    </div>
-    <div id="item3mobile" class="mui-slider-item mui-control-content">
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
-            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
-            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-      </ul>
-    </div>
-    <div id="item4mobile" class="mui-slider-item mui-control-content">
-      <ul class="mui-table-view">
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
-            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
-            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
-            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
-            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
-            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
-            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-        <li class="mui-table-view-cell mui-media"> <a href="javascript:;"> <img class="mui-media-object mui-pull-left" src="${ctxPath}/static/assets/phoneui/img/headc.png">
-          <div class="mui-media-body">
-            <p class="black">FIRS12T TATTOO &nbsp; &nbsp;<small class="grew">5 user</small><small class="right grew">17 min ago</small></p>
-            <p><font class="blue">Amelia Davis, Billy Wood</font> and <font class="blue">3 other</font></p>
-            <p class='mui-ellipsis'>On weekends I go to do the tattoo!</p>
-          </div>
-          </a>
-          <div class="btn mui-btn-danger">删除</div>
-        </li>
-      </ul>
-    </div>
+    
   </div>
 </div>
-</div>
+
 <script src="${ctxPath}/static/assets/phoneui/js/mui.min.js"></script> 
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/zepto.min.js"></script> 
 <script type="text/javascript" src="${ctxPath}/static/assets/phoneui/js/zepto.touchWipe.js"></script> 
@@ -206,11 +73,98 @@
 	});
 
   $(function() {
-  	$('.mui-table-view-cell').touchWipe({itemDelete: '.btn'});
+  	//$('.mui-table-view-cell').touchWipe({itemDelete: '.btn'});
   	
   	$(".mui-icon-back").click(function(){
   		mui.back()
-  	})
+  	});
+  	
+  	
+  	
+  	
+  	
+  	$(document).ready(function() {
+ 		
+		 function InitOpenNewsList(domId,initDataId){
+				var _items = initData[initDataId];
+				
+				if(_items.length==0){
+					$("#item1mobile").html('<div class="empty"><span class="mui-icon mui-icon-info"></span> 暂无消息！</div>');
+				}
+				
+				var lis ='';
+				for(var i = 0;i < _items.length;i++){
+					var j = _items[i];
+					lis += String.format('<li class="mui-table-view-cell mui-media"> <a href="{5}?id={6}"> <img class="mui-media-object mui-pull-left" src="{0}">'
+							+'<div class="mui-media-body">'
+							+'   <p class="black">{1}&nbsp; &nbsp;<small class="grew">{4}</small><small class="right grew">{2}</small></p>'
+							+'   <p class="mui-ellipsis">{3}</p>'
+							+' </div>'
+							+' </a>'
+							+'</li>',getuserimgbyuid(j["createdBy"]),j["subject"],dateFormatter(j["createdDate"]),j["content"],getdisplaynamebyuid(j["createdBy"]),j["inmodule"],j["moduleid"]);
+					
+					$(domId).html('<ul class="mui-table-view">'+lis+'</ul>');
+					
+				}
+				
+			}
+			
+			InitOpenNewsList("#item1mobile", "listmessages");
+			
+			
+			 function dateFormatter(value){
+				  var d = new Date();
+				  d.setTime(value);
+				  return d.pattern("MM-dd HH:mm");
+	  		}
+			 
+			 
+			 function getuserimgbyuid(value){//根据用户id检索出当前用户头像
+			    	var name='';
+					//异步获取
+					$.ajax({
+					url : 'ajaxgetusernamebyid',
+					type : "post",
+					data :{userid:value},
+					dataType: "json",
+					async: false,
+					success : function(data) {
+						name=data.data.headimgurl;
+						
+					}
+
+					});
+					return name;
+			    	
+			    }
+			 
+			 
+			 function getdisplaynamebyuid(value){//根据用户id检索出当前用户昵称
+			    	var name='';
+					//异步获取
+					$.ajax({
+					url : 'ajaxgetusernamebyid',
+					type : "post",
+					data :{userid:value},
+					dataType: "json",
+					async: false,
+					success : function(data) {
+						name=data.data.displayName;
+						
+					}
+
+					});
+					return name;
+			    	
+			    }
+			 
+			
+	});
+  	
+  	
+  	
+  	
+  	
   	
   });
  

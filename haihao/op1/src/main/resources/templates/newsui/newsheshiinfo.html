@@ -88,16 +88,16 @@
   <!-- 舆情基本信息 -->
  	<div class="mui-card">
 		<div class="mui-card-header mui-card-media">
-			<img src="${ctxPath}/static/assets/phoneui/img/headc.png" />
+			<img id="disheadimg" src="${ctxPath}/static/assets/phoneui/img/headc.png" />
 			<div class="mui-media-body">
 				<b id="disname"></b>
-				<p><span class="mui-icon mui-icon-paperplane"></span>&nbsp;&nbsp;<small class="typeid"></small>&nbsp;&nbsp;<span class="mui-icon mui-icon-compose"></span> <small class="time"></small></p>
+				<p style="padding-top:2px;"><span class="mui-icon mui-icon-paperplane" style="font-size:19px;"></span>&nbsp;<small class="typeid"></small>&nbsp;&nbsp;<span class="mui-icon mui-icon-compose" style="font-size:19px;"></span>&nbsp;<small class="time"></small></p>
 			</div>
 			
 		</div>
 		<div class="mui-card-content" >
 			<div class="mui-card-content-inner">
-				<p style="color: #333;">${newsmodel.content}</p>
+				<p style="color: #333;">${newsmodel.cont}</p>
 			</div>
 		</div>
 	</div>
@@ -245,13 +245,8 @@ if(toDoStatus >= 5){
 	<% if(newsmodel.status < 2 ){ %>
 	    
 	    <a class="mui-tab-item" id="fankui">
-	  		<span class="mui-icon mui-icon-compose"></span>
+	  		<span class="mui-icon mui-icon-chatbubble"></span>
 	  		<p>核实反馈</p>
-	  	</a>
-	  	
-	    <a class="mui-tab-item" id="heshi">
-			<span class="mui-icon mui-icon-eye"></span>
-	  		<p>核实完毕</p>
 	  	</a>
 		 
 	  	<% heshi = "yes"; %>
@@ -301,7 +296,7 @@ if(toDoStatus >= 5){
 				document.getElementById("fankui").addEventListener('tap', function(e) {
 					e.detail.gesture.preventDefault();
 					var btnArray = ['确定', '取消'];
-					mui.prompt('反馈舆情核实情况：', '', '助手', btnArray, function(e) {
+					mui.prompt('反馈新闻核实情况：', '', '助手', btnArray, function(e) {
 						if (e.index == 0) {//确定
 							
 							if(jQuery.trim(e.value).length==0){
@@ -380,6 +375,7 @@ if(toDoStatus >= 5){
 			success : function(data) {
 				
 				$("#disname").html(data.data.displayName);
+				$("#disheadimg").attr("src",data.data.headimgurl);
 				
 			}
 

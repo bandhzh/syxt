@@ -13,7 +13,13 @@ public class ImMessageDto {
 	private Long createdDate;
 	
 	private String cid;
-
+	
+	private String isread;
+	
+	private String inmodule; //所属模块
+	
+	private Long moduleid; //模块主体id
+	
 	public Long getCreatedBy() {
 		return createdBy;
 	}
@@ -62,4 +68,29 @@ public class ImMessageDto {
 		this.cid = cid;
 	}
 
+	public String getIsread() {
+		return isread;
+	}
+
+	public void setIsread(String isread) {
+		this.isread = isread;
+	}
+
+	public String getInmodule() {
+		return inmodule;
+	}
+
+	public void setInmodule(String inmodule) {
+		this.inmodule = inmodule;
+	}
+
+	public Long getModuleid() {
+		return moduleid;
+	}
+
+	public void setModuleid(Long moduleid) {
+		this.moduleid = moduleid;
+	}
+
+	
 }

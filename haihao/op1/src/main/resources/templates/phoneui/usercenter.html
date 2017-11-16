@@ -90,6 +90,12 @@
 			background: -webkit-gradient(linear, 0 0, 0 bottom, from(#f6f9f9), to(#d3d3d4));
 		}
 		
+		.banner{
+		    text-align: center;
+		    padding-top: 15%;
+		    padding-bottom: 15%;
+		    box-shadow: 7px 1px 39px #c3bdbd;
+		}
 	</style>
 </head>
 <body class="home">
@@ -109,7 +115,7 @@
 	<div class="heihead"></div>
 	<div class="mui-content">
 		<div class="banner">
-			<img src="${ctxPath}/static/assets/phoneui/img/user_06.png" width="100%" style="box-shadow:7px 1px 39px #c3bdbd;" />
+			<img src="${authenticationFn().userDto.headimgurl}" width="100%" style="box-shadow:7px 1px 39px #c3bdbd;border-radius:80px;max-width: 150px;max-height: 150px;" />
 		</div>
 		<div class="mui-text-center u-text pad">
 			<h1 class="font-avenir departmentname" style="color: #536a78; padding: .4rem 0"></h1>

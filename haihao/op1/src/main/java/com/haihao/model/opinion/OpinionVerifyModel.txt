@@ -8,5 +8,8 @@ import com.haihao.plugin.tablebind.TableBind;
 public class OpinionVerifyModel extends BaseModel<OpinionVerifyModel> {
 
 	private static final long serialVersionUID = -1658354762004192287L;
+	
+	public static OpinionVerifyModel dao = new OpinionVerifyModel().dao();
+	
 
 }

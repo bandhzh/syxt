@@ -8,5 +8,6 @@ import com.haihao.plugin.tablebind.TableBind;
 public class OpinionToDoFollowModel extends BaseModel<OpinionToDoFollowModel> {
 
 	private static final long serialVersionUID = -1658354762004192287L;
+	public static OpinionToDoFollowModel dao = new OpinionToDoFollowModel().dao();
 
 }

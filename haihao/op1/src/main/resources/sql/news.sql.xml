@@ -106,5 +106,13 @@
 		]]>
 	</sql>
 	
+	
+	<!-- 根据舆情id检索出提交核实人 -->
+	<sql id="selectVerifybynewsId">
+		<![CDATA[ 
+			select * from op_news_verify where newsId = ${newsId};
+		]]>
+	</sql>
+	
 
 </sql-statement>

@@ -1,6 +1,7 @@
 package com.haihao.model.news;
 
 import com.haihao.model.BaseModel;
+import com.haihao.model.opinion.OpinionVerifyModel;
 import com.haihao.plugin.tablebind.TableBind;
 
 
@@ -12,7 +13,7 @@ public class NewsVerifyModel extends  BaseModel<NewsVerifyModel>{
 	 */
 	private static final long serialVersionUID = -2635911835727163446L;
 	
-	
+	public static NewsVerifyModel dao = new NewsVerifyModel().dao();
 	
 
 }

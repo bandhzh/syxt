@@ -10,5 +10,9 @@ public class ImMessageModel extends BaseModel<ImMessageModel> {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	
+	
+	public static ImMessageModel dao = new ImMessageModel().dao();
 
 }

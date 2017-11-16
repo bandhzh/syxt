@@ -78,7 +78,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 						</div>
 					</a>
 				</li>
-				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<!-- <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 					<a href="#">
 						<p>
 							<img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%">
@@ -90,7 +90,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 							</p>
 						</div>
 					</a>
-				</li>
+				</li> -->
 				
 				
 				
@@ -117,7 +117,7 @@ mui.init({
 function plusReady(){
        mui(".addrenyuan").on("tap","a",function(){   
           mui.openWindow({
-              url:httpurl+"/book/toeditgroup", //120.26.62.100
+              url:httpurl+"/book/toeditgroup", 
               id:"b"
           })   
        })   
@@ -148,7 +148,7 @@ function plusReady(){
 					$("#nowli"+uid).remove();
  					mui.toast("删除成功！");
 				} else {
-					mui.toast("点了取消！");
+					mui.toast("你已取消！");
 				}
 			})
 		});		
@@ -162,8 +162,8 @@ function plusReady(){
   
   
   
-  //自定义窗体事件  doit 要和b页面定义的 事件名称一致   
-  window.addEventListener('doit',fun1);   
+ //自定义窗体事件  doit 要和b页面定义的 事件名称一致   
+ window.addEventListener('doit',fun1);   
 
 
 $(document).ready(function() {
@@ -173,38 +173,38 @@ $(document).ready(function() {
 	 function InitOpenNewsList(domId,initDataId){
 			var _items = initData[initDataId];
 			if(_items.length==0){
-				$("#nowing").html('<div class="empty">暂无相关数据</div>');
+				$("#listchengyuans").html('<div class="empty">暂无成员</div>');
 			}
 			
 			for(var i = 0;i < _items.length;i++){
 				var j = _items[i];
 				$(domId).append(
-	 					String.format('<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="rli{2}">'
+	 					String.format('<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="rli{1}">'
 	 							+'<a href="#">'
 	 							+'<p>'
-	 							+'	<img src="${ctxPath}/static/assets/phoneui/img/head.png" width="70%">'
+	 							+'	<img src="{2}" style="max-height:55px;min-width:60px;">'
 	 							+'</p>'
 	 							+'<div class="mui-media-body">'
 	 							+'	<small>{0}</small>'
 	 							+'	<p>'
-	 							+'		<small class="cancel_users" alt={1}>移除</small>'
+	 							/* +'		<small class="cancel_users" alt={1}>移除</small>'j["id"] */
 	 							+'	</p>'
 	 							+'	</div>'
 	 							+'</a>'
-	 							+'</li>',getnamebyuserid(j["userid"]),j["id"],j["id"]));
+	 							+'</li>',getnamebyuserid(j["userid"]),j["id"],getimgbyuserid(j["userid"])));
 				
 				}
 			
 			
 
-			mui('p').on('tap', '.cancel_users', function(event) {
+			/* mui('p').on('tap', '.cancel_users', function(event) {
 		    	var uid = $(this).attr("alt");
 		    	
 				var btnArray = ['是', '否'];
 				mui.confirm('是否删除该成员？', '一把手助手', btnArray, function(e) {
 					if (e.index == 0) {
 						 $.ajax({
-				     			url : "${ctxPath}/phoneui/ajaxdeletechengyuan",//取消报料
+				     			url : "${ctxPath}/phoneui/ajaxdeletechengyuan",
 				     			type : "post",
 				     			data : {uid:uid},
 				     			dataType:"json",
@@ -218,10 +218,10 @@ $(document).ready(function() {
 				     			}
 				     		});
 					} else {
-						mui.toast("点了取消！");
+						mui.toast("你已取消！");
 					}
 				})
-			});				
+			});			 */	
 			
 			
 			
@@ -246,6 +246,25 @@ $(document).ready(function() {
 			async: false,
 			success : function(data) {
 				name=data.data.displayName;
+				
+			}
+	
+			});
+			return name;
+	    	
+	    }
+		
+		function getimgbyuserid(value){
+			var name='';
+			//异步获取
+			$.ajax({
+			url : 'ajaxgetusernamebyid',
+			type : "post",
+			data :{userid:value},
+			dataType: "json",
+			async: false,
+			success : function(data) {
+				name=data.data.headimgurl;
 				
 			}
 	

@@ -42,6 +42,7 @@ import com.haihao.model.baoliao.AccessUserInfo;
 import com.haihao.model.baoliao.BaoliaoModel;
 import com.haihao.model.group.MSTaoLunZu;
 import com.haihao.model.group.MSTaoLunZuUsers;
+import com.haihao.model.im.ImMessageModel;
 import com.haihao.model.im.ImService;
 import com.haihao.model.mashang.MaShangeModel;
 import com.haihao.model.news.NewsModel;
@@ -920,6 +921,16 @@ public class PhoneController extends BaseController{
 	 */
 	@RequestMapping(value = { "/message"})
 	public String message(Map<String, Object> model) {
+		
+		
+		
+		//根据当前登录用户进行检索消息列表
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("receiverBy", ToolSecurity.getUserId());
+		List<Record> listmessages = Db.find(ToolSqlXml.getSql("com.list.selectAllmessagesbyuser",map));//处理中
+		map.put("listmessages", ToolModel.recordListConvert(listmessages));
+		
+		model.put("initData", JSON.toJSONString(map));
 		
 		
 		return "phoneui/message";

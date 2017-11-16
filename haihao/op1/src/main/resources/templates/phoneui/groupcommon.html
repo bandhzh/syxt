@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title>${zuname}交流中心</title>
+<title>${zuname}-交流中心</title>
 <!--  --><link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
@@ -282,6 +282,9 @@ function onMsg(msg) {
     		}
     	}
     }else if(msg.scene == "team"){//群聊
+    	
+    	alert("000");
+    	
     	 for(var i = 0,j;j = initData.users[i++];){
      		if(j.imAccountId == msg.from){
      			var _data = new Date();
@@ -361,7 +364,7 @@ function onSyncDone() {
 <body class="msgbox mbsc-fr-lock">
 <header class="mui-bar mui-bar-nav ">
 	<a class="mui-icon mui-icon-back"></a>
-  	<h1 class="mui-title">${zuname}交流中心</h1>
+  	<h1 class="mui-title">${zuname} — 交流中心</h1>
   	<a class="mui-icon mui-icon-person right" alt="${tlzid}"></a>
 </header>
 <div class="heihead"></div>
@@ -411,55 +414,10 @@ function onSyncDone() {
     <a href="#"><span class="mui-icon mui-icon-image" ></span><!--  <i>IMAGE</i> --></a> </div>
 </div>
 
-<!-- <input type="button" id="okByImg" style="display: none;"/>    -->
-   
 
-<!-- 测试数据 -->
 <input type="hidden" id="initData" value='${initData}' />
 
 <input type="hidden" id="groupSelect" value='${createTeam}' />
-
-
-
-<!-- 选择选择一个群<select  id="groupSelect"></select> -->
-<!-- 群聊发送<input id="sendTextGroup" style="width: 160px" />
-<input type="button" id="okGroup" value="发送群消息" /> 
-
-<input type="button" id="randomSysMsg" value="发送随机历史消息" />    
-
-
-<br/>
-聊天消息
-<div id="result">
-
-</div>
-历史消息
-<div id="hisMsg">
-
-</div>
-<br/>
-系统通知
-<div id="sysAlert">
-
-</div>
-<br/>
-群消息
- <div id="Groupresult">
-
-</div>
-
-<br/>
-群成初始化返回
-<div id="GroupresultMember">
-
-</div> -->
-
-
-
-
-
-
-
 
 <script type="text/javascript">
 
@@ -744,7 +702,7 @@ $(document).ready(function(){
 		    	
 	                $('html, body').animate({  
 	                    scrollTop: $("#chat-messages").height()
-	                }, 1000);  
+	                }, 1000);
 	                
 		    	
 		    	
@@ -756,7 +714,7 @@ $(document).ready(function(){
 	
 	
 	//初始化加载查看群历史消息
-	$("#hisGroup").bind("click",function(){
+	//$("#hisGroup").bind("click",function(){
 		
 		setTimeout(function() {
 			nim.getHistoryMsgs({
@@ -773,7 +731,7 @@ $(document).ready(function(){
 			    				if(jj.imAccountId == j.from){
 			    					j.displayName = jj.displayName;
 			    					
-			    					$("#chat-messages").append(String.format('<div class="message"><img src="${ctxPath}/static/assets/phoneui/img/headc.png"><div class="bubble"><p>{0}</p><div class="corner"></div></div></div>',msg.text));
+			    					$("#chat-messages").prepend(String.format('<div class="message"><img src="${ctxPath}/static/assets/phoneui/img/headc.png"><div class="bubble"><p>{0}</p><div class="corner"></div></div></div>',msg.text));
 			    					
 					         		//$("#chat-messages").append(String.format("<div>from:{0},time:{1}<br/>{2}</div>",j.displayName,_data.pattern("yyyy-MM-dd HH:mm:ss"),msg.text));
 					         		break;
@@ -788,7 +746,7 @@ $(document).ready(function(){
 			});
 		}, 500);	
 		
-	});
+	//});
 	
 	
 	

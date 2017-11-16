@@ -178,6 +178,11 @@ public class OpinionController extends BaseController {
 						imMessageDto.setReceiverBy(userModel.getLong("id"));
 						imMessageDto.setSubject("舆情核实");
 						imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+						imMessageDto.setInmodule("opinionsheshiinfo");
+						imMessageDto.setModuleid(Long.parseLong(id.toString()));
+						imMessageDto.setIsread("N");
+						
+						
 						GeTuiUtils.send(imMessageDto);
 					}
 				}
@@ -246,13 +251,13 @@ public class OpinionController extends BaseController {
 				
 				
 				
-				//将反馈的消息推送给转办人 根据舆情id检索出转办表
+				//将反馈的消息推送给提交核实的人
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("opinionId", model.get("opinionId"));
-				List<OpinionToDoModel> listtodos = OpinionToDoModel.dao.find(ToolSqlXml.getSql("com.opinion.selecttodobyopinionId", map));
+				List<OpinionVerifyModel> listtodos = OpinionVerifyModel.dao.find(ToolSqlXml.getSql("com.opinion.selecttVerifybyopinionId", map));
 				
 				//获取当前舆情的转办者
-				UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy")));
+				UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy").toString()));
 				
 				if(null != userModel){
 					ImMessageDto imMessageDto = new ImMessageDto();
@@ -262,6 +267,10 @@ public class OpinionController extends BaseController {
 					imMessageDto.setReceiverBy(userModel.getLong("id"));
 					imMessageDto.setSubject("舆情核实反馈");
 					imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+					imMessageDto.setInmodule("opinionsinfo");
+					imMessageDto.setModuleid(model.get("opinionId"));
+					imMessageDto.setIsread("N");
+					
 					GeTuiUtils.send(imMessageDto);
 				}
 				
@@ -289,6 +298,11 @@ public class OpinionController extends BaseController {
 		return resultDto;
 	}
 
+	/**
+	 * 核实反馈--完成核实
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/finishVerifyFollerOpinion/{id}")
 	@ResponseBody
 	public ResultDto finishVerifyFollerOpinion(@PathVariable Long id) {
@@ -301,10 +315,10 @@ public class OpinionController extends BaseController {
 		//将反馈的消息推送给转办人 根据舆情id检索出转办表
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("opinionId", id);
-		List<OpinionToDoModel> listtodos = OpinionToDoModel.dao.find(ToolSqlXml.getSql("com.opinion.selecttodobyopinionId", map));
+		List<OpinionVerifyModel> listtodos = OpinionVerifyModel.dao.find(ToolSqlXml.getSql("com.opinion.selecttVerifybyopinionId", map));
 		
 		//获取当前舆情的转办者
-		UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy")));
+		UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy").toString()));
 		
 		if(null != userModel){
 			ImMessageDto imMessageDto = new ImMessageDto();
@@ -314,6 +328,11 @@ public class OpinionController extends BaseController {
 			imMessageDto.setReceiverBy(userModel.getLong("id"));
 			imMessageDto.setSubject("舆情核实反馈");
 			imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+			
+			imMessageDto.setInmodule("opinionsinfo");
+			imMessageDto.setModuleid(id);
+			imMessageDto.setIsread("N");
+			
 			GeTuiUtils.send(imMessageDto);
 		}
 		
@@ -325,6 +344,11 @@ public class OpinionController extends BaseController {
 		return resultDto;
 	}
 
+	/**
+	 * 提交转办
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/toDoOpinion")
 	@ResponseBody
 	public ResultDto toDoOpinion(HttpServletRequest request) {
@@ -378,6 +402,10 @@ public class OpinionController extends BaseController {
 								imMessageDto.setReceiverBy(userModel.getLong("id"));
 								imMessageDto.setSubject("舆情转办");
 								imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+								imMessageDto.setInmodule("opinionszhuanbaninfo");
+								imMessageDto.setModuleid(Long.parseLong(opinionToDoModelOpinionId.toString()));
+								imMessageDto.setIsread("N");
+								
 								GeTuiUtils.send(imMessageDto);
 							}
 						}
@@ -412,6 +440,10 @@ public class OpinionController extends BaseController {
 								imMessageDto.setReceiverBy(userModel.getLong("id"));
 								imMessageDto.setSubject("舆情转办");
 								imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+								imMessageDto.setInmodule("opinionszhuanbaninfo");
+								imMessageDto.setModuleid(Long.parseLong(opinionToDoModelOpinionId.toString()));
+								imMessageDto.setIsread("N");
+								
 								GeTuiUtils.send(imMessageDto);
 							}
 						}
@@ -465,7 +497,7 @@ public class OpinionController extends BaseController {
 	}
 
 	/**
-	 * 提交反馈
+	 * 转办 --提交反馈
 	 * @param request
 	 * @return
 	 */
@@ -492,7 +524,7 @@ public class OpinionController extends BaseController {
 				List<OpinionToDoModel> listtodos = OpinionToDoModel.dao.find(ToolSqlXml.getSql("com.opinion.selecttodobyopinionId", map));
 				
 				//获取当前舆情的转办者
-				UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy")));
+				UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy").toString()));
 				
 				if(null != userModel){
 					ImMessageDto imMessageDto = new ImMessageDto();
@@ -502,6 +534,10 @@ public class OpinionController extends BaseController {
 					imMessageDto.setReceiverBy(userModel.getLong("id"));
 					imMessageDto.setSubject("舆情反馈");
 					imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+					imMessageDto.setInmodule("opinionsinfo");
+					imMessageDto.setModuleid(model.get("opinionId"));
+					imMessageDto.setIsread("N");
+					
 					GeTuiUtils.send(imMessageDto);
 				}
 				
@@ -524,6 +560,11 @@ public class OpinionController extends BaseController {
 		return resultDto;
 	}
 
+	/**
+	 * 转办 --- 处理完成
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/finishTodoFoller/{id}")
 	@ResponseBody
 	public ResultDto finishTodoFoller(@PathVariable Long id) {
@@ -540,7 +581,7 @@ public class OpinionController extends BaseController {
 		List<OpinionToDoModel> listtodos = OpinionToDoModel.dao.find(ToolSqlXml.getSql("com.opinion.selecttodobyopinionId", map));
 		
 		//获取当前舆情的转办者
-		UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy")));
+		UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy").toString()));
 		
 		if(null != userModel){
 			ImMessageDto imMessageDto = new ImMessageDto();
@@ -550,6 +591,10 @@ public class OpinionController extends BaseController {
 			imMessageDto.setReceiverBy(userModel.getLong("id"));
 			imMessageDto.setSubject("处理完成反馈");
 			imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+			imMessageDto.setInmodule("opinionsinfo");
+			imMessageDto.setModuleid(id);
+			imMessageDto.setIsread("N");
+			
 			GeTuiUtils.send(imMessageDto);
 		}
 		
@@ -560,6 +605,11 @@ public class OpinionController extends BaseController {
 		return resultDto;
 	}
 
+	/**
+	 * 转办--无法处理
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/untTodoFollerOpinion/{id}")
 	@ResponseBody
 	public ResultDto untTodoFollerOpinion(@PathVariable Long id) {
@@ -575,7 +625,7 @@ public class OpinionController extends BaseController {
 		List<OpinionToDoModel> listtodos = OpinionToDoModel.dao.find(ToolSqlXml.getSql("com.opinion.selecttodobyopinionId", map));
 		
 		//获取当前舆情的转办者
-		UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy")));
+		UserModel userModel = UserModel.dao.findById(Integer.parseInt(listtodos.get(0).get("createdBy").toString()));
 		
 		if(null != userModel){
 			ImMessageDto imMessageDto = new ImMessageDto();
@@ -585,6 +635,10 @@ public class OpinionController extends BaseController {
 			imMessageDto.setReceiverBy(userModel.getLong("id"));
 			imMessageDto.setSubject("无法处理反馈");
 			imMessageDto.setCid(ToolString.toString(userModel.get("gtCientid")));
+			imMessageDto.setInmodule("opinionsinfo");
+			imMessageDto.setModuleid(id);
+			imMessageDto.setIsread("N");
+			
 			GeTuiUtils.send(imMessageDto);
 		}
 		
