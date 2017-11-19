@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>新闻中心-列表展示</title>
+<title>新闻中心</title>
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -194,21 +194,22 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 		                
 		<nav class="mui-bar mui-bar-tab foot">
 			<a class="mui-tab-item mui-active" href="#item1mobile"> 
-				<span class="mui-icon-extra mui-icon-extra-order"></span>
-				<p>公开新闻</p>
-			</a>
-			<a class="mui-tab-item" href="#item2mobile">
-				<span class="mui-icon-extra mui-icon-extra-outline" style="font-weight:800;"></span>
-				<p>新闻核实</p>
-			</a>
-			<a class="mui-tab-item " href="#item3mobile">
-				<span class="mui-icon-extra mui-icon-extra-share"></span>
-				<p>新闻转办</p>
+				<span class="mui-icon-extra mui-icon-extra-class"></span>
+				<p>新闻首页</p>
 			</a>
 			<a class="mui-tab-item" href="#item4mobile">
 				<span class="mui-icon-extra mui-icon-extra-topic"></span>
-				<p>新闻批示</p>
+				<p>查看批示</p>
 			</a>
+			<a class="mui-tab-item" href="#item2mobile">
+				<span class="mui-icon-extra mui-icon-extra-outline" style="font-weight:800;"></span>
+				<p>核实处理</p>
+			</a>
+			<a class="mui-tab-item " href="#item3mobile">
+				<span class="mui-icon-extra mui-icon-extra-share"></span>
+				<p>转办处理</p>
+			</a>
+			
 		</nav>
 	</div>
     <!-- off-canvas backdrop -->
@@ -230,10 +231,11 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 });
   
   
-  
   jQuery(".departmentname").html(listFormatter({id:"departments"},"${authenticationFn().userDto.departmentId}"));
   
   function InitOpenNewsList(domId,initDataId){
+	  
+	  
 		$(".wangluonews").html("");
 		var _items = initData[initDataId];
 		
@@ -287,7 +289,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 		 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
 		 									+'<div class="mui-media-body">'
 		 									+'	<small class="blue">{1}</small> &nbsp; <small class="grew"></small>'
-		 									+'	<p>{2}</p>'
+		 									+'	<p>来源：{2}</p>'
 		 									+'	<p><font class="grew"></font>{4}&nbsp; &nbsp;{3}</p>'
 		 									+'</div>'
 		 									+'</a>'
@@ -398,7 +400,7 @@ function listFormatter(columnDef, value){
   									+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
   									+'<div class="mui-media-body">'
   									+'	<small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small>'
-  									+'	<p>'+listFormatter({id:"lists"},val.sourceid)+'</p>'
+  									+'	<p>来源：'+listFormatter({id:"lists"},val.sourceid)+'</p>'
   									+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
   									+'</div>'
   									+'</a>'
@@ -453,7 +455,7 @@ function listFormatter(columnDef, value){
    								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
    								+'<div class="mui-media-body">'
    								+'	<small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small>'
-   								+'	<p class="">'+listFormatter({id:"lists"},val.sourceid)+'</p>'
+   								+'	<p>来源：'+listFormatter({id:"lists"},val.sourceid)+'</p>'
    								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
    								+'</div>'
    								+'</a>'
@@ -508,7 +510,7 @@ function listFormatter(columnDef, value){
    								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
    								+'<div class="mui-media-body">'
    								+'	<small class="blue">'+val.title+'</small> &nbsp; <small class="grew"></small>'
-   								+'	<p class="">'+listFormatter({id:"lists"},val.sourceid)+'</p>'
+   								+'	<p>来源：'+listFormatter({id:"lists"},val.sourceid)+'</p>'
    								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
    								+'</div>'
    								+'</a>'

@@ -26,6 +26,13 @@
 .mui-media-body .mui-icon-navigate{
 	font-size: 16px;
 }
+
+.mui-card-header{
+	font-size: 14px;
+}
+.mui-card-content-inner p{
+	font-size: 13px;
+}
 </style>
 </head>
 <body class="info mbsc-fr-lock">
@@ -75,7 +82,7 @@
 <header class="mui-bar mui-bar-nav " style="background: #000;">
 	<a class="mui-icon mui-icon-back"></a>
    	<h1 class="mui-title">${newsmodel.title}</h1>
-    <a href="${ctxPath}/phoneui/usercenter" class="mui-icon mui-icon-person right"></a>
+    <a href="${ctxPath}/phoneui/usercenter" class="mui-icon mui-icon-home right"></a>
 </header>
 
 <div class="heihead"></div>
@@ -107,7 +114,7 @@
 		
 	<% if(newsmodel.hasInstruction > 0){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">批示详情</div>
+		<div class="mui-card-header">【批示】</div>
 		<div class="mui-card-content pishilist">
 			
 			
@@ -120,7 +127,7 @@
 	
 	<% if(newsmodel.status > 0){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">核实状态</div>
+		<div class="mui-card-header">【核实】</div>
 		<div class="mui-card-content heshilist" >
 			<div class="mui-card-content-inner"><p>
 				
@@ -154,7 +161,7 @@
 	
 	<% if(newsmodel.toDoStatus >= 5){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">处理详情</div>
+		<div class="mui-card-header">【处理】</div>
 		<div class="mui-card-content zhuanbanlist">
 			
 			
@@ -192,52 +199,6 @@
   </div>
 </div>
 <div class="heihead"></div>
-
-<!-- 
-var status = dataContext.status;
-var isVerify = dataContext.isVerify;
-var hasInstruction = dataContext.hasInstruction;
-
-
- <% if(aclFn("opinion_add_verify")){ %>
-if (isVerify < 0 && status < 1) {
-	_content.push(String.format("<a href='javascript:initVerify({0});'>{1}</a>&nbsp;&nbsp;", row, "提交核实"));
-}
- <% }%>
-
-if (status > 0) {
-	_content.push(String.format("<a href='javascript:listVerifyFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看核实"));
-}
-
-var toDoStatus = dataContext.toDoStatus;
-
- <% if(aclFn("opinion_add_zb")){ %>
-if (status >= 2 && toDoStatus < 5) {
-	_content.push(String.format("<a href='javascript:initTodo({0});'>{1}</a>&nbsp;&nbsp;", row, "发起转办"));
-}
- <% }%>
-
-if (toDoStatus >= 5) {
-	_content.push(String.format("<a href='javascript:listTodoFollerOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看转办"));
-}
-
- <% if(aclFn("user_instruction")){ %>
-_content.push(String.format("<a href='javascript:initInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "批示"));
- <% }%>
-
-if (hasInstruction > 0) {
-	_content.push(String.format("<a href='javascript:listInstructionOpinion({0});'>{1}</a>&nbsp;&nbsp;", row, "查看批示"));
-}
-
-<% if(aclFn("opinion_to_mashang")){ %>
-_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "转到马上办"));
- <% }%>
-
-if(toDoStatus >= 5){
-	_content.push(String.format("<a href='javascript:void({0});'>{1}</a>&nbsp;&nbsp;", row, "完成"));
-}
-
- -->
 
 <nav class="mui-bar mui-bar-tab foot">
 
@@ -296,7 +257,7 @@ if(toDoStatus >= 5){
 				document.getElementById("fankui").addEventListener('tap', function(e) {
 					e.detail.gesture.preventDefault();
 					var btnArray = ['确定', '取消'];
-					mui.prompt('反馈新闻核实情况：', '', '助手', btnArray, function(e) {
+					mui.prompt('反馈新闻核实情况：', '', ' ', btnArray, function(e) {
 						if (e.index == 0) {//确定
 							
 							if(jQuery.trim(e.value).length==0){

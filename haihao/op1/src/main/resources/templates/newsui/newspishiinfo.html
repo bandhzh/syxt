@@ -26,6 +26,12 @@
 .mui-media-body .mui-icon-navigate{
 	font-size: 16px;
 }
+.mui-card-header{
+	font-size: 14px;
+}
+.mui-card-content-inner p{
+	font-size: 13px;
+}
 </style>
 </head>
 <body class="info mbsc-fr-lock">
@@ -75,7 +81,7 @@
 <header class="mui-bar mui-bar-nav " style="background: #000;">
 	<a class="mui-icon mui-icon-back"></a>
    	<h1 class="mui-title">${newsmodel.title}</h1>
-    <a href="${ctxPath}/phoneui/usercenter" class="mui-icon mui-icon-person right"></a>
+    <a href="${ctxPath}/phoneui/usercenter" class="mui-icon mui-icon-home right"></a>
 </header>
 
 <div class="heihead"></div>
@@ -108,7 +114,7 @@
 		
 	<% if(newsmodel.hasInstruction > 0){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">批示详情</div>
+		<div class="mui-card-header">【批示】</div>
 		<div class="mui-card-content pishilist">
 			
 			
@@ -121,7 +127,7 @@
 	
 	<% if(newsmodel.status > 0){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">核实状态</div>
+		<div class="mui-card-header">【核实】</div>
 		<div class="mui-card-content heshilist" >
 			<div class="mui-card-content-inner"><p>
 				
@@ -155,7 +161,7 @@
 	
 	<% if(newsmodel.toDoStatus >= 5){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">处理详情</div>
+		<div class="mui-card-header">【处理】</div>
 		<div class="mui-card-content zhuanbanlist">
 			
 			

@@ -316,7 +316,7 @@ div.message.right .corner{
     color:  #fff;
    
 }.inp input{ color:#fff}
-.inp{margin-left:3rem; margin-right:3rem;}
+.inp{margin-left:3rem; margin-right:3rem;padding-top: 6px;}
 #sendmessage input{
 	background:none;
 	
@@ -337,7 +337,8 @@ div.message.right .corner{
 .three .ad{ position:relative; margin:0.4rem ; background:#5f6a70; border:#5f6a70 solid 2px}
 .three .ad span{ position:absolute; top:.4rem; left:.4rem; font-size:1rem}
 .three .ad i{ background:#5f6a70; border-radius:1rem; padding:0rem .5rem; line-height:1rem; position:absolute; top:.4rem; left:2rem;}
-#sendmessage button{ left:-10px; top:-5px; color:#fff;
+#sendmessage button{ 
+	left:-5px; top:-3px; color:#fff;
 	
 	width:1.8rem;
 	height:1.8rem; background:none;
@@ -689,7 +690,7 @@ body.open .alert_bg .btn .btnRight{
 	h1{ font-weight:normal }
 .mui-title{
 	color: #fff !important;
-	font-size: 0.77rem !important;
+	font-size: 0.57rem !important;
 	font-weight: normal !important;
 	height: 1.88rem !important;
 	line-height: 1.88rem !important;

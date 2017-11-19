@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>舆情中心-列表展示</title>
+<title>舆情中心</title>
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -61,7 +61,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
   <!-- --><aside id="offCanvasSide" class="mui-off-canvas-left">
     <div id="offCanvasSideScroll" class="mui-scroll-wrapper">
       <div class="mui-scroll">
-        <div class="title font-avenir departmentname" style="padding:30px 15px; color:#fff; font-size:1rem; letter-spacing:5px">区委宣传部</div>
+        <div class="title font-avenir departmentname" style="padding:30px 15px; color:#fff; font-size:1rem; letter-spacing:5px"></div>
         <div class="content">
           <button type="hidden" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px; display:none"></button>
         </div>
@@ -206,21 +206,23 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 		
 		<nav class="mui-bar mui-bar-tab foot">
 			<a class="mui-tab-item mui-active" href="#item1mobile"> 
-				<span class="mui-icon-extra mui-icon-extra-order"></span>
-				<p>公开舆情</p>
-			</a>
-			<a class="mui-tab-item" href="#item2mobile">
-				<span class="mui-icon-extra mui-icon-extra-outline" style="font-weight:800;"></span>
-				<p>舆情核实</p>
-			</a>
-			<a class="mui-tab-item " href="#item3mobile">
-				<span class="mui-icon-extra mui-icon-extra-share"></span>
-				<p>舆情转办</p>
+				<span class="mui-icon-extra mui-icon-extra-class"></span>
+				<p>舆情首页</p>
 			</a>
 			<a class="mui-tab-item" href="#item4mobile">
 				<span class="mui-icon-extra mui-icon-extra-topic"></span>
-				<p>舆情批示</p>
+				<p>查看批示</p>
 			</a>
+			
+			<a class="mui-tab-item" href="#item2mobile">
+				<span class="mui-icon-extra mui-icon-extra-outline" style="font-weight:800;"></span>
+				<p>核实处理</p>
+			</a>
+			<a class="mui-tab-item " href="#item3mobile">
+				<span class="mui-icon-extra mui-icon-extra-share"></span>
+				<p>转办处理</p>
+			</a>
+			
 		</nav>
 		
 		
@@ -319,7 +321,7 @@ function pulldownRefresh() {
 		 									+'<img class="mui-media-object mui-pull-left" src="{0}">'
 		 									+'<div class="mui-media-body">'
 		 									+'	<small class="blue">{1}</small> &nbsp; <small class="grew"></small>'
-		 									+'	<p>{2}</p>'
+		 									+'	<p>类别：{2}</p>'
 		 									+'	<p><font class="grew"></font>{4}&nbsp; &nbsp;{3}</p>'
 		 									+'</div>'
 		 									+'</a>'
@@ -426,7 +428,7 @@ function listFormatter(columnDef, value){
   									+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
   									+'<div class="mui-media-body">'
   									+'	<small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small>'
-  									+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
+  									+'	<p>类别：'+listFormatter({id:"lists"},val.categoryId)+'</p>'
   									+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
   									+'</div>'
   									+'</a>'
@@ -483,7 +485,7 @@ function listFormatter(columnDef, value){
   								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
   								+'<div class="mui-media-body">'
   								+'	<small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small>'
-  								+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
+  								+'	<p>类别：'+listFormatter({id:"lists"},val.categoryId)+'</p>'
   								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
   								+'</div>'
   								+'</a>'
@@ -537,7 +539,7 @@ function listFormatter(columnDef, value){
   								+'<img class="mui-media-object mui-pull-left" src="'+window.qiniuDomainHttp+val.mainImg+'">'
   								+'<div class="mui-media-body">'
   								+'	<small class="blue">'+val.subject+'</small> &nbsp; <small class="grew"></small>'
-  								+'	<p>'+listFormatter({id:"lists"},val.categoryId)+'</p>'
+  								+'	<p>类别：'+listFormatter({id:"lists"},val.categoryId)+'</p>'
   								+'	<p><font class="grew"></font>'+dateFormatter(val.createdDate)+'&nbsp; &nbsp;'+status+'</p>'
   								+'</div>'
   								+'</a>'

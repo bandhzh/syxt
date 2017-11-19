@@ -96,6 +96,10 @@
 		    padding-bottom: 15%;
 		    box-shadow: 7px 1px 39px #c3bdbd;
 		}
+		.mui-table-view-cell>.mui-badge, .mui-table-view-cell>.mui-btn, .mui-table-view-cell>.mui-switch, .mui-table-view-cell>a>.mui-badge, .mui-table-view-cell>a>.mui-btn, .mui-table-view-cell>a>.mui-switch{
+			top:10%;
+			right: -9px;
+		}
 	</style>
 </head>
 <body class="home">
@@ -110,31 +114,17 @@
 	<header class="mui-bar mui-bar-nav">
 		<a  href="${ctxPath}/phoneui/setting" class="mui-icon mui-icon-gear-filled"></a>
 		<h1 class="mui-title">个人中心</h1>
-		<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#topPopover"></a>
+		<!-- <a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#topPopover"></a> -->
 	</header>
 	<div class="heihead"></div>
-	<div class="mui-content">
+	<div class="mui-content" style="background-color: #efeff4;">
 		<div class="banner">
-			<img src="${authenticationFn().userDto.headimgurl}" width="100%" style="box-shadow:7px 1px 39px #c3bdbd;border-radius:80px;max-width: 150px;max-height: 150px;" />
+			<img src="${authenticationFn().userDto.headimgurl}" width="100%" style="box-shadow:7px 1px 39px #c3bdbd;border-radius:80px;width: 150px;height: 150px;" />
 		</div>
 		<div class="mui-text-center u-text pad">
 			<h1 class="font-avenir departmentname" style="color: #536a78; padding: .4rem 0"></h1>
 		</div>
 		<ul class="mui-table-view mui-grid-view mui-grid-9">
-			
-			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="${ctxPath}/phoneui/tomashangeCenter" >
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u2.png" width="90%"></P>
-					<div class="mui-media-body">马上办</div>
-				</a>
-			</li>
-			
-			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-				<a href="javscript:void(0);" class="daikaifang">
-					<P><img src="${ctxPath}/static/assets/phoneui/img/u1.png" width="90%"></P>
-					<div class="mui-media-body">安全</div>
-				</a>
-			</li>
 			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 				<a href="${ctxPath}/phoneui/listnewsblock">
@@ -145,8 +135,17 @@
 			
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 				<a href="javscript:void(0);" class="daikaifang">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u1.png" width="90%"></P>
+					<div class="mui-media-body">安全</div>
+				</a>
+			</li>
+			
+			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<a href="${ctxPath}/phoneui/message">
 					<P><img src="${ctxPath}/static/assets/phoneui/img/u3.png" width="90%"></P>
-					<div class="mui-media-body">信访</div>
+					<span class="mui-badge mui-badge-danger">45</span>
+					<div class="mui-media-body">消息</div>
 				</a>
 			</li>
 			
@@ -158,6 +157,38 @@
 				</a>
 			</li>
 			
+			
+			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<a href="${ctxPath}/phoneui/tomashangeCenter" >
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u2.png" width="90%"></P>
+					<div class="mui-media-body">马上办</div>
+				</a>
+			</li>
+			
+			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<a href="${ctxPath}/phoneui/listgroups">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u8.png" width="90%"></P>
+					<div class="mui-media-body">讨论组</div>
+				</a>
+			</li>
+			
+			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<a href="javscript:void(0);" class="daikaifang">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u11.png" width="90%"></P>
+					<div class="mui-media-body">信访</div>
+				</a>
+			</li>
+			
+			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+				<a href="${ctxPath}/book/book">
+					<P><img src="${ctxPath}/static/assets/phoneui/img/u10.png" width="90%"></P>
+					<div class="mui-media-body">通讯录</div>
+				</a>
+			</li>
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 				<a href="${ctxPath}/phoneui/setting">
 					<P><img src="${ctxPath}/static/assets/phoneui/img/u7.png" width="90%"></P>
@@ -166,19 +197,20 @@
 			</li>
 			
 			
+			
 		</ul>
 	</div>
 	
 	
 	<!--右上角弹出菜单-->
-		<div id="topPopover" class="mui-popover">
+		<!-- <div id="topPopover" class="mui-popover">
 			<div class="mui-popover-arrow"></div>
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
 						
 						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/message">消息中心<span class="mui-badge mui-badge-primary">11</span></a></li>
-						<!-- <li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/todolist">待办事项<span class="mui-badge mui-badge-danger">44</span></a></li> -->
+						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/todolist">待办事项<span class="mui-badge mui-badge-danger">44</span></a></li>
 						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/listgroups">讨论组</a></li>
 						<li class="mui-table-view-cell"><a href="${ctxPath}/book/book">通讯录</a></li>
 						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/setting">设置</a></li>
@@ -186,7 +218,7 @@
 				</div>
 			</div>
 
-		</div>
+		</div> -->
 	
 </body>
 

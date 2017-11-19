@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>新闻中心-块级展示</title>
+<title>新闻中心</title>
     
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -115,24 +115,26 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
   <aside id="offCanvasSide" class="mui-off-canvas-left">
     <div id="offCanvasSideScroll" class="mui-scroll-wrapper">
       <div class="mui-scroll">
-        <div class="title font-avenir departmentname" style="padding:30px 15px; color:#fff; font-size:1rem; letter-spacing:5px"></div>
+        <div class="title font-avenir departmentname" style="padding:30px 15px; color:#fff; font-size:0.7rem; letter-spacing:5px"></div>
        
-        <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted" style="background: #242a34;">
+        <ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted" style="background: #242a34;font-size: 0.55rem;">
 	         <li class="mui-table-view-cell mui-collapse">
-				<a class="gongkai" href="javascript:void(0)">公开新闻</a>
+				<a class="gongkai" href="javascript:void(0)">新闻首页</a>
 			</li>
 			
 			<li class="mui-table-view-cell mui-collapse">
-				<a class="heshilist" href="javascript:void(0)" >新闻核实</a>
+				<a class="pishi" href="javascript:void(0)">查看批示</a>
+			</li>
+			
+			
+			<li class="mui-table-view-cell mui-collapse">
+				<a class="heshilist" href="javascript:void(0)" >核实处理</a>
 			</li>
 			
 			<li class="mui-table-view-cell mui-collapse">
-				<a class="zhuanban" href="javascript:void(0)">新闻转办</a>
+				<a class="zhuanban" href="javascript:void(0)">转办处理</a>
 			</li>
 			
-			<li class="mui-table-view-cell mui-collapse">
-				<a class="pishi" href="javascript:void(0)">新闻批示</a>
-			</li>
 			
 			
 	        <li class="mui-table-view-cell mui-collapse">
@@ -159,7 +161,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
      
      <header class="mui-bar mui-bar-nav ">
 		<a class="mui-icon mui-icon mui-icon-bars" href="#offCanvasSide"></a>
-      	<h1 class="mui-title">新闻列表</h1>
+      	<h1 class="mui-title">新闻早报</h1>
       	<a class="mui-icon mui-icon-settings right" href="${ctxPath}/phoneui/listnews"></a>
     </header>
     <div class="heihead"></div>
@@ -213,8 +215,8 @@ $(document).ready(function() {
  							+'<P class="mui-clearfix hei"></P>'
  							+'<img src="{2}" alt="图片加载失败">'
  							+'<div class="pad grew">'
- 							+'	<span class="mui-pull-left"> <a class="active"><span class="mui-icon mui-icon-paperplane"></span></a> {3}</span>' //<span class="mui-icon mui-icon-paperplane"></span>
- 							+'	<span class="mui-pull-right"> <a id="icon-icon-contact"><span class="mui-icon mui-icon-contact"></span></a> {4}</span>'
+ 							+'	<span class="mui-pull-left">来源： {3}</span>' //<span class="mui-icon mui-icon-paperplane"></span>
+ 							+'	<span class="mui-pull-right">发布人： {4}</span>'
  							+'</div>'
  							+'<P class="mui-clearfix hei"></P>'
  							/* +'<div class="mui-clearfix pad grew">{5}</div>' */
@@ -309,6 +311,10 @@ $(document).ready(function() {
     var wordremark;
     //核实列表
     mui('body').on('tap','.heshilist',function(){
+    	
+    	jQuery(".mui-title").html("核实处理");
+    	
+    	
     	mui('#offCanvasWrapper').offCanvas('close');
     	datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
     	_url = 'ajaxlistNewsByVerify';
@@ -322,6 +328,8 @@ $(document).ready(function() {
     
     //舆情转办
 	mui('body').on('tap','.zhuanban',function(){
+		jQuery(".mui-title").html("转办处理");
+		
     	mui('#offCanvasWrapper').offCanvas('close');
     	datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}],"data":{"departmentId":"${authenticationFn().userDto.departmentId}"}};
     	_url = 'ajaxlistNewsByTodo';
@@ -334,6 +342,8 @@ $(document).ready(function() {
 
 	//舆情批示
 	mui('body').on('tap','.pishi',function(){
+		jQuery(".mui-title").html("查看批示");
+		
 		mui('#offCanvasWrapper').offCanvas('close');
 		datajson={"start":0,"limit":100,"page":{"rowStart":0,"limit":100},"filters":[{"property":"newsModel.enabled","value":"1","operation":"="}],"sorts":[{"property":"newsModel.id","order":"desc"}]};
 		_url = 'ajaxlistNewsByInstruction';
@@ -368,8 +378,8 @@ $(document).ready(function() {
 	 							+'<P class="mui-clearfix hei"></P>'
 	 							+'<img src="'+window.qiniuDomainHttp+val.mainImg+'" alt="图片加载失败">'
 	 							+'<div class="pad grew">'
-	 							+'	<span class="mui-pull-left"> <a class="active"><span class="mui-icon mui-icon-paperplane"></span></a>'+listFormatter({id:"lists"},val.sourceid)+'</span>'
-	 							+'	<span class="mui-pull-right"> <a id="icon-icon-contact"><span class="mui-icon mui-icon-contact"></span></a> '+getdisplaynamebyuid(val.createdBy)+'</span>'
+	 							+'	<span class="mui-pull-left">来源： '+listFormatter({id:"lists"},val.sourceid)+'</span>'
+	 							+'	<span class="mui-pull-right">发布人： '+getdisplaynamebyuid(val.createdBy)+'</span>'
 	 							+'</div>'
 	 							+'<P class="mui-clearfix hei"></P>'
 	 							/* +'<div class="mui-clearfix pad grew">'+val.memo+'</div>' */

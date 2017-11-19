@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title>处理中心</title>
+<title>马上办</title>
 <link href="${ctxPath}/static/assets/phoneui/css/mui.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/swiper.min.css">
 <link rel="stylesheet" href="${ctxPath}/static/assets/phoneui/css/Global.css" />
@@ -37,11 +37,20 @@
 .ev a{
 	font-weight: 800;
 }
+
+.mui-icon-chatbubble{
+
+	position:absolute; right:0; display:inline-block; width:1rem; height:1rem;font-size: 30px;
+}
+
+ 
+
+
 </style>
 </head>
 <body class="chat mbsc-fr-lock">
 <header class="mui-bar mui-bar-nav bgh"> <a class="mui-icon mui-icon-back"></a>
-  <h1 class="mui-title">马上办处理中心</h1>
+  <h1 class="mui-title">马上办</h1>
   
 </header>
 <div class="heihead"></div>
@@ -128,15 +137,15 @@ $.ajax({
 							+'		</div>'
 							+'	</span>'
 							+'	<span class="mui-col-xs-6 mui-col-sm-6 mui-pull-left padl">'
-							+'		<small class="grew">发布时间</small>'
+							+'		<small class="grew">创建时间</small>'
 							+'		<p>'
-							+'			'+dateFormatter(val.createdDate)+'<span class="ico20"></span>'
+							+'			'+dateFormatter(val.createdDate)+'<span class="mui-icon mui-icon-chatbubble"><span class="mui-badge">2</span></span>'
 							+'		</p>'
 							+'	</span>'
 							+'</div>'
 							+'<p class="mui-clearfix"></p>'
 							+'<div>'
-							+'	<small class="grew">备注</small>'
+							+'	<small class="grew">摘要</small>'
 							+'	<p>'
 							+val.memo
 							+'	</p>'
@@ -185,15 +194,15 @@ $.ajax({
 								+'		</div>'
 								+'	</span>'
 								+'	<span class="mui-col-xs-6 mui-col-sm-6 mui-pull-left padl">'
-								+'		<small class="grew">发布时间</small>'
+								+'		<small class="grew">创建时间</small>'
 								+'		<p>'
-								+'			'+dateFormatter(val.createdDate)+'<span class="ico20"></span>'
+								+'			'+dateFormatter(val.createdDate)+'<span class="mui-icon mui-icon-chatbubble"></span>'
 								+'		</p>'
 								+'	</span>'
 								+'</div>'
 								+'<p class="mui-clearfix"></p>'
 								+'<div>'
-								+'	<small class="grew">备注</small>'
+								+'	<small class="grew">摘要</small>'
 								+'	<p>'
 								+val.memo
 								+'	</p>'

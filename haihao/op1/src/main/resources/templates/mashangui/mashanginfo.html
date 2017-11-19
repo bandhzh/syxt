@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title>${newsmodel.title}</title>
+<title>${newsmodel.subject}</title>
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
@@ -36,6 +36,12 @@
 }
 .mui-media-body p{
 	margin-top: 4px;
+}
+.mui-card-header{
+	font-size: 14px;
+}
+.mui-card-content-inner p{
+	font-size: 13px;
 }
 </style>
 </head>
@@ -102,7 +108,7 @@
 <header class="mui-bar mui-bar-nav " style="background: #000;">
 	<a class="mui-icon mui-icon-back"></a>
    	<h1 class="mui-title">${newsmodel.subject}</h1>
-    <a href="${ctxPath}/phoneui/usercenter" class="mui-icon mui-icon-person right"></a>
+    <a href="${ctxPath}/phoneui/usercenter" class="mui-icon mui-icon-home right"></a>
 </header>
 
 <div class="heihead"></div>
@@ -134,7 +140,7 @@
 		
 	<% if(newsmodel.hasInstruction > 0){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">批示详情</div>
+		<div class="mui-card-header">【批示】</div>
 		<div class="mui-card-content pishilist">
 			
 			
@@ -147,7 +153,7 @@
 	
 	<% if(newsmodel.status > 0){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">核实状态</div>
+		<div class="mui-card-header">【核实】</div>
 		<div class="mui-card-content heshilist" >
 			<div class="mui-card-content-inner"><p>
 			状态：	
@@ -181,7 +187,7 @@
 	
 	<% if(newsmodel.toDoStatus >= 5){ %>
 	<div class="mui-card">
-		<div class="mui-card-header">处理状态</div>
+		<div class="mui-card-header">【处理】</div>
 		<div class="mui-card-content zhuanbanlist">
 			
 			
@@ -276,7 +282,7 @@
 				document.getElementById("pishi").addEventListener('tap', function(e) {
 					e.detail.gesture.preventDefault();  
 					var btnArray = ['确定', '取消'];
-					mui.prompt('输入您对此事件的批示语：', '', '助手', btnArray, function(e) {
+					mui.prompt('请输入您对此事件的批示意见', '', '', btnArray, function(e) {
 						if (e.index == 0) {//确定
 							
 							if(jQuery.trim(e.value).length==0){
