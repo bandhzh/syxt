@@ -13,93 +13,23 @@
    
 	
 	<style>
-		/*跨webview需要手动指定位置*/
-		
-		.mui-plus .mui-bar-nav~.mui-content {
-			padding: 0!important;
-		}
-		
-		.mui-plus .plus{
-			display: inline;
-		}
-		
-		
-		.mui-plus.mui-android .mui-bar-nav~.mui-content{
-			padding: 0;
-		}
-			
-		#topPopover {
-			position: fixed;
-			top: 16px;
-			right: 6px;
-		}
-		#topPopover .mui-popover-arrow {
-			left: auto;
-			right: 6px;
-		}
-		
-		span.mui-icon {
-			font-size: 14px;
-			color: #007aff;
-			margin-left: -15px;
-			padding-right: 10px;
-		}
-		
-		@media (min-width:320px){
-
-		   .mui-popover {
-				 height: 180px;
-			}
-		
-		}
-		
-		@media (min-width:360px){
-
-		   .mui-popover {
-				 height: 200px;
-			}
-		
-		}
-		
-		
-		@media (min-width:375px){
-			.mui-popover {
-					 height: 240px;
-				}
-		}
-		
-		@media (min-width:414px){
-			.mui-popover {
-					 height: 250px;
-				}
-		}
-		
-		@media (min-width:640px){
-			.mui-popover {
-					 height: 580px;
-				}
-		}
-		
-		@media (min-width:960px){
-			.mui-popover {
-					 height: 860px;
-				}
-		}
-		
 		body{
 			background: -webkit-gradient(linear, 0 0, 0 bottom, from(#f6f9f9), to(#d3d3d4));
 		}
 		
+
 		.banner{
 		    text-align: center;
-		    padding-top: 15%;
-		    padding-bottom: 15%;
+		    padding-top: 14%;
+		    padding-bottom: 1%;
 		    box-shadow: 7px 1px 39px #c3bdbd;
 		}
 		.mui-table-view-cell>.mui-badge, .mui-table-view-cell>.mui-btn, .mui-table-view-cell>.mui-switch, .mui-table-view-cell>a>.mui-badge, .mui-table-view-cell>a>.mui-btn, .mui-table-view-cell>a>.mui-switch{
 			top:10%;
 			right: -9px;
 		}
+		
+	
 	</style>
 </head>
 <body class="home">
@@ -109,17 +39,22 @@
 		var initData = {};
 		if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
 	</script>
-
-
+	
+	
+	
 	<header class="mui-bar mui-bar-nav">
 		<a  href="${ctxPath}/phoneui/setting" class="mui-icon mui-icon-gear-filled"></a>
 		<h1 class="mui-title">个人中心</h1>
-		<!-- <a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#topPopover"></a> -->
 	</header>
-	<div class="heihead"></div>
-	<div class="mui-content" style="background-color: #efeff4;">
+	
+	
+	
+	
+	
+	
+	<div class="mui-content" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#f6f9f9), to(#d3d3d4))">
 		<div class="banner">
-			<img src="${authenticationFn().userDto.headimgurl}" width="100%" style="box-shadow:7px 1px 39px #c3bdbd;border-radius:80px;width: 150px;height: 150px;" />
+			<img src="${authenticationFn().userDto.headimgurl}" width="100%" style="box-shadow:7px 1px 39px #c3bdbd;border-radius:80px;width: 100px;height: 100px;" />
 		</div>
 		<div class="mui-text-center u-text pad">
 			<h1 class="font-avenir departmentname" style="color: #536a78; padding: .4rem 0"></h1>
@@ -200,27 +135,8 @@
 			
 		</ul>
 	</div>
-	
-	
-	<!--右上角弹出菜单-->
-		<!-- <div id="topPopover" class="mui-popover">
-			<div class="mui-popover-arrow"></div>
-			<div class="mui-scroll-wrapper">
-				<div class="mui-scroll">
-					<ul class="mui-table-view">
-						
-						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/message">消息中心<span class="mui-badge mui-badge-primary">11</span></a></li>
-						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/todolist">待办事项<span class="mui-badge mui-badge-danger">44</span></a></li>
-						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/listgroups">讨论组</a></li>
-						<li class="mui-table-view-cell"><a href="${ctxPath}/book/book">通讯录</a></li>
-						<li class="mui-table-view-cell"><a href="${ctxPath}/phoneui/setting">设置</a></li>
-					</ul>
-				</div>
-			</div>
-
-		</div> -->
-	
 </body>
+
 
  <script>
 		mui.init({
@@ -243,10 +159,6 @@
 			});
 		});
 		
-		
-		
-		
-		
 		 function listFormatter(columnDef, value){
 		     	var _items = initData[columnDef.id];
 		     	 for(var i = 0;i < _items.length;i++){
@@ -259,10 +171,6 @@
 		 $(document).ready(function() {
 			 $(".departmentname").html(listFormatter({id:"departments"},"${authenticationFn().userDto.departmentId}"));
 		 });
-		 
-		
-		
-		
 	</script>
 	
 </html>
