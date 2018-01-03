@@ -301,7 +301,14 @@ public class PhoneController extends BaseController{
 		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
 		map.put("departments", ToolModel.recordListConvert(find2));
 
+		
+		//检测当前未读的消息
+		map.put("receiverBy", ToolSecurity.getUserId());
+		List<Record> listmessages = Db.find(ToolSqlXml.getSql("com.list.selectAllnoreadmessagesbyuser",map));//所有未读的消息
+		map.put("listmessages", ToolModel.recordListConvert(listmessages));
+		
 		model.put("initData", JSON.toJSONString(map));
+		
 		
 		
 		return "phoneui/usercenter";
@@ -931,6 +938,13 @@ public class PhoneController extends BaseController{
 		map.put("listmessages", ToolModel.recordListConvert(listmessages));
 		
 		model.put("initData", JSON.toJSONString(map));
+		
+		
+		//更改消息状态 标记为已读
+		int allupdatenum = Db.update(ToolSqlXml.getSql("com.list.updateAllnoreadmessagesbyuser",map));//更改所有未读的消息
+		
+		
+		
 		
 		
 		return "phoneui/message";

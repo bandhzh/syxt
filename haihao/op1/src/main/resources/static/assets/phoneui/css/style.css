@@ -1,6 +1,6 @@
 *{ padding:0; margin:0;}body{ font-family:Microsoft YaHei !important}
 body.login {
-	background:#211c32;
+	background:#eeeeee;/**#211c32**/
 }
 @font-face {
     font-family: "font-avenir";
@@ -485,7 +485,7 @@ div.message.right .corner{
     background: none !important;
 	box-shadow:0 0 8px;
 }*/
-.log{ border:#73707e solid 1px; border-radius:5px}
+.log{ border:#c2c0ca solid 1px; border-radius:5px}
 .hei{ clear:both; content:""; display:block;height:.6rem}
 .content input {
     width:100% !important;
@@ -663,7 +663,7 @@ body.open .alert_bg .btn{
 	
 }
 .black{ color:#000 !important}
-.form-input{ border-bottom:#414050 solid 1px; padding:2px 5px}
+.form-input{ border-bottom:#ababb1 solid 1px; padding:2px 5px}
 body.open .alert_bg .btn .btnLeft{
 	width: 5.3rem;
 	height:1.8rem;

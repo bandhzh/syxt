@@ -79,7 +79,7 @@
 			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
 				<a href="${ctxPath}/phoneui/message">
 					<P><img src="${ctxPath}/static/assets/phoneui/img/u3.png" width="90%"></P>
-					<span class="mui-badge mui-badge-danger">45</span>
+					<span class="mui-badge mui-badge-danger">0</span>
 					<div class="mui-media-body">消息</div>
 				</a>
 			</li>
@@ -158,6 +158,16 @@
 				
 			});
 		});
+		
+		if(initData.listmessages.length==0){
+			$(".mui-badge-danger").remove();
+		}else{
+			$(".mui-badge-danger").html(initData.listmessages.length);	
+		}
+		
+		
+		
+		//mui.alert(initData.listmessages);
 		
 		 function listFormatter(columnDef, value){
 		     	var _items = initData[columnDef.id];
