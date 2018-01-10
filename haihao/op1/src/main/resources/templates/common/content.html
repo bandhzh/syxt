@@ -28,7 +28,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <meta content="" name="description" />
         <meta content="" name="author" />
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <!-- <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" /> -->
         <link href="${ctxPath}/static/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="${ctxPath}/static/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
         <link href="${ctxPath}/static/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -38,7 +38,6 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <link href="${ctxPath}/static/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
         <link href="${ctxPath}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-        
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="${ctxPath}/static/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
@@ -278,7 +277,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                         
                         
                         
-                          <li class="nav-item  ">
+                         <!--  <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>
                                 <span class="title">信息</span>
@@ -286,7 +285,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                             </a>
                             <ul class="sub-menu">
                             </ul>
-                        </li>
+                        </li> -->
                         
                         
                         
@@ -338,7 +337,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                         
                         
                         
-                         <li class="nav-item  ">
+<!--                          <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>
                                 <span class="title">信访</span>
@@ -346,7 +345,10 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                             </a>
                             <ul class="sub-menu">
                             </ul>
-                        </li>
+                        </li> -->
+                        
+                        <!-- 新闻权限判断 -->
+                        <% if(aclFn("analysis_query")){ %>
                           <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-puzzle"></i>
@@ -354,8 +356,17 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                                 <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
+                            	  <% if(aclFn("analysis_query")){ %>
+                                <li class="nav-item  ">
+                                    <a href="${ctxPath}/analysis/responseDegree" class="nav-link ">
+                                        <span class="title">统计分析</span>
+                                    </a>
+                                </li>
+                                 <% }%>
                             </ul>
                         </li>
+                         <% }%>
+                        
                         <li class="nav-item  ">
                             <a href="?p=" class="nav-link nav-toggle">
                                 <i class="icon-settings"></i>
@@ -578,7 +589,8 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
             <script type="text/javascript">
             $(document).ready(function(){
     		    if (jQuery().datepicker) {
-    	            $('.date-picker').datepicker({language:"zh-CN",
+    	            $('.date-picker').datepicker({
+    	            	language:"zh-CN",
     	                rtl: App.isRTL(),
     	                orientation: "left",
     	                autoclose: true

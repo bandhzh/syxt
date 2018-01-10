@@ -13,6 +13,7 @@
 		<![CDATA[ 
 			from op_opinion opinionModel left join 
 			op_user userModel on opinionModel.createdBy = userModel.id 
+			left join op_list on opinionModel.levelId = op_list.id 
 			where 1 = 1 
 			<%
 			commonSql("com.common.params",filters!,sorts!);

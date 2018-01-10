@@ -1,0 +1,474 @@
+<style>
+    html{
+		overflow-y: auto;
+	}
+.table thead tr th {
+	text-align: center;
+}
+</style>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light portlet-fit portlet-datatable ">
+			<div class="portlet-body">
+				<div class="table-container">
+					<table
+						class="table table-striped table-bordered table-hover table-checkable" id="datatable_orders">
+						<thead>
+						 <tr role="row" class="heading">
+						 	<th width="40%"> 时间范围 </th>
+						 	<th width="20%">  </th>
+						 	<th width="20%">  </th>
+						 	<th width="15%"> 操作 </th>
+						 </tr>
+						  <tr role="row" class="filter">
+						  <td>
+						            <div class="form-group" style="margin-bottom:0px;" id="sjdw_form" >
+                                                    <div class="input-group input-large date-picker input-daterange" data-date="2012-11-10" data-date-format="yyyy-mm-dd" style="margin-left: auto;margin-right: auto;">
+                                                        <input type="text" class="form-control" id="sjdw_begin" name="op.createdDate" operation=">=" >
+                                                        <span class="input-group-addon toClassHide" > to </span>
+                                                        <input type="text" class="form-control toClassHide" id="sjdw_end" name="op.createdDate" operation="<" > </div>
+                                            </div>
+                                            </td>
+                                                    <td>
+                                                    </td>
+                                                    
+                                                     <td>
+                                                        </td>
+                                                        
+                                                         <td>
+                                                        <div class="margin-bottom-5">
+                                                            <button class="btn btn-sm btn-success filter-submit margin-bottom">
+                                                                <i class="fa fa-search" ></i> 查询</button>
+                                                           <button class="btn btn-sm" id="daochu">
+                                                               			导出</button>
+                                                        </div>
+                                                    </td>
+                                                            
+						  
+						  </tr>
+						</thead>
+						<tbody>
+						<tr>
+                                 <td colspan="4">
+                                 <div class="row" id="row-chart-v1">
+                                 <div class="col-md-12">
+                                 <div class="panel-body ui-portlet-highchart" id="panel-chart-v1" style="height: 400px">
+</div>
+                                 </div>
+                                 </div>
+                                </td>
+                                </tr>
+                                
+                                
+                                  <tr> <td colspan="4">
+                                            <div class="row" id="row-chart-v2">
+                                 <div class="col-md-12">
+                                 <div class="panel-body ui-portlet-highchart" id="panel-chart-v2" style="height: 400px">
+</div>
+                                 </div>
+                                 </div></td>
+                                 
+                                            </tr>
+                                            
+                                 <tr> <td colspan="4">
+                                            <div class="row" id="row-chart-v3">
+                                 <div class="col-md-12">
+                                 <div class="panel-body ui-portlet-highchart" id="panel-chart-v3" style="height: 400px">
+</div>
+                                 </div>
+                                 </div></td>
+                                 
+                                            </tr>
+                                            
+                                            
+                                 <tr> <td colspan="4">
+                                            <div class="row" id="row-chart-v3">
+                                 <div class="col-md-12">
+                                 <div class="panel-body ui-portlet-highchart" id="panel-chart-v4" style="height: 400px">
+</div>
+                                 </div>
+                                 </div></td>
+                                 
+                                            </tr>
+						
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+<script src="${ctxPath}/static/assets/global/plugins/Highcharts-4.0.4/js/highcharts.js" type="text/javascript"></script>
+<script src="${ctxPath}/static/assets/global/plugins/Highcharts-4.0.4/js/modules/exporting.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+var myDataView,myGrid,pager,myWaterInfoDataView,myWaterInfoGrid,myWaterPage,
+_watchItems = [],sjc = 1;
+
+$(window).resize(function() {
+	  $("#slickGrid").width($("#slickGrid").parent().width());
+	  if(myGrid){
+		  myGrid.resizeCanvas();
+	  }
+
+});
+
+
+var char1Cfg = {
+        chart: {
+       	 plotBackgroundColor: null,
+            plotBorderWidth: 1,//null,
+            plotShadow: false
+       },
+        title: {
+            text: '核实响应率'
+        },
+        xAxis: {
+        },
+        yAxis: {
+            min: 0,
+
+        },
+        tooltip: {
+        	enabled:false,
+            pointFormat: '{point.y:.1f}%',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+       	 pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+       },
+        series: []
+    }
+    
+
+var char2Cfg = {
+        chart: {
+          	 plotBackgroundColor: null,
+               plotBorderWidth: 1,//null,
+               plotShadow: false
+          },
+        title: {
+            text: '核实完成率'
+        },
+        xAxis: {
+        },
+        yAxis: {
+            min: 0,
+
+        },
+        tooltip: {
+        	enabled:false,
+            pointFormat: '{point.y:.1f}%',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+          	 pie: {
+                   allowPointSelect: true,
+                   cursor: 'pointer',
+                   dataLabels: {
+                       enabled: true,
+                       format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                   }
+               }
+          },
+        series: []
+    }
+    
+    
+var char3Cfg = {
+        chart: {
+          	 plotBackgroundColor: null,
+               plotBorderWidth: 1,//null,
+               plotShadow: false
+          },
+        title: {
+            text: '转办响应率'
+        },
+        xAxis: {
+        },
+        yAxis: {
+            min: 0,
+
+        },
+        tooltip: {
+        	enabled:false,
+            pointFormat: '{point.y:.1f}%',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+          	 pie: {
+                   allowPointSelect: true,
+                   cursor: 'pointer',
+                   dataLabels: {
+                       enabled: true,
+                       format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                   }
+               }
+          },
+        series: []
+    }
+    
+var char4Cfg = {
+        chart: {
+          	 plotBackgroundColor: null,
+               plotBorderWidth: 1,//null,
+               plotShadow: false
+          },
+        title: {
+            text: '转办完成率'
+        },
+        xAxis: {
+        },
+        yAxis: {
+            min: 0,
+
+        },
+        tooltip: {
+        	enabled:false,
+            pointFormat: '{point.y:.1f}%',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+          	 pie: {
+                   allowPointSelect: true,
+                   cursor: 'pointer',
+                   dataLabels: {
+                       enabled: true,
+                       format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                   }
+               }
+          },
+        series: []
+    }
+
+$(document).ready(function(){
+	$(window).resize();
+	
+	 $('#panel-chart-v1').highcharts(char1Cfg);
+	 $('#panel-chart-v2').highcharts(char2Cfg);
+	 $('#panel-chart-v3').highcharts(char3Cfg);
+	 $('#panel-chart-v4').highcharts(char4Cfg);
+	 
+	 
+	 $(".filter-submit").bind("click",function(){
+		 
+		 var _sjdw_begin = $("#sjdw_begin").val();
+		var _sjdw_end = $("#sjdw_end").val();
+		if(_sjdw_end == "" && _sjdw_begin == ""){
+			toastr.error("请选择时间范围");
+			return;
+		}
+		var filterParameters = [];
+		
+		var _sjdw_beginArray = _sjdw_begin.split("-");  
+		var _sjdw_beginArrayDate = new Date(_sjdw_beginArray[0],parseInt(_sjdw_beginArray[1])-1,_sjdw_beginArray[2]);  
+		_sjdw_beginArrayDate.setTime(_sjdw_beginArrayDate.getTime());
+		filterParameters.push({property:"opinionModel.publishDate",value:_sjdw_beginArrayDate.getTime(),operation:">="});
+		
+		var _sjdw_endArray = _sjdw_end.split("-");  
+		var _sjdw_endArrayDate = new Date(_sjdw_endArray[0],parseInt(_sjdw_endArray[1])-1,_sjdw_endArray[2]);  
+		_sjdw_beginArrayDate.setTime(_sjdw_beginArrayDate.getTime());
+		filterParameters.push({property:"opinionModel.publishDate",value:_sjdw_endArrayDate.getTime(),operation:"<"});
+		
+		filterParameters.push({property:"opinionModel.enabled",value:"1",operation:"="});
+		var _data = {filters:filterParameters};
+		var _param = {data:JSON.stringify(_data)}
+		 $.ajax({
+             url: "${ctxPath}/analysis/ajaxResponseDegree",
+             type: "post",
+             data: _param,
+             success: function (data) {
+             	if(data.success){
+             		var _verifyhashMap = new HashTable();
+             		var _todohashMap = new HashTable();
+             		var _verifyFinish = {total:0,success:0,failure:0};
+             		var _todoFinish = {total:0,success:0,failure:0};
+             		var data = data.data;
+             		var _departments = data.departments;
+             		for(var i = 0;i<data.opinions.length;i++){
+             			var j = data.opinions[i];
+             			var dealDate = j.dealDate * 1000 * 60;
+             			var finishDate = j.finishDate * 1000 * 60;
+             			_verifyFinish.total = _verifyFinish.total + 1;
+             			_todoFinish.total = _todoFinish.total + 1;
+             			//发起核实
+             			for(var ii = 0;ii<data.opinionsVerify.length;ii++){
+             				var jj = data.opinionsVerify[ii];
+             				if(!_verifyhashMap.containsKey(jj.departmentId)){
+             					_verifyhashMap.put(jj.departmentId,{departmentId:jj.departmentId,total:1,success:0,failure:0})
+             				}else{
+             					var _tempHm = _verifyhashMap.get(jj.departmentId);
+             					_verifyhashMap.put(jj.departmentId,{total:_tempHm.total + 1,success:_tempHm.success,failure:_tempHm.failure})
+             				}
+             				_tempHm = _verifyhashMap.get(jj.departmentId);
+             				var _isExist = false;
+             				for(var iii = 0;iii<data.opinionsVerifyFollow.length;iii++){
+                 				var jjj = data.opinionsVerifyFollow[iii];
+								if(jj.departmentId == jjj.departmentId){
+									_isExist = true;
+									if(jj.createdDate + dealDate > jjj.createdDate){//不合格
+										_isExist = false;
+									}
+									break;
+								}
+             				}
+             				if(!_isExist){//不合格
+             					_verifyhashMap.put(jj.departmentId,{departmentId:jj.departmentId,total:_tempHm.total,success:_tempHm.success,failure:_tempHm.failure + 1})
+             				}
+             				else{
+             					_verifyhashMap.put(jj.departmentId,{departmentId:jj.departmentId,total:_tempHm.total,success:_tempHm.success + 1,failure:_tempHm.failure})
+             				}
+             			}
+             			
+             			
+             			for(var ii = 0;ii<data.opinionsTodo.length;ii++){
+             				var jj = data.opinionsTodo[ii];
+             				if(!_todohashMap.containsKey(jj.departmentId)){
+             					_todohashMap.put(jj.departmentId,{departmentId:jj.departmentId,total:1,success:0,failure:0})
+             				}else{
+             					var _tempHm = _todohashMap.get(jj.departmentId);
+             					_todohashMap.put(jj.departmentId,{total:_tempHm.total + 1,success:_tempHm.success,failure:_tempHm.failure})
+             				}
+             				_tempHm = _todohashMap.get(jj.departmentId);
+             				var _isExist = false;
+             				for(var iii = 0;iii<data.opinionsTodoFollow.length;iii++){
+                 				var jjj = data.opinionsTodoFollow[iii];
+								if(jj.departmentId == jjj.departmentId){
+									_isExist = true;
+									if(jj.createdDate + dealDate > jjj.createdDate){//不合格
+										_isExist = false;
+									}
+									break;
+								}
+             				}
+             				if(!_isExist){//不合格
+             					_todohashMap.put(jj.departmentId,{departmentId:jj.departmentId,total:_tempHm.total,success:_tempHm.success,failure:_tempHm.failure + 1})
+             				}
+             				else{
+             					_todohashMap.put(jj.departmentId,{departmentId:jj.departmentId,total:_tempHm.total,success:_tempHm.success + 1,failure:_tempHm.failure})
+             				}
+             			}
+             			
+             			
+             			
+             			if(j.finishVerifyDate > finishDate + j.publishDate){
+             				_verifyFinish.failure = _verifyFinish.failure + 1;
+             			}else{
+             				_verifyFinish.success = _verifyFinish.success + 1;
+             			}
+             			
+             			if(j.finishTodoDate > finishDate + j.publishDate){
+             				_todoFinish.failure = _todoFinish.failure + 1;
+             			}else{
+             				_todoFinish.success = _todoFinish.success + 1;
+             			}
+             			
+             			
+             		}
+             		var  _chart = $("#panel-chart-v1").highcharts();
+             		var _chart2 = $("#panel-chart-v2").highcharts();
+             		var _chart3 = $("#panel-chart-v3").highcharts();
+             		var _chart4 = $("#panel-chart-v4").highcharts();
+             		_chart.xAxis[0].setCategories(["核实响应率"]);
+             		_chart2.xAxis[0].setCategories(["核实完成率"]);
+             		_chart3.xAxis[0].setCategories(["转办响应率"]);
+             		_chart4.xAxis[0].setCategories(["转办完成率"]);
+             		
+             		 var _d = _chart.series.length;
+             		  for(var i = _d - 1;i>=0;i--){
+             				_chart.series[i].remove(false);
+             		  }
+             		  
+             		  _d = _chart2.series.length;
+             		  for(var i = _d - 1;i>=0;i--){
+             				_chart2.series[i].remove(false);
+             		  }
+             		  
+             		 _d = _chart3.series.length;
+            		  for(var i = _d - 1;i>=0;i--){
+            				_chart3.series[i].remove(false);
+            		  }
+            		  
+              		 _d = _chart4.series.length;
+	           		  for(var i = _d - 1;i>=0;i--){
+	           				_chart4.series[i].remove(false);
+	           		  }
+	           		  
+	           		var _verifyValues = _verifyhashMap.values();
+	           		var _todoValues = _todohashMap.values();
+	           		
+	           		for(var i = 0;i<_verifyValues.length;i++){
+	           			var j = _verifyValues[i];
+	           			for(var ii = 0;ii < _departments.length;ii++){
+	           				var jj = _departments[ii];
+	           				if(j.departmentId == jj.id){
+	           					j.name = jj.label + "核实响应率";
+	           					j.y = (Math.round(j.success / j.total * 10000) / 100.00);
+	           					break;
+	           				}
+	           			}
+	           		}
+	           		
+	           		
+					for(var i = 0;i<_todoValues.length;i++){
+						var j = _todoValues[i];
+	           			for(var ii = 0;ii < _departments.length;ii++){
+	           				var jj = _departments[ii];
+	           				if(j.departmentId == jj.id){
+	           					j.name = jj.label + "转办响应率";
+	           					j.y = (Math.round(j.success / j.total * 10000) / 100.00);
+	           					break;
+	           				}
+	           			}
+	           		}
+	           		  
+	           		//var series = {type:"pie",name:"核实响应率",data:[{name:'失败率',y:sum},{name:'成功率',y:sjc*data.count - sum}]};
+	           		var series = {type:"pie",name:"核实响应率",data:_verifyValues};
+             		var series2 = {type:"pie",name:"核实完成率",data:[{name:'不合格',y:_verifyFinish.failure},{name:'合规',y:_verifyFinish.success}]};
+             		var series3 = {type:"pie",name:"转办响应率",data:_todoValues};
+             		var series4= {type:"pie",name:"转办核实完成率",data:[{name:'不合格',y:_todoFinish.failure},{name:'合规',y:_todoFinish.success}]};
+             		/* for(var i = 0;i<data.dataType.length;i++){
+             			var j = data.dataType[i];
+             			series3.data.push({name:j["报警类型"],y:j["FailureCount"]});
+             		} */
+             		  
+             		  
+             		 _chart.addSeries(series, false);	
+            		_chart.redraw();
+            		
+            		 _chart2.addSeries(series2, false);	
+            		_chart2.redraw();
+            		
+           		 _chart3.addSeries(series3, false);	
+             		_chart3.redraw();
+             		
+              		 _chart4.addSeries(series4, false);	
+              		_chart4.redraw();
+             	    
+             	}else{
+             		toastr.error(data.error);
+             	}
+             }
+           }); 
+		 
+	 });
+	
+});
+
+
+
+
+</script>

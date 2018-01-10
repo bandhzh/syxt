@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sql-statement namespace="com.analysis">
+
+	<!-- 查询出统计分析 -->
+	<sql id="selectBody">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			left join op_list on opinionModel.levelId = op_list.id 
+			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+
+
+
+</sql-statement>
