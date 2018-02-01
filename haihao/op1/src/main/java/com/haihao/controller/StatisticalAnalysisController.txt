@@ -1,0 +1,84 @@
+package com.haihao.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.alibaba.fastjson.JSON;
+import com.haihao.beetl.ToolSqlXml;
+import com.haihao.dto.RequestDTO;
+import com.haihao.dto.ResultDto;
+import com.haihao.jfinal.ToolModel;
+import com.haihao.model.security.UserModel;
+import com.haihao.tool.ToolString;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
+
+
+@Controller
+@RequestMapping(value = "/analysis")
+public class StatisticalAnalysisController extends BaseController {
+
+	
+
+	
+	@RequestMapping("/responseDegree")
+	public String ResponseDegree(Map<String, Object> model) {
+		model.put("htmlContent", "/templates/analysis/responseDegree.html");
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		
+		
+		
+		model.put("initData", JSON.toJSONString(map));
+		
+
+		
+		return "common/content";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/ajaxResponseDegree")
+	public ResultDto ajaxResponseDegree(HttpServletRequest request){
+		ResultDto resultDto = new ResultDto();
+		RequestDTO requestDTO = getRequestDTO(request);
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("data", requestDTO.getData());
+		params.put("filters", requestDTO.getFilters());
+		params.put("sorts", requestDTO.getSorts());
+		params.put("extraAttributes", requestDTO.getExtraAttributes());
+		
+		List<Record> find = Db.find("select opinionModel.id,opinionModel.status,opinionModel.toDoStatus,opinionModel.publishDate,opinionModel.finishVerifyDate,opinionModel.finishTodoDate,userModel.displayName,op_list.dealDate,op_list.finishDate " + " " + ToolSqlXml.getSql("com.analysis.selectBody", params));
+		List<Long> ids = new ArrayList<Long>();
+		for(Record r : find){
+			ids.add(r.getLong("id"));
+		}
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("opinions", ToolModel.recordListConvert(find));
+		
+		List<Record> find1 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		data.put("departments", ToolModel.recordListConvert(find1));
+		
+		data.put("opinions", ToolModel.recordListConvert(find));
+		if(ids.size() > 0){
+			data.put("opinionsTodo", ToolModel.recordListConvert(Db.find("select * from op_opinion_todo where opinionId in (" + ToolString.joinForSQL(ids, ",") + ")")));
+			data.put("opinionsTodoFollow", ToolModel.recordListConvert(Db.find("select opinionId,departmentId,userId,createdDate from op_opinion_todo_follow where opinionId in (" + ToolString.joinForSQL(ids, ",") + ")")));
+			data.put("opinionsVerify", ToolModel.recordListConvert(Db.find("select * from op_opinion_verify where opinionId in (" + ToolString.joinForSQL(ids, ",") + ")")));
+			data.put("opinionsVerifyFollow", ToolModel.recordListConvert(Db.find("select opinionId,departmentId,userId,createdDate from op_opinion_verify_follow where opinionId in (" + ToolString.joinForSQL(ids, ",") + ")")));
+		}
+		
+		
+		
+		resultDto.setData(data);
+		return resultDto;
+	}
+
+}

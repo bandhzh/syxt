@@ -309,6 +309,8 @@ public class OpinionController extends BaseController {
 		ResultDto resultDto = new ResultDto();
 		OpinionModel findById = OpinionModel.dao.findById(id);
 		findById.set("status", DataConstant.OpinionStatus.finishVerify);
+		findById.set("finishVerifyDate", System.currentTimeMillis());
+		
 		findById.update();
 		
 		
@@ -571,6 +573,7 @@ public class OpinionController extends BaseController {
 		ResultDto resultDto = new ResultDto();
 		OpinionModel findById = OpinionModel.dao.findById(id);
 		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.finishDo);
+		findById.set("finishTodoDate", System.currentTimeMillis());
 		findById.update();
 		
 		
@@ -616,6 +619,7 @@ public class OpinionController extends BaseController {
 		ResultDto resultDto = new ResultDto();
 		OpinionModel findById = OpinionModel.dao.findById(id);
 		findById.set("toDoStatus", DataConstant.OpinionToDoStatus.untDo);
+		findById.set("finishTodoDate", System.currentTimeMillis());
 		findById.update();
 		
 		
