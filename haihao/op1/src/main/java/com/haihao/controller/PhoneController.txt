@@ -481,6 +481,73 @@ public class PhoneController extends BaseController{
 	}
 	
 	
+	
+	
+	
+	/**
+	 * app 安全中心 列表版式
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/listopinionsbyanquan"})
+	public String listopinionsbyanquan(Map<String, Object> model,HttpServletRequest request) {
+		
+		
+		//加载已公开的安全舆情 type=2
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		
+		List<Record> opennews = Db.find(ToolSqlXml.getSql("com.opinion.selectisPublicbyanquan"));//开放的安全舆情
+		map.put("listopennews", ToolModel.recordListConvert(opennews));
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
+		
+		//+需要自己处理的核实 以及转办给我的舆情
+		
+		model.put("initData", JSON.toJSONString(map));
+				
+		
+		return "anquanui/listanquans";
+	}
+	
+	
+	
+	/**
+	 * app 信访中心 列表版式
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = { "/listopinionsbyxinfang"})
+	public String listopinionsbyxinfang(Map<String, Object> model,HttpServletRequest request) {
+		
+		
+		//加载已公开的安全舆情 type=2
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		List<Record> types = Db.find(ToolSqlXml.getSql("com.label.list"));
+		map.put("lists", ToolModel.recordListConvert(types));
+		
+		
+		List<Record> opennews = Db.find(ToolSqlXml.getSql("com.opinion.selectisPublicbyxinfang"));//开放的信访 type=3
+		map.put("listopennews", ToolModel.recordListConvert(opennews));
+		
+		List<Record> find2 = Db.find(ToolSqlXml.getSql("com.label.department"));
+		map.put("departments", ToolModel.recordListConvert(find2));
+		
+		//+需要自己处理的核实 以及转办给我的舆情
+		
+		model.put("initData", JSON.toJSONString(map));
+				
+		
+		return "xinfang/listxinfangs";
+	}
+	
+	
+	
 	/**
 	 * 异步获取舆情核实列表
 	 * @param request
@@ -505,6 +572,52 @@ public class PhoneController extends BaseController{
 	
 	
 	/**
+	 * 异步获取安全核实列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/ajaxlistOpinionByVerifybyanquan")
+	@ResponseBody
+	public PageResultDto ajaxlistOpinionByVerifybyanquan(HttpServletRequest request) {
+		
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByVerifybyanquan");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	/**
+	 * 异步获取信访核实列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/ajaxlistOpinionByVerifybyxinfang")
+	@ResponseBody
+	public PageResultDto ajaxlistOpinionByVerifybyxinfang(HttpServletRequest request) {
+		
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByVerifybyxinfang");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	
+	
+	/**
 	 * 异步获取舆情转办列表
 	 * @param request
 	 * @return
@@ -512,6 +625,7 @@ public class PhoneController extends BaseController{
 	@RequestMapping("/ajaxlistOpinionByTodo")
 	@ResponseBody
 	public PageResultDto ajaxlistOpinionByTodo(HttpServletRequest request) {
+		
 		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
 		pageSqlCommond.setRequest(request);
 		pageSqlCommond.setBodySql("com.opinion.selectBodyByTodo");
@@ -525,6 +639,51 @@ public class PhoneController extends BaseController{
 	}
 	
 	
+	
+	/**
+	 * 异步获取安全转办列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/ajaxlistOpinionByTodobyanquan")
+	@ResponseBody
+	public PageResultDto ajaxlistOpinionByTodobyanquan(HttpServletRequest request) {
+		
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByTodobyanquan");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	/**
+	 * 异步获取信访转办列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/ajaxlistOpinionByTodobyxinfang")
+	@ResponseBody
+	public PageResultDto ajaxlistOpinionByTodobyxinfang(HttpServletRequest request) {
+		
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByTodobyxinfang");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	
 	/**
 	 * 异步获取 批示给我的舆情列表
 	 * @param request
@@ -533,9 +692,57 @@ public class PhoneController extends BaseController{
 	@RequestMapping("/ajaxlistOpinionByInstruction")
 	@ResponseBody
 	public PageResultDto ajaxlistOpinionByInstruction(HttpServletRequest request) {
+		
+		
 		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
 		pageSqlCommond.setRequest(request);
 		pageSqlCommond.setBodySql("com.opinion.selectBodyByInstruction");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	
+	/**
+	 * 异步获取 批示给我的安全列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/ajaxlistOpinionByInstructionbyanquan")
+	@ResponseBody
+	public PageResultDto ajaxlistOpinionByInstructionbyanquan(HttpServletRequest request) {
+		
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByInstructionbyanquan");
+		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
+		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
+			@Override
+			public void onComplete(List<Map<String, Object>> data) {
+			}
+		});
+		return ajaxList(pageSqlCommond);
+	}
+	
+	
+	
+	/**
+	 * 异步获取 批示给我的信访列表
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/ajaxlistOpinionByInstructionbyxinfang")
+	@ResponseBody
+	public PageResultDto ajaxlistOpinionByInstructionbyxinfang(HttpServletRequest request) {
+		
+		PageSqlCommond<List<Map<String, Object>>> pageSqlCommond = new PageSqlCommond<List<Map<String, Object>>>();
+		pageSqlCommond.setRequest(request);
+		pageSqlCommond.setBodySql("com.opinion.selectBodyByInstructionbyxinfang");
 		pageSqlCommond.setHeadSql("com.opinion.selectHearder");
 		pageSqlCommond.setSqlCallback(new SQLCallback<List<Map<String, Object>>>() {
 			@Override

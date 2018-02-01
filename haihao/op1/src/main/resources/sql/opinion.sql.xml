@@ -35,6 +35,38 @@
 		]]>
 	</sql>
 	
+	<!-- 获取安全核实列表 -->
+	<sql id="selectBodyByVerifybyanquan">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			inner join (
+				select distinct opinionId from op_opinion_verify where departmentId = ${data.departmentId} 
+			) opinionVerifyModel on opinionModel.id = opinionVerifyModel.opinionId 
+			where 1 = 1 and opinionModel.type=2 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	<!-- 获取信访核实列表 -->
+	<sql id="selectBodyByVerifybyxinfang">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			inner join (
+				select distinct opinionId from op_opinion_verify where departmentId = ${data.departmentId} 
+			) opinionVerifyModel on opinionModel.id = opinionVerifyModel.opinionId 
+			where 1 = 1 and opinionModel.type=3 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	
 	<sql id="selectBodyByTodo">
 		<![CDATA[ 
 			from op_opinion opinionModel left join 
@@ -43,6 +75,36 @@
 				select distinct opinionId from op_opinion_todo where departmentId = ${data.departmentId} 
 			) opinionToDoModel on opinionModel.id = opinionToDoModel.opinionId 
 			where 1 = 1 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	<sql id="selectBodyByTodobyanquan">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			inner join (
+				select distinct opinionId from op_opinion_todo where departmentId = ${data.departmentId} 
+			) opinionToDoModel on opinionModel.id = opinionToDoModel.opinionId 
+			where 1 = 1 and opinionModel.type=2 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	<sql id="selectBodyByTodobyxinfang">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			inner join (
+				select distinct opinionId from op_opinion_todo where departmentId = ${data.departmentId} 
+			) opinionToDoModel on opinionModel.id = opinionToDoModel.opinionId 
+			where 1 = 1 and opinionModel.type=3 
 			<%
 			commonSql("com.common.params",filters!,sorts!);
 			%>
@@ -96,7 +158,34 @@
 	</sql>
 	
 	
+	<sql id="selectBodyByInstructionbyanquan">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			where 1 = 1 
+			and hasInstruction = 1 and opinionModel.type=2 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
 	
+	
+	
+	<sql id="selectBodyByInstructionbyxinfang">
+		<![CDATA[ 
+			from op_opinion opinionModel left join 
+			op_user userModel on opinionModel.createdBy = userModel.id 
+			where 1 = 1 
+			and hasInstruction = 1 and opinionModel.type=3 
+			<%
+			commonSql("com.common.params",filters!,sorts!);
+			%>
+		]]>
+	</sql>
+	
+	
+	<!-- 公开舆情 -->
 	<sql id="selectisPublic">
 		<![CDATA[ 
 			select * from op_opinion where isPublic = 1 and enabled =1
@@ -126,6 +215,21 @@
 		]]>
 	</sql>
 	
+	
+	<!-- 公开安全舆情 -->
+	<sql id="selectisPublicbyanquan">
+		<![CDATA[ 
+			select * from op_opinion where isPublic = 1 and enabled =1 and type=2
+		]]>
+	</sql>
+	
+	
+	<!-- 公开信访 -->
+	<sql id="selectisPublicbyxinfang">
+		<![CDATA[ 
+			select * from op_opinion where isPublic = 1 and enabled =1 and type=3
+		]]>
+	</sql>
 	
 	
 	

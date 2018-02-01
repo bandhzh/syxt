@@ -160,7 +160,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                     <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                     <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                     <% if(aclFn("opinion_query")){ %>
-                        <li class="nav-item  start active open">
+                        <li class="nav-item  start active open"><!-- active open -->
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
                                 <span class="title">舆论</span>
@@ -231,8 +231,8 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                         </li>
                         <% }%>
                         
-                        <% if(aclFn("opinion_query")){ %>
-                        <li class="nav-item  start active open">
+                        <% if(aclFn("safe_query")){ %>
+                        <li class="nav-item  start ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
                                 <span class="title">安全</span>
@@ -240,7 +240,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                             </a>
                             <ul class="sub-menu">
                             
-                                 <% if(aclFn("opinion_manager")){ %>
+                                 <% if(aclFn("safe_manager")){ %>
                                 <li class="nav-item  ">
                                     <a href="${ctxPath}/opinion?type=2" class="nav-link ">
                                         <span class="title">管理列表</span>
@@ -248,7 +248,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                                 </li>
                                  <% }%>
                                 
-                                <% if(aclFn("opinion_verify")){ %>
+                                <% if(aclFn("safe_verify")){ %>
                                 <li class="nav-item  ">
                                     <a href="${ctxPath}/opinion/opinionByVerify?type=2" class="nav-link ">
                                         <span class="title">核实列表</span>
@@ -256,7 +256,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                                 </li>
                                 <% }%>
                                 
-                                <% if(aclFn("opinion_query_zb")){ %>
+                                <% if(aclFn("safe_query_zb")){ %>
                                  <li class="nav-item  ">
                                     <a href="${ctxPath}/opinion/opinionByTodo?type=2" class="nav-link ">
                                         <span class="title">转办列表</span>
@@ -264,7 +264,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                                 </li>
                               	<% }%>
                                 
-                                 <% if(aclFn("opinion_duban")){ %>
+                                 <% if(aclFn("safe_duban")){ %>
                                  <li class="nav-item  ">
                                     <a href="${ctxPath}/opinion/opinionByInstruction?type=2" class="nav-link ">
                                         <span class="title">含批示列表</span>
@@ -278,7 +278,7 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                         
                         
                         
-                          <li class="nav-item  ">
+                        <!--   <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>
                                 <span class="title">信息</span>
@@ -286,14 +286,14 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                             </a>
                             <ul class="sub-menu">
                             </ul>
-                        </li>
+                        </li> -->
                         
                         
                         
                         
                         <!-- 新闻权限判断 -->
                         <% if(aclFn("new_query")){ %>
-                        <li class="nav-item  start active open">
+                        <li class="nav-item  start">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>
                                 <span class="title">新闻</span>
@@ -336,9 +336,52 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                         </li>
                         <% }%>
                         
+                        <!-- 信访 -->
+                        <% if(aclFn("petition_query")){ %>
+                        <li class="nav-item  start">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-bulb"></i>
+                                <span class="title">信访</span>
+                                <span class="arrow"></span>
+                            </a>
+                            <ul class="sub-menu">
+                            
+                                 <% if(aclFn("petition_manager")){ %>
+                                <li class="nav-item  ">
+                                    <a href="${ctxPath}/opinion?type=3" class="nav-link ">
+                                        <span class="title">信访管理列表</span>
+                                    </a>
+                                </li>
+                                 <% }%>
+                                
+                                <% if(aclFn("petition_verify")){ %>
+                                <li class="nav-item  ">
+                                    <a href="${ctxPath}/opinion/opinionByVerify?type=3" class="nav-link ">
+                                        <span class="title">核实列表</span>
+                                    </a>
+                                </li>
+                                <% }%>
+                                
+                                <% if(aclFn("petition_query_zb")){ %>
+                                 <li class="nav-item  ">
+                                    <a href="${ctxPath}/opinion/opinionByTodo?type=3" class="nav-link ">
+                                        <span class="title">转办列表</span>
+                                    </a>
+                                </li>
+                              	<% }%>
+                                
+                                 <% if(aclFn("petition_duban")){ %>
+                                 <li class="nav-item  ">
+                                    <a href="${ctxPath}/opinion/opinionByInstruction?type=3" class="nav-link ">
+                                        <span class="title">含批示列表</span>
+                                    </a>
+                                </li>
+                                 <% }%>
+                            </ul>
+                        </li>
+                        <% }%>
                         
-                        
-                         <li class="nav-item  ">
+                         <!-- <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-bulb"></i>
                                 <span class="title">信访</span>
@@ -346,7 +389,9 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
                             </a>
                             <ul class="sub-menu">
                             </ul>
-                        </li>
+                        </li> -->
+                        
+                        
                           <li class="nav-item  ">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-puzzle"></i>
@@ -577,6 +622,23 @@ if($("#initData").val())initData = jQuery.parseJSON($("#initData").val());
             
             <script type="text/javascript">
             $(document).ready(function(){
+            	
+            	//左侧菜单点击事件
+            	
+            	$(".sub-menu li").click(function(){
+            		$(this).parent().parent().addClass("active open");
+            		
+            	});
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
     		    if (jQuery().datepicker) {
     	            $('.date-picker').datepicker({language:"zh-CN",
     	                rtl: App.isRTL(),
